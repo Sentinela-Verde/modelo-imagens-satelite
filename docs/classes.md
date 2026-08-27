@@ -40,8 +40,18 @@ e `SV-10-rotulagem-manual-execucao.md`): é a única forma de capturar esse esta
 | 95 | Mangroves | 0 `nodata` | Não ocorre na AOI |
 | 100 | Moss and lichen | 0 `nodata` | Não ocorre na AOI |
 
-## Adicionando uma nova fonte de remap (ex.: MapBiomas, SV-05b)
+## Mapeamento MapBiomas Coleção 9 → nossas classes (SV-05b)
 
-Edite só a seção `remaps` de `config/classes.yml`, adicionando uma nova chave (ex.: `mapbiomas`)
-com a tabela `codigo_origem: nosso_id`. `src/sentinela/classes.py` não precisa mudar —
-`remap(array, "mapbiomas")` passa a funcionar automaticamente.
+A tabela completa está em `config/classes.yml`, seção `remaps.mapbiomas`, conferida código a código
+contra a legenda oficial da Coleção 9. O raciocínio completo — incluindo as decisões de julgamento
+(mineração, afloramento rochoso, wetland, dendê) e por que nenhum código do MapBiomas isola
+"canteiro de obras" — está em `docs/decisoes/ADR-004-fonte-de-labels.md`. **Qual fonte (WorldCover,
+MapBiomas ou as duas) a V1 efetivamente usa é decisão pendente de confirmação do time em ADR-004** —
+`remap(array, "mapbiomas")` já funciona em código, mas isso não implica que SV-07 deva usá-lo sem
+essa confirmação.
+
+## Adicionando uma nova fonte de remap
+
+Edite só a seção `remaps` de `config/classes.yml`, adicionando uma nova chave com a tabela
+`codigo_origem: nosso_id`. `src/sentinela/classes.py` não precisa mudar — `remap(array, "fonte")`
+passa a funcionar automaticamente.

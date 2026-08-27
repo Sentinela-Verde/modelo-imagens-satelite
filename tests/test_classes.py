@@ -49,6 +49,27 @@ def test_seis_classes_com_slugs_unicos():
     assert len(slugs) == len(set(slugs))
 
 
+def test_mapbiomas_remap_cobre_toda_legenda_colecao_9():
+    # Todos os 37 códigos da legenda oficial da Coleção 9 (SV-05b), conferidos código a código
+    # contra brasil.mapbiomas.org/wp-content/uploads/sites/4/2024/08/Legenda-Colecao-9-LEGEND-CODE.pdf
+    # — nenhum deve ficar de fora da tabela de remap (cenário de teste 1 de SV-05b).
+    codigos_legenda_colecao_9 = {
+        1, 3, 4, 5, 6, 49,  # Floresta
+        10, 11, 12, 32, 29, 50,  # Vegetação Herbácea e Arbustiva
+        14, 15, 18, 19, 39, 20, 40, 62, 41, 36, 46, 47, 35, 48, 9, 21,  # Agropecuária
+        22, 23, 24, 30, 25,  # Área não Vegetada
+        26, 33, 31,  # Corpo D'água
+        27,  # Não observado
+    }
+    assert codigos_legenda_colecao_9 == set(classes.REMAPS["mapbiomas"].keys())
+
+
+def test_mapbiomas_remap_so_produz_ids_validos():
+    entrada = np.array(sorted(classes.REMAPS["mapbiomas"].keys()))
+    resultado = classes.remap(entrada, "mapbiomas")
+    assert set(resultado.tolist()) <= set(classes.CLASSES.keys())
+
+
 def test_colormap_tem_uma_cor_por_id_sem_repeticao():
     cmap = classes.colormap()
     assert set(cmap.keys()) == set(classes.CLASSES.keys())
