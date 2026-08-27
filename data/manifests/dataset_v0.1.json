@@ -1,0 +1,579 @@
+{
+  "versao": "v0.1",
+  "n_linhas": 1307425,
+  "n_features": 13,
+  "lista_features": [
+    "blue",
+    "green",
+    "red",
+    "nir",
+    "swir1",
+    "swir2",
+    "ndvi",
+    "evi",
+    "ndwi",
+    "mndwi",
+    "ndbi",
+    "bsi",
+    "ndmi"
+  ],
+  "distribuicao_classes": {
+    "total": {
+      "vegetacao_densa": 318273,
+      "vegetacao_rala": 370529,
+      "solo_exposto_obras": 113450,
+      "construida_urbana": 384000,
+      "agua": 121173
+    },
+    "por_split": {
+      "treino": {
+        "vegetacao_densa": 205582,
+        "vegetacao_rala": 262169,
+        "solo_exposto_obras": 69112,
+        "construida_urbana": 278695,
+        "agua": 85832
+      },
+      "teste": {
+        "vegetacao_densa": 112691,
+        "vegetacao_rala": 108360,
+        "solo_exposto_obras": 44338,
+        "construida_urbana": 105305,
+        "agua": 35341
+      }
+    },
+    "por_sensor": {
+      "s2": {
+        "vegetacao_densa": 168000,
+        "vegetacao_rala": 168000,
+        "solo_exposto_obras": 104831,
+        "construida_urbana": 168000,
+        "agua": 113510
+      },
+      "landsat": {
+        "vegetacao_densa": 150273,
+        "vegetacao_rala": 202529,
+        "solo_exposto_obras": 8619,
+        "construida_urbana": 216000,
+        "agua": 7663
+      }
+    },
+    "por_sensor_e_split": {
+      "s2_treino": {
+        "vegetacao_densa": 109949,
+        "vegetacao_rala": 118683,
+        "solo_exposto_obras": 64254,
+        "construida_urbana": 122209,
+        "agua": 80307
+      },
+      "s2_teste": {
+        "vegetacao_densa": 58051,
+        "vegetacao_rala": 49317,
+        "solo_exposto_obras": 40577,
+        "construida_urbana": 45791,
+        "agua": 33203
+      },
+      "landsat_treino": {
+        "vegetacao_densa": 95633,
+        "vegetacao_rala": 143486,
+        "solo_exposto_obras": 4858,
+        "construida_urbana": 156486,
+        "agua": 5525
+      },
+      "landsat_teste": {
+        "vegetacao_densa": 54640,
+        "vegetacao_rala": 59043,
+        "solo_exposto_obras": 3761,
+        "construida_urbana": 59514,
+        "agua": 2138
+      }
+    }
+  },
+  "n_blocos": {
+    "treino": 252,
+    "teste": 111
+  },
+  "sites": [
+    "ascenty-vinhedo",
+    "odata-hortolandia",
+    "scala-tambore"
+  ],
+  "anos": [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "sensores": [
+    "landsat",
+    "s2"
+  ],
+  "fonte_label": "mapbiomas_coleção9_anual (ADR-004 opção b) + worldcover_crosscheck_2021",
+  "seed": 42,
+  "regra_split": "bloco_id = grade regular de 1km x 1km sobre coordenadas projetadas (x, y) em EPSG:31983 (nunca linha/coluna — índices de pixel significam distâncias diferentes a 10m e a 30m). Blocos inteiros (não pixels) são sorteados 70%/30% para treino/teste, com random_state=42, estratificado por site: todos os anos e sensores de um mesmo bloco vão para o mesmo split. Isso fecha os 3 vetores de vazamento de dados do projeto ao mesmo tempo: espacial (pixels vizinhos), temporal (mesmo lugar em anos consecutivos) e entre sensores (mesmo lugar, mesmo ano, duas cópias em resoluções diferentes nos anos de sobreposição 2019-2021). holdout_temporal marca o ano mais recente do dataset (2025) como flag informativo adicional para validação temporal em SV-12 — não substitui nem sobrepõe o split por bloco, que continua sendo a única fonte de verdade da coluna `split`.",
+  "regra_peso_label": "peso_label = 1/(1+distancia_safra) x (1.0 se concorda com WorldCover no ano de verificação cruzada 2021, senão 0.5). Fonte é anual (MapBiomas, ADR-004 opção b): distancia_safra=0 e peso_label=1.0 na grande maioria dos casos (2013-2023, exceto 2021 discordante). As duas exceções documentadas: (a) 2024/2025 replicam a banda classification_2023 (Coleção 9 não cobre esses anos) -> distancia_safra=1 ou 2, peso reduzido; (b) 2021 tem verificação cruzada com WorldCover -> pixels discordantes (~29-33% dos válidos, ver ADR-004) entram com peso 0.5 em vez de serem descartados.",
+  "erosao": {
+    "landsat": {
+      "pixels_antes_erosao": 3015182,
+      "pixels_depois_erosao": 2427001,
+      "pixels_descartados": 588181,
+      "pct_descartado": 19.5073
+    },
+    "s2": {
+      "pixels_antes_erosao": 21126168,
+      "pixels_depois_erosao": 19196149,
+      "pixels_descartados": 1930019,
+      "pct_descartado": 9.1357
+    }
+  },
+  "amostragem": {
+    "teto_por_classe_site_ano_sensor": 8000,
+    "erosao_borda_px": 1,
+    "observacao": "teto por sensor (não proporcional à contagem de pixels) — um pixel Landsat de 30m cobre 9x a área de um pixel S2 de 10m; teto proporcional faria a era moderna dominar o dataset ~9:1."
+  },
+  "rasters_origem": [
+    {
+      "sensor": "landsat",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2013,
+      "sha256_manifest_features": "308299b8e503b87102d0322d64b2c42905833d9b97ed386fd41c52f33ec18302",
+      "sha256_manifest_labels": "d5198b9ee706c35e1340034372e9452e3c67535b8ce2007c57d85bec28e9f2cb",
+      "sha256_tif_features": "0abf150e95f867dbfb511dc11e74c546e14b2f0e5b71b26f86064b8c4cea6ca5",
+      "sha256_tif_labels": "1285f521efcd7e2db7e54cbba78131d7c7bc2e7da724ae031ae42a508d3e7ff9"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2014,
+      "sha256_manifest_features": "cfd557e8532dc111f216b3e3556d11a9ca02720499fa798f4f13482180e07f4c",
+      "sha256_manifest_labels": "3f3288626c575f43de37dd6957ad4b7a968c6134a18ae418f1620097e44dd464",
+      "sha256_tif_features": "d79ef1cff5ffe0ca8df5ed01a441d624b237aa9350adf4f4133ae29cd31cc5e3",
+      "sha256_tif_labels": "60c7d25b89ad7cdcf25ef649079fa3bdf63a65e8cbf79045f5c47b3b00b37d31"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2015,
+      "sha256_manifest_features": "3d2bb63e99e099ebf3f417b5ab92978b6952f36a9085c7a6e27788f8063b6163",
+      "sha256_manifest_labels": "1e55666ca245db98d086402f64e9e68fc28a1b744c5381138fb01b67d7b0794c",
+      "sha256_tif_features": "d635d4489c096db22e215b508cf8e7ec8dd637f69f3e751d064a9a8fff6f2683",
+      "sha256_tif_labels": "71950f6dc5d8f2c4e053b74efb37714f750511610306266ae1d45c57e013770e"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2016,
+      "sha256_manifest_features": "f0a3100701a6ff5762efa0b3ce05fb39a609bb04e4bdcb34526d1c180cfc7389",
+      "sha256_manifest_labels": "abbdb501cefe45883e2443d10d600caab9f370f64624386ad32cba38e499ab97",
+      "sha256_tif_features": "20973c47a9e68fb880d043480171c17e5ebbea2d92bfdf04775e74915544c339",
+      "sha256_tif_labels": "25fb965e4de16e7cbbd460718d46bd3ec2f29a39734acc436936ea5079081e00"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2017,
+      "sha256_manifest_features": "1970a768109dc31a5130cbb336b46455a5a72df68870809f2cf9d5a1959c9cdc",
+      "sha256_manifest_labels": "560cc72cd9d4f727cafca5d157549b0bd0dcd6f87a6d00252012fa2eefbbf01f",
+      "sha256_tif_features": "1fa1d5107a596ec6236f84d3ef83f6d9bb0e6ebbad1d296250c319fcc1538075",
+      "sha256_tif_labels": "e824ebeed336eac0c94760a23d628410d0240bc0cff6367d7bbaa3c1b068b8fc"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2018,
+      "sha256_manifest_features": "b3831478de01e78b47481319e7a0d8bb087a70bf5cf0e939757c1036f46d3db1",
+      "sha256_manifest_labels": "13090063afc6f03fd075f2fb01e61483c2617967d68e37c326f20f39468365a5",
+      "sha256_tif_features": "6c6a25a18ba5b9de84b5ee20b5dba0e818e52a4c241748ea99491827476238fd",
+      "sha256_tif_labels": "6e6c5262c917e999ee30aa5e158537a4dc908229f139717f36a86fad0735449e"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2019,
+      "sha256_manifest_features": "aadcbde28ea8aa7964d8ab1395356372c0691f69d6033893ebe7a3970adb30de",
+      "sha256_manifest_labels": "1ae686e0059fa2a41a42e8b97b406697a4ed4492f730def069b1ad470d24b8e6",
+      "sha256_tif_features": "663c3bc7e64619d291af5ac29f6fa1c80344236309ec4b1b83d5b072a5b15203",
+      "sha256_tif_labels": "4df712956c69ae0a1ce0faae8e1b8b3c63dd2e83f2e0b66f4c88242799b5c58c"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2020,
+      "sha256_manifest_features": "2f2764149889df3b6389d7ca910b3cc9a391df613d3c9b17fd852c421bb5f5d7",
+      "sha256_manifest_labels": "bf96e20c545e65b8978f08e1176cd14142c790ad8470f1b827c754a3bbfaa3f8",
+      "sha256_tif_features": "df3644805f576fbca81383bb5b2d84d9ac0c31171b0b91c0f09375d29fdf235d",
+      "sha256_tif_labels": "33f08c286cb0476780e206b3982524b8d6a83c552d32b165bd77365172064163"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2021,
+      "sha256_manifest_features": "f596927943495e8af37e421ab3bf112d7e35d66af0029337918a588760ae08e4",
+      "sha256_manifest_labels": "459b2196a06dc016f34204cbc7199bc302473c0ac8177e46ea4fb3e9e36ea838",
+      "sha256_tif_features": "8c26b04ab49df1cce65afbbaaf226c8c158de4403d8630c3702babc037b20ea5",
+      "sha256_tif_labels": "6f47ac18d5aaeb80677a1c9b566561ed252227faf8c59fc4e20f1bf94d988400"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "odata-hortolandia",
+      "ano": 2013,
+      "sha256_manifest_features": "fc5ef3715f4c8e7c6de80218ba59cccbaa8fbad1dc6fbb545b930b48be8cfb7d",
+      "sha256_manifest_labels": "067644701c102e572a68037c84261e68c3a2fa4415999f6bd0b78f00cdc0deb9",
+      "sha256_tif_features": "a1c5c095cb67b0a1ca37400dd5070eace4b814e015911e0977ff64765c59ebd4",
+      "sha256_tif_labels": "64cc27f4e44b055b0ea8735642ecf22e986f7aca874f95b594d8ce24eca2bfc6"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "odata-hortolandia",
+      "ano": 2014,
+      "sha256_manifest_features": "4957089f2a978dabfbe12affa712e5421c39aec47580a3ad970211cfdbc0ecbb",
+      "sha256_manifest_labels": "a351268c324c58fde541aa3fbcb59beda41092586bc43b1c9ab11df0a048e00d",
+      "sha256_tif_features": "a7d9dc8962fb7b51ed5eb700293536676a43687ff274443005fe578917023725",
+      "sha256_tif_labels": "8261aa62a2c749db9427331163828ddfc1b16fbff8d33aad97d0bff8f60cd834"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "odata-hortolandia",
+      "ano": 2015,
+      "sha256_manifest_features": "64f1054648c477d41c9b6a9c64e8ac1b7475e8a417c013c1273f6c29190d0e32",
+      "sha256_manifest_labels": "208c4c23de8a034c00781365518b46aad5cc3e77523e8b82f8af5c2dc15483d6",
+      "sha256_tif_features": "57d31e002f449771874dc33a5edd0fcf3b678ea71470dcd4ac24ba02a92a765e",
+      "sha256_tif_labels": "3743af0eb3e1d558899613b73aff8e8ee0a332c7f50671c19e79242108bfc57f"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "odata-hortolandia",
+      "ano": 2016,
+      "sha256_manifest_features": "2149f40874658f2c35238e840fc7d420b356aaf09b6e905ee833c90504a70282",
+      "sha256_manifest_labels": "ffb0bec0ce47036f48341eb221cac199732537c60299c0f5145004d283d1e699",
+      "sha256_tif_features": "b1f343a29e6d9b8231911085b9e5fa575ba352df5ca208c886c7e16eee4e01ac",
+      "sha256_tif_labels": "aaf4fed2ac2d495c241370c1ec87e33126033483cc229da315f04b85b7371e91"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "odata-hortolandia",
+      "ano": 2017,
+      "sha256_manifest_features": "7b33f13a529ebae10187fa63d837b4570835a5183a8a50cf4d05d46fc853b528",
+      "sha256_manifest_labels": "dda26fe72081b2c538417c868b84f1334fad93a2fd020c4cd31dfd7d7612453a",
+      "sha256_tif_features": "cf166d1ab47c1fa805442e54e8a865c8dc12e43058f7d87c59771139c41999cd",
+      "sha256_tif_labels": "31f77d6ffbbc81588bf6c8ae1282573a957e0bd357d0f05159a644c3f3e7a9f1"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "odata-hortolandia",
+      "ano": 2018,
+      "sha256_manifest_features": "a9849d59db76875f0240f1ef82c26a1807164ef278a38100b9f8b0abd18e61c8",
+      "sha256_manifest_labels": "f4a185b3951b2322279b5a37af6144d9a5f92900898f8689488009dbd5d9c60a",
+      "sha256_tif_features": "a0e4b02be05a401d0289f8e1ee1cb91d44ff9165f84495ab5e369729ac5d1300",
+      "sha256_tif_labels": "b877e47effb2461e05871c53ae0a089fa41a5eb305a1ba88cd8bc96da8d6bb55"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "odata-hortolandia",
+      "ano": 2019,
+      "sha256_manifest_features": "b339b7965b5359e95e705f919398fde08a91fc756100353e6f2658470c0a4d29",
+      "sha256_manifest_labels": "0a3b2ab9d9d8aababdcfdeb18bcd355798653c1486f554db4e353348ed3b44fc",
+      "sha256_tif_features": "8f953c1187472eb3e6b40ff6e6aad2c79f37702c0f97b41873b2c8d3a5f32dfa",
+      "sha256_tif_labels": "a439a330057903bec510785c54cb6e952b089c1ddfc35d35ed6a30793229ffe4"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "odata-hortolandia",
+      "ano": 2020,
+      "sha256_manifest_features": "69e5cce6112528b8d3dccc9e99096294a40420c951f43f8826fe5b9ef0922017",
+      "sha256_manifest_labels": "cb08f75df3bf2f25e2a0f766816ec70149da4b2bd8a0e56806c6864ade899834",
+      "sha256_tif_features": "60acef35488ccf7458e6672fbb3adc8c4bfdee8c5874e20e756d2eaf53f04755",
+      "sha256_tif_labels": "b03d03213c81164aabf393c8589aef5d9bf2af8d1ceba126ca79ba2f635d64aa"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "odata-hortolandia",
+      "ano": 2021,
+      "sha256_manifest_features": "ad42c81d35bfabffaabf75702b752f5ca0a261f00f9dd1083b4c0e121500122a",
+      "sha256_manifest_labels": "e0ec997a58c468b99d3006964932eeb979db419d9a703ebea04518cbf3a1b625",
+      "sha256_tif_features": "2d2685e3ffbffd02e702c48f484365ee21042250c509798e9ff628c3073ca3de",
+      "sha256_tif_labels": "1c74624a9a6c5ecd717f0d74f4ffa5bdfde531c51bdf5f5b3ad9d72fda2959ca"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "scala-tambore",
+      "ano": 2013,
+      "sha256_manifest_features": "7afd5d52d46e13da55a4a39935b8b6e349b196f5e6ffeaec4c776ed652b3bfe6",
+      "sha256_manifest_labels": "33d0e56dd6abcaaa835bb281c8fbe1e25de04ac8f00ff740ac49eedba5ba7823",
+      "sha256_tif_features": "9aeb29a411dd996e11ddb04005cfd7d3bcee538241a2d8aeeb385de994f366b0",
+      "sha256_tif_labels": "58bd0de42b8547c3070fb3c955d008a2b388eea5b0cbf8c99e7aea7de109dd97"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "scala-tambore",
+      "ano": 2014,
+      "sha256_manifest_features": "b96a42dda3be7f3ef47c94efc7ebd353543ee801ba45fc68e748bc90eb2dc361",
+      "sha256_manifest_labels": "ecbd294aedb53a9ac1968833ffe15b5eda7efc60924a80cbe523ee2d20b3be2c",
+      "sha256_tif_features": "ffd3a7a37e5a556678e80e6c8e427826a3f69766b4490a8bdbad6b4e0118d53e",
+      "sha256_tif_labels": "d6a5e462fd7947d9a2638141d12f054977ccc9f4328c367b83f62d659c3066c6"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "scala-tambore",
+      "ano": 2015,
+      "sha256_manifest_features": "4af894cf279e6e0c3a53c7f28f47aa6377ece87b489e97b47755c098c519d997",
+      "sha256_manifest_labels": "9926455241212a9f47ab7181e4e3b196b82a0b1a4705809fea68b79b84ef0949",
+      "sha256_tif_features": "81acc547b7106f98cceb633af286581ce4c6397156ddd9738fb57f66609da441",
+      "sha256_tif_labels": "a6f380c0865b943d861c956e9d2281ebaa1b7d40f17850daa73846ecd61b1af5"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "scala-tambore",
+      "ano": 2016,
+      "sha256_manifest_features": "d0a6891740c6f1f682aba748bc8f68877fc9d339f3008d5aedc44174534ddc2e",
+      "sha256_manifest_labels": "69277e732163623e76283c87820f2d9588e20a7e54d5073b9725565533ee20ae",
+      "sha256_tif_features": "50f91aa7b04d5850e4dcf045cab40c3569be1cf91c1b26e13bc6a219c344aa1e",
+      "sha256_tif_labels": "27523ad35909651f104e55cfb5422f36905289a23ef64d5007023c56e30debb8"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "scala-tambore",
+      "ano": 2017,
+      "sha256_manifest_features": "990fd2f0e619b8dfbd3341cb1f8c18735d51139f03b27434b77e36b6e23af855",
+      "sha256_manifest_labels": "2f646017e8ac2dcfdbd7193b814392c2fe630cd0d6fcc20dbaafbf8c56db6c58",
+      "sha256_tif_features": "20cb93a6ef255601baeff8d2d061065996fb29b5e123735b1e8810da33779e2b",
+      "sha256_tif_labels": "b7ec6fccf51931e01854b45c1a402ca192a6d7beb9d3333f1d087bb5ab4eff06"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "scala-tambore",
+      "ano": 2018,
+      "sha256_manifest_features": "3000b211a130d861a17535b222196826da4b43f83dc047a1c50be60b2c13b7fd",
+      "sha256_manifest_labels": "d5240cb299e12b61f355fad0be9aa2c4e651ca3889782a188d4d2b32cc317dd5",
+      "sha256_tif_features": "26edff3a80a96e555d74cbeb6d0743a0f1f34e8411a9b6f2d69bafe28026f823",
+      "sha256_tif_labels": "4f089b6f81c6cd5c0c155af3bc3dfc496337b7479d9b43f23a9dfd63f6422393"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "scala-tambore",
+      "ano": 2019,
+      "sha256_manifest_features": "a7c98705925c4aa15b8e91c793e450644c9c70406e56dcd868de4c5f468ce06b",
+      "sha256_manifest_labels": "4fb482cb4826756c4d72c998fc115bf6634dfd26756b3c7ed70d3c45895769e4",
+      "sha256_tif_features": "9b9b157c7bb182ef53bffffe5e4c1ceec2db2e3b86e06d478e78a98170758a63",
+      "sha256_tif_labels": "da42b787fea194e612fe92428ee46fedd6661b00efe67d2aa973447574b39af2"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "scala-tambore",
+      "ano": 2020,
+      "sha256_manifest_features": "b87040dbcf518d1fbe16bdbcd8ba56fa98d84b0650b86ec7472d48dd7f3b5326",
+      "sha256_manifest_labels": "36e1d051f3d44760594760448d6b55b84017ec2819a26e2a2f9d10463e361600",
+      "sha256_tif_features": "247f42f20eaf378e05891a160ec711dc143d3f5b7417522c1adef849b7a2686b",
+      "sha256_tif_labels": "0b1a10142d1db824eeeb8f3cfad6b6be2754ea955fc99996e1e8a38a5ed7e25a"
+    },
+    {
+      "sensor": "landsat",
+      "site_id": "scala-tambore",
+      "ano": 2021,
+      "sha256_manifest_features": "8ce94d1c0905b1b52367785469a1df5ae7688c12fd1643e8c0aa51c4edc1d93d",
+      "sha256_manifest_labels": "cdddc148d734dea7fcfad1dbf3433d47ee078c0c3cada565837336c54babbcb7",
+      "sha256_tif_features": "48c1a8eebb86abe715017f1bf62b6db9575146853daafc7fe47c333176d1ab7a",
+      "sha256_tif_labels": "cb1711b8d52895baf072510af617effeb1155d46809f54fd752a7310dafacaae"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2019,
+      "sha256_manifest_features": "26713507ab21aba86190fc67c0919ad049c4899a319c0258e9e7573395afe233",
+      "sha256_manifest_labels": "0e4a036bcaadd9d0afbf6030772e6d6cdfb1cc8865e66b8a481c057f9a1f82b2",
+      "sha256_tif_features": "4008aca9a547ca886604a06dfd10e18c836aae7badba5d3c9edd4a686a577a99",
+      "sha256_tif_labels": "ca6eb993dc57a39ae5e50814da08fc1dffd12ffa0f55641fec5801023d13b2cd"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2020,
+      "sha256_manifest_features": "f9eb2fea4ddc021ccb8fc7940ade90390c4949a541af2c470aae097ea01537fd",
+      "sha256_manifest_labels": "91959f310ccc060a5d9df6b46b92754744695f5ddea831040a9cacfd486c3084",
+      "sha256_tif_features": "759ff49b7cb1a35a45c2572a98489661be54d7c2020d6f1c5b5df1215f08380a",
+      "sha256_tif_labels": "f53e79383d94219945fc78d447b37a1eac0015343a25082221ef29d80d660109"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2021,
+      "sha256_manifest_features": "e5326358097895246c5a8c98e17f4e9b96689e317af9b5ec5eff1b95d67c0b9b",
+      "sha256_manifest_labels": "87ed97e41e285246da556e702b2ea6c0a766a8873d0867760b43933e65138291",
+      "sha256_tif_features": "726b6c840dbcbd82bb8540ff1abfb262cdde511c02619ca34558d93ea85fcc08",
+      "sha256_tif_labels": "2fb540d5830c894d94305a618f105da55df685844bb1b93cf10e0eda3d3cf565"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2022,
+      "sha256_manifest_features": "9ed8e1fb1768b74d843ff9b25e2379522388fc7df87108905b3c5dcd183664f0",
+      "sha256_manifest_labels": "53d79298dee3c43a6387132813c1559bb58d99bcae7271e9115b656ea8ef9796",
+      "sha256_tif_features": "df8d5ab098750e9dd3ddef34e06caf14b986cdafae0a23f2fd1698a26d2b3ac7",
+      "sha256_tif_labels": "90175817e80f689fc997fa24b70f2aa46944e075f98f52336db9dc66b4434296"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2023,
+      "sha256_manifest_features": "6387fa460ae226d80e025717bf0afa1ce01b211a0db99aeeb71013ecf8a7a93a",
+      "sha256_manifest_labels": "09321aa3f92800cc1b93d5a496950cfc7f34599ba5f91eac141dd309dbc7f366",
+      "sha256_tif_features": "62389694a2deb5fef24cac20f46fcdfab96d4b80bdd871a6e882a151b04828c6",
+      "sha256_tif_labels": "dffdc2d1783a645cf9f43c56b78d8ac1d3a6d80c48232466312ed7052cf199e6"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2024,
+      "sha256_manifest_features": "1b130630a93f1bd0d0a39d007e0e128c791c927279c334e052ddd8e8d9728453",
+      "sha256_manifest_labels": "ec4171ee4efc00fc1d4aa6fcd1839b6a70e736289cb788c7219e48a85c7da60a",
+      "sha256_tif_features": "ae727abc978a00bc0287a73093f36ebd6f28eb9777fac1b5954760dbad17e91d",
+      "sha256_tif_labels": "dffdc2d1783a645cf9f43c56b78d8ac1d3a6d80c48232466312ed7052cf199e6"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "ascenty-vinhedo",
+      "ano": 2025,
+      "sha256_manifest_features": "04bb49ea0436ee160fb5cbbdebb48bf77cf3be7827b79f113b455da9c59a989c",
+      "sha256_manifest_labels": "89ce5cb83c0f06aa3aab2d837947bad62eac7d2f103046d4ef15dafae027c306",
+      "sha256_tif_features": "eef31382a0406857089f6ce9f9ffa5e4818f813827021527265d1d4845b71f79",
+      "sha256_tif_labels": "dffdc2d1783a645cf9f43c56b78d8ac1d3a6d80c48232466312ed7052cf199e6"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "odata-hortolandia",
+      "ano": 2019,
+      "sha256_manifest_features": "575513cd112474c0ad334cd2c45fb2f90da0f9bfe32c27332f4dcfa9cb959402",
+      "sha256_manifest_labels": "9e03bc54a497513579aa3c5c83f2e74a2447ea90cacbccec629ae03487c02474",
+      "sha256_tif_features": "c229da8a4da046907dadb159193b9bd6a974435c707bdc604459d310e7de10a0",
+      "sha256_tif_labels": "5eea5a91e956533300f071f8cd543b6647f68983b7758f072656b42d22d84121"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "odata-hortolandia",
+      "ano": 2020,
+      "sha256_manifest_features": "610eb025957e07e7e0c1d051546c815878aa45db791856b6999a10918054d2d2",
+      "sha256_manifest_labels": "ba791a04e91bb771424553871f005815ccf7d15167470ca097f4541d0fd2022f",
+      "sha256_tif_features": "b4f8f92ac4949b720974797d05dce23c784725184a08a7dd97fb2b14d4cfed2a",
+      "sha256_tif_labels": "2075aad9b7904f86cd0ff0a78cb58926c29dab8814c02f4f4e65df414dec7ac1"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "odata-hortolandia",
+      "ano": 2021,
+      "sha256_manifest_features": "f881b801992e11f5171608563009fec6e4a87ec3030e9ed706e11ef02162df8a",
+      "sha256_manifest_labels": "6632cc6ad261da6b7f0baf1339a30060c3340b95fadf319e598834d64e7448ec",
+      "sha256_tif_features": "10012a8a568f6d25b2139c285a9a54894a808027ad16dc70ad8f7f7fcf4554ff",
+      "sha256_tif_labels": "aa438b56633868fa717ad4be87bc68fb13e4ac6967ccf5f0600cfa296b21073c"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "odata-hortolandia",
+      "ano": 2022,
+      "sha256_manifest_features": "0d5ec7f13e2f520b36c8010cc4835b4515027038b2cc17ac750197ae9aaec282",
+      "sha256_manifest_labels": "c1efcc7c711a9fcac2462c0e3c9a949088bf229ca1cd3e39a3feda703d6fc53a",
+      "sha256_tif_features": "a25dc92cae598c2739fa9472126ca80fc8598ff3d6fc69074608ec60c8431ec5",
+      "sha256_tif_labels": "5d24392121830dae9515c8086bb412ba4831a440c1095dc8af689d910d883b84"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "odata-hortolandia",
+      "ano": 2023,
+      "sha256_manifest_features": "5397d4ea58d13fd442c231a15fd5ddca548879bf9698be66befe06545bff1c0f",
+      "sha256_manifest_labels": "bc9da4c1d53d94be96d6bdd562b6858605c7f4435a4135558ce27ce5758c76c7",
+      "sha256_tif_features": "f7e83eadbeb62f97fb7cc04162dba0ad4ba9d2a95946254277861933612e2bc2",
+      "sha256_tif_labels": "eb8744979a14b26af1f30dcf35534af63ef998ee9771a326719123a3cd11f40b"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "odata-hortolandia",
+      "ano": 2024,
+      "sha256_manifest_features": "a28a9717d921173ee8acd7ef60761c76556ee51d1580b3649a86b78c1291a8af",
+      "sha256_manifest_labels": "7c8712bdf539fcfc1759fee95f3dac50c7389c0b61783bc4388573902082f80a",
+      "sha256_tif_features": "84b748a5ed6f4b8bf7dd6529120c4c81cd13a3dc8be38f4f34a0e6e78233f6c5",
+      "sha256_tif_labels": "eb8744979a14b26af1f30dcf35534af63ef998ee9771a326719123a3cd11f40b"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "odata-hortolandia",
+      "ano": 2025,
+      "sha256_manifest_features": "1102033b5a8d9b7fab734b3b69ac7e8e3b65d75215049aea2de0dc84aba86159",
+      "sha256_manifest_labels": "13c0af889e31ec31b744ae3648380bde5969a8d7db2c7438d0185d119d19e5d6",
+      "sha256_tif_features": "de2b870dddea3dbc0b26386dbf6a917506291f50e37d8024778eacd2a40b477d",
+      "sha256_tif_labels": "eb8744979a14b26af1f30dcf35534af63ef998ee9771a326719123a3cd11f40b"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "scala-tambore",
+      "ano": 2019,
+      "sha256_manifest_features": "e3d5279bb1626cb597a6fde6133ccfdd9a09283d4d359959f08731b9548cc2c5",
+      "sha256_manifest_labels": "235f97226169da36d7170d93cb7db0b78849232668e92e0bb8d34b36faf1716a",
+      "sha256_tif_features": "398116d066125328df38119b18fb19b535cadaf8ba60b5494b6de79e36aee3c3",
+      "sha256_tif_labels": "236283af069375e9d211002c611aca6a203c53b2fb7c03b2a5e76296bda4e3bb"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "scala-tambore",
+      "ano": 2020,
+      "sha256_manifest_features": "423c14d6c495dfdfc0d45cc7e32fc2fa10382370cd672f12c52ff7b35ab59fd8",
+      "sha256_manifest_labels": "9eeef962830605a02f56bb7df4d8ea2cd6ee1c391ca5c5cdba200f71bdbee3ea",
+      "sha256_tif_features": "aeb355f797fb9a29f4c1fd4a028db84414b3d5e9f70bc3779f8e124c8b23d8ba",
+      "sha256_tif_labels": "7413de174e5619309102300a9e9ab258fcb64c03a00e7477051d6442f33729c0"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "scala-tambore",
+      "ano": 2021,
+      "sha256_manifest_features": "3f3bdd648882d6e7f735f26cf219977e1dcc2f2dc4a6f525babd4e609c1baabd",
+      "sha256_manifest_labels": "f893719ca5cf909f07b3a28e0ba27f9a1248a62cce9733d872252631f225bb4b",
+      "sha256_tif_features": "8d668d1c5676c5f9dd04469f606b21006a88145934108089f05e2c213406bf9e",
+      "sha256_tif_labels": "303b9167d6e9ecaed67a93edc87e5cfaceb30090a73b50d85460f1ed36a610c8"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "scala-tambore",
+      "ano": 2022,
+      "sha256_manifest_features": "d97e4a01fb0e992832c38728d2b281a2b9ba3d6e4d98db6d632830d9a739c94c",
+      "sha256_manifest_labels": "35eafc77ae904b53aa36544158079c0a2eba3161111d50c3e3ac8dcad33ac68c",
+      "sha256_tif_features": "a405ce79ee10fdad80557ea977e63d31e10a294a64b9365e3d11cbdeb1e902ac",
+      "sha256_tif_labels": "ac00fc9658183666c8f4009a92349bbe0952931628a2eecb83cc680093165169"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "scala-tambore",
+      "ano": 2023,
+      "sha256_manifest_features": "035b920e5ec95538a510923dc337a5f1840a67d6a8bb0db3ec3780ab4585433d",
+      "sha256_manifest_labels": "858d206903c785ca9e1602f309aa85dc68359596671284be45c8f3efbfd6b48c",
+      "sha256_tif_features": "30367b14bfb06bb8db6b5e4920a309c1f10ad04bc5b6bfe4679c86ba2db0a588",
+      "sha256_tif_labels": "6e8083afeb2764556f5041dab2596a18d62be0d66e9ec6cb38300746261a14a5"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "scala-tambore",
+      "ano": 2024,
+      "sha256_manifest_features": "cb3343d6ad2d8d254909c9484aaae095f5cba96608657af7d46183764b4b77f3",
+      "sha256_manifest_labels": "f60f7fa0971a79de7a01abadb0bc16b86305eb2fdf421f01ae76d7598a9da068",
+      "sha256_tif_features": "e8794f653882177fb5f0333a756fa82f49d07acbd1e132265556ad8635ba4ab4",
+      "sha256_tif_labels": "6e8083afeb2764556f5041dab2596a18d62be0d66e9ec6cb38300746261a14a5"
+    },
+    {
+      "sensor": "s2",
+      "site_id": "scala-tambore",
+      "ano": 2025,
+      "sha256_manifest_features": "84e085b47ddcac7d042e7ee4f6a395d8236d4f6945c8dc37171c818dd997e728",
+      "sha256_manifest_labels": "a0f65d209f24ea001c2deedbc988170dbf20202cbc85f94ed8b125e686686c3d",
+      "sha256_tif_features": "d7433688d951ed240c2f321e55c26212796e63d7185c13e03edfed9c58bfa78f",
+      "sha256_tif_labels": "6e8083afeb2764556f5041dab2596a18d62be0d66e9ec6cb38300746261a14a5"
+    }
+  ],
+  "sha256": "ec4d82466619d3add494714a3fd8ca24f384acf4f0f44ee8e48ca3e03ce51e21",
+  "git_sha": "f7466963e28f99afb0dbde0c794992be4770b098",
+  "gerado_em": "2026-08-27T20:55:57.580392+00:00"
+}
