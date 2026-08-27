@@ -1,14 +1,11 @@
 # ADR-002 — Contrato de output com a frente de Indicadores (etapa 05)
 
-- **Status:** Proposto — aguardando objeção
+- **Status:** **Aceito** — schema default abaixo vale, sem contraproposta do time
 - **Proposto em:** 2026-08-27
-- **Prazo de objeção:** 2026-08-29 (48h) — sem resposta até lá, vale o default abaixo
+- **Resposta em:** 2026-08-27 — a frente de Indicadores respondeu que **ainda não tem indicadores
+  estabelecidos** e que a frente de Modelagem pode definir a base ("podemos pegar de base o que o
+  PM achar melhor")
 - **Decisor:** usuário (owner da frente de Modelagem) ↔ responsável pela etapa 05 – Indicadores
-
-> **AÇÃO PENDENTE (humana):** esta proposta ainda não foi enviada. Copie a seção "Mensagem a
-> enviar" abaixo e mande para quem cuida da etapa 05 – Indicadores no time. Depois, atualize o
-> "Status" acima e, se a resposta mudar algo, preencha "Resposta recebida" com a tabela de colunas
-> final (não em prosa).
 
 ## Mensagem a enviar
 
@@ -56,11 +53,23 @@
 
 ## Resposta recebida
 
-_(preencher depois que houver resposta — ou registrar "sem objeção até 29/08/2026, vale o default
-acima" se ninguém responder)_
+A frente de Indicadores (etapa 05) respondeu que **não tem indicadores estabelecidos ainda** e que
+pode partir do que a frente de Modelagem definir. Nenhuma mudança de coluna/formato foi pedida — o
+schema proposto (seção acima) vale como está.
+
+**Isso muda o peso da decisão:** não é mais "nosso contrato interno até alguém objetar" — na
+ausência de outra definição, este schema **é** a definição de indicador do projeto. Duas
+consequências práticas para quem for implementar SV-15:
+
+- `area_por_classe.csv` deixa de ser só "insumo pro dashboard" e passa a ser, de fato, a fonte dos
+  KPIs do Sentinela Verde (% perda/ganho de vegetação, variação de área construída etc. — ver
+  Briefing do projeto, seção 8.3). Vale a pena revisar se as colunas já cobrem esses KPIs
+  diretamente ou se falta alguma agregação.
+- A pergunta sobre marcar a troca de sensor em 2019 no dashboard **continua sem resposta** — sem
+  indicadores prévios, é ainda mais importante que a própria frente de Modelagem trate isso na
+  visualização que entregar (SV-15/SV-17), já que não há garantia de que o dashboard final vá
+  fazer essa distinção sozinho.
 
 ## Efeito em SV-15
 
-Esta dependência é **não bloqueante**: SV-15 (implementação do export) segue com o schema default
-acima independente de resposta. Se a resposta mudar alguma coluna/formato, atualize esta seção e
-avise explicitamente quem estiver tocando SV-15 antes de a tarefa ser dada como concluída.
+Sem bloqueio: SV-15 implementa o schema default acima, sem alteração pendente.
