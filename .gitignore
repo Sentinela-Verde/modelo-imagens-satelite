@@ -27,3 +27,8 @@ outputs/
 !data/labels_manual/
 !data/manifests/
 !.gitkeep
+
+# PNGs de apoio à rotulagem manual (SV-09): ~120MB, regenerados em segundos via
+# `python -m sentinela.labeling.candidatos` — pesado demais pra versionar, ao contrário dos
+# outros PNGs de reports/figures/ (poucos, leves, e são evidência final, não material de trabalho).
+reports/figures/rotulagem/

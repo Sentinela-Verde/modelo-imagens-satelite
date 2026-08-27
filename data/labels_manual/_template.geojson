@@ -1,0 +1,51 @@
+{
+  "type": "FeatureCollection",
+  "name": "labels_manual_template",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "schema_campos": {
+    "site_id": {
+      "tipo": "string",
+      "descricao": "id do site em config/sites.geojson (ex.: ascenty-vinhedo, odata-hortolandia, scala-tambore)."
+    },
+    "ano": {
+      "tipo": "integer",
+      "descricao": "ano da imagem em que o polígono foi desenhado (2013-2025)."
+    },
+    "classe_id": {
+      "tipo": "integer",
+      "valores_permitidos": [1, 2, 3, 4, 5],
+      "descricao": "id da classe em src/sentinela/classes.py — nunca 0 (nodata) num polígono rotulado à mão."
+    },
+    "classe_slug": {
+      "tipo": "string",
+      "valores_permitidos": [
+        "vegetacao_densa", "vegetacao_rala", "solo_exposto_obras", "construida_urbana", "agua"
+      ],
+      "descricao": "slug correspondente a classe_id — mantenha os dois consistentes."
+    },
+    "confianca": {
+      "tipo": "string",
+      "valores_permitidos": ["alta", "media", "baixa"],
+      "descricao": "confiança do rotulador na classe escolhida. Marque 'baixa' sem constrangimento."
+    },
+    "autor": {
+      "tipo": "string",
+      "descricao": "nome ou identificação de quem rotulou (para concordância entre rotuladores, SV-10)."
+    },
+    "data_rotulagem": {
+      "tipo": "string",
+      "formato": "ISO 8601 (ex.: 2026-09-04)",
+      "descricao": "data em que o polígono foi rotulado."
+    },
+    "observacao": {
+      "tipo": "string",
+      "descricao": "texto livre — casos de borda, dúvida, motivo da confiança baixa, etc."
+    },
+    "origem": {
+      "tipo": "string",
+      "valores_permitidos": ["candidato", "manual"],
+      "descricao": "'candidato' se o polígono veio de data/interim/candidatos_{site_id}.geojson (mesmo redesenhado); 'manual' se foi desenhado do zero (ex.: negativo difícil que a heurística não pegou)."
+    }
+  },
+  "features": []
+}
