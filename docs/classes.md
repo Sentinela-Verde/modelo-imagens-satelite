@@ -50,6 +50,30 @@ MapBiomas ou as duas) a V1 efetivamente usa é decisão pendente de confirmaçã
 `remap(array, "mapbiomas")` já funciona em código, mas isso não implica que SV-07 deva usá-lo sem
 essa confirmação.
 
+## Fonte de labels efetivamente usada em produção (SV-07, ADR-004 opção b)
+
+`sentinela.gee.labels` (`python -m sentinela.gee.labels --site <id|all> --ano <ano|all> --sensor <s2|landsat|all>`)
+implementa a opção **(b)** de `docs/decisoes/ADR-004-fonte-de-labels.md`, confirmada pelo usuário
+em 2026-08-27:
+
+- **MapBiomas Coleção 9** (`config/params.yml`, seção `labels`) é o label anual principal para
+  2013-2023 — a defasagem de safra fixa que motivou a troca de fonte (até 8 anos com WorldCover
+  puro) foi eliminada nesse intervalo.
+- **A Coleção 9 termina em 2023.** Não há banda `classification_2024` nem `classification_2025`.
+  Para esses dois anos, o pipeline **replica a banda `classification_2023`** e grava
+  `distancia_safra: 1` (2024) ou `distancia_safra: 2` (2025) no manifest
+  (`data/manifests/labels_{sensor}_{site_id}_{ano}.json`) — a defasagem residual que sobra depois
+  da troca de fonte, no máximo 2 anos, bem menor que os até 8 anos do cenário WorldCover puro
+  descartado. `SV-11` deve ler esse campo ao ponderar/documentar essas duas safras.
+- **ESA WorldCover v200** entra só como **verificação cruzada em 2021** (único ano de sobreposição
+  real entre as duas fontes) — gera `data/raw/labels/{sensor}/{site_id}/concordancia_{ano}.tif`
+  (1 onde as duas fontes remapeadas concordam, 0 caso contrário), e o manifest desse ano grava
+  `crosscheck.pct_concordancia_global`. Fora de 2021, `crosscheck` é `null` — o WorldCover não é
+  uma série anual e não pode ponderar nenhum outro ano.
+- **Classe 3 (`solo_exposto_obras`) segue com representação baixa** mesmo vindo do MapBiomas
+  (código mais próximo é `30 Mineração`, um fenômeno diferente de canteiro de obras) — a
+  rotulagem manual de SV-09/SV-10 continua obrigatória, não é opcional nesta fonte.
+
 ## Adicionando uma nova fonte de remap
 
 Edite só a seção `remaps` de `config/classes.yml`, adicionando uma nova chave com a tabela

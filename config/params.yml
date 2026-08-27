@@ -38,3 +38,17 @@ resolucao_m:
   landsat: 30
 
 seed: 42
+
+# Fonte de labels (SV-07) — decidida em ADR-004 (docs/decisoes/ADR-004-fonte-de-labels.md),
+# opção (b): MapBiomas Coleção 9 como label anual principal + ESA WorldCover v200 como
+# verificação cruzada só em 2021 (peso maior nos pixels onde as duas concordam). Ver SV-07
+# (docs/tarefas/SV-07-labels-worldcover.md). Trocar de fonte é editar esta seção, não o código.
+labels:
+  forma_adr004: "b"
+  fonte_principal: "mapbiomas"
+  colecao_mapbiomas: "projects/mapbiomas-public/assets/brazil/lulc/collection9/mapbiomas_collection90_integration_v1"
+  ano_mapbiomas_min: 2013
+  ano_mapbiomas_max: 2023   # último ano coberto pela Coleção 9 — anos além disso replicam este
+  fonte_crosscheck: "worldcover"
+  colecao_worldcover: "ESA/WorldCover/v200"
+  ano_crosscheck: 2021      # único ano de sobreposição real entre as duas fontes
