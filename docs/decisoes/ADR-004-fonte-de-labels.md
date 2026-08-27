@@ -1,11 +1,10 @@
 # ADR-004 — Fonte de labels para a série anual (WorldCover vs. MapBiomas)
 
-- **Status:** **Proposto — aguardando confirmação do time/usuário** (ver seção final; este ADR
-  toca a decisão fechada do `CLAUDE.md` sobre fonte de labels, então não entra em vigor sozinho —
-  ver aviso em `docs/tarefas/SV-05b-spike-fonte-labels-anual.md`)
-- **Proposto em:** 2026-08-27
-- **Decisor:** usuário (owner da frente de Modelagem) — pendente
+- **Status:** **Aceito** — opção (b) confirmada pelo usuário em 2026-08-27
+- **Proposto em:** 2026-08-27 · **Confirmado em:** 2026-08-27
+- **Decisor:** usuário (owner da frente de Modelagem) — confirmado
 - **Responsável pela medição:** spike SV-05b (`ml-engineer`)
+- `CLAUDE.md` atualizado para refletir esta decisão. SV-07 pode implementar a opção (b).
 
 ## Contexto
 
@@ -209,15 +208,11 @@ argumento a favor do projeto.
 - Este spike não testa Faixa B (2000–2011): a Coleção 9 cobre 1985–2023, então tecnicamente cobriria,
   mas isso segue fora de escopo aqui (SV-02b ainda não validou a harmonização TM→OLI necessária).
 
-## Confirmação — pendente
+## Confirmação — recebida
 
-Como registrado no aviso de SV-05b e no `CLAUDE.md`, mudar a fonte de labels é uma decisão fechada do
-time que não pode ser reaberta unilateralmente por este spike. **Não há confirmação do time
-registrada** — este agente não tem como conversar com o time humano do projeto. Seguindo o mesmo
-padrão de `ADR-002-contrato-indicadores.md` ("proposto, aguardando confirmação"):
-
-> A recomendação técnica acima (**opção b**) está pronta, com toda a evidência medida nesta página.
-> **Ela não deve ser implementada em SV-07 até o usuário/time confirmar** — objetar, ajustar, ou
-> aprovar. Se não houver resposta, a regra do enunciado de SV-05b (escalar ao usuário em 48h) se
-> aplica; como este agente não tem canal para o time, a escalação acontece automaticamente ao
-> reportar este resultado ao usuário.
+Recomendação (opção b) apresentada ao usuário (owner da frente de Modelagem) em 2026-08-27, com toda
+a evidência medida nesta página. **Confirmada no mesmo dia**, sem objeção nem ajuste ao proposto.
+`CLAUDE.md` foi atualizado para registrar a nova fonte de labels como decisão fechada. SV-07 pode
+implementar a opção (b) como especificada nas seções 2–5 acima. A confirmação com o restante do
+time (além do usuário) fica registrada como pendência de comunicação, não de implementação — não
+bloqueia SV-07.

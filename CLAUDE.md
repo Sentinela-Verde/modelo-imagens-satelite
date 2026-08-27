@@ -20,9 +20,14 @@ riscos) vive no Notion: página **"🧭 Plano de Modelos de ML — Product Flow"
 - **Classes de cobertura/uso do solo (5):** Vegetação (densa) · Vegetação rala/pasto/agricultura leve
   · Solo exposto/em obras (classe crítica — sinal de início de construção) · Área construída/urbana
   · Água. Infraestrutura viária como classe separada fica fora do V1 (entra em "construída").
-- **Fonte de labels:** ESA WorldCover (v200) como labels fracos/iniciais + rotulagem manual
-  complementar para a classe "solo exposto/em obras" (o WorldCover é de safra fixa ~2020/2021 e não
-  captura esse estado transitório).
+- **Fonte de labels (atualizado 2026-08-27, ADR-004):** **MapBiomas Coleção 9 (anual, 2013–2023,
+  replicando 2023 para 2024–2025) como label principal**, com **ESA WorldCover v200 como
+  verificação cruzada só em 2021** (peso maior nos pixels onde as duas fontes concordam) — troca a
+  decisão original (WorldCover puro) porque a janela do projeto virou 2013–2025 e uma safra fixa
+  aplicada a 13 anos gerava defasagem de até 8 anos, um erro sistemático medido em 4–6% de pixels
+  por site. **Em qualquer cenário, a rotulagem manual complementar da classe "solo exposto/em
+  obras" continua obrigatória** — nem WorldCover nem MapBiomas têm uma classe "canteiro de obras".
+  Detalhe completo: `docs/decisoes/ADR-004-fonte-de-labels.md`.
 - **V1 (mínimo necessário):** modelo supervisionado baseline (Random Forest/scikit-learn), dataset
   de modelagem versionado, avaliação com métricas documentadas (accuracy, F1 por classe, matriz de
   confusão), classificação reproduzível, output consumível pela etapa de Indicadores (05).
@@ -30,8 +35,15 @@ riscos) vive no Notion: página **"🧭 Plano de Modelos de ML — Product Flow"
   para change detection, comparação de abordagens.
 - **Split:** nunca aleatório por pixel — usar split espacial e/ou temporal explícito para evitar
   vazamento de dados entre treino/teste.
-- **Cronograma:** Sprint 3 (25/08–31/08) = classes + dataset de modelagem · Sprint 4 (01/09–07/09) =
-  baseline + avaliação + handoff pra Indicadores · Sprint 5 (08/09–14/09) = Plus, se houver folga.
+- **Cronograma (atualizado 2026-08-27):** este repo usa um cronograma próprio por fases, não mais
+  as sprints do Notion — ver `docs/plano-execucao.md`. Prazo final fixo: **14/09/2026** (apresentação,
+  sem prorrogação). Congelamento de escopo em 10/09; 11–13/09 é reserva protegida para documentação
+  e ensaio de demo (critério de nota), nunca sacrificada por atraso de modelagem.
+- **Janela temporal e sites (ADR-001/ADR-003):** 2013–2025, multi-sensor — Landsat 8/9 (30 m) para
+  2013–2018, Sentinel-2 (10 m) para 2019–2025, harmonizados via `sentinela.gee.harmonizacao`
+  (coeficientes Claverie/NASA HLS). `sensor` entra como feature explícita no modelo (SV-12) porque
+  o resíduo entre sensores não bateu tolerância em 3 de 6 bandas (NIR, SWIR1, SWIR2). 3 sites:
+  `ascenty-vinhedo`, `odata-hortolandia`, `scala-tambore` — ver `config/sites.geojson`.
 
 ## Regras do repositório
 - Nunca commitar dado bruto pesado (raster/GeoTIFF), credenciais ou artefato de modelo grande — usar
