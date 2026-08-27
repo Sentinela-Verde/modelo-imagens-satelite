@@ -1,0 +1,29 @@
+# Ambiente
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Segredos — nunca commitar
+.env
+*-service-account*.json
+*credentials*.json
+.config/earthengine/
+
+# Dados e artefatos pesados/gerados — reproduzíveis a partir da fonte
+*.tif
+*.tiff
+*.parquet
+data/raw/
+data/interim/
+data/processed/
+models/
+outputs/
+
+# Exceções explícitas: estes SÃO versionados mesmo estando sob data/ ou sendo gerados
+!data/labels_manual/
+!data/manifests/
+!.gitkeep
