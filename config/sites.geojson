@@ -1,0 +1,56 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "ascenty-vinhedo",
+        "nome": "Ascenty Vinhedo",
+        "operador": "Ascenty",
+        "municipio": "Vinhedo",
+        "uf": "SP",
+        "lat": -23.0700044,
+        "lon": -47.0118926,
+        "buffer_km": 5,
+        "fonte_coordenada": "https://www.google.com/maps/place/Av.+Jo%C3%A3o+Batista+Nunes,+50+-+Distrito+Industrial+Benedito+Storani,+Vinhedo+-+SP,+13288-162/@-23.0700044,-47.0118926,17z",
+        "ano_inicio_operacao_estimado": null,
+        "ativo": true
+      },
+      "geometry": { "type": "Point", "coordinates": [-47.0118926, -23.0700044] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "odata-hortolandia",
+        "nome": "ODATA Data Center SP02",
+        "operador": "ODATA (Aligned Data Centers)",
+        "municipio": "Hortolândia",
+        "uf": "SP",
+        "lat": -22.8995299,
+        "lon": -47.1952611,
+        "buffer_km": 5,
+        "fonte_coordenada": "https://www.google.com/maps/place/ODATA+Data+Center+SP02/@-22.8995299,-47.1952611,17z",
+        "ano_inicio_operacao_estimado": null,
+        "ativo": true
+      },
+      "geometry": { "type": "Point", "coordinates": [-47.1952611, -22.8995299] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "site_id": "scala-tambore",
+        "nome": "Scala Data Centers - SGRUTB12",
+        "operador": "Scala Data Centers",
+        "municipio": "Barueri",
+        "uf": "SP",
+        "lat": -23.4948321,
+        "lon": -46.8130769,
+        "buffer_km": 5,
+        "fonte_coordenada": "https://www.google.com/maps/place/Scala+Data+Centers+-+SGRUTB12/@-23.4948321,-46.8130769,17z",
+        "ano_inicio_operacao_estimado": null,
+        "ativo": true
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.8130769, -23.4948321] }
+    }
+  ]
+}
