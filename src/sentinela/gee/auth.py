@@ -18,9 +18,9 @@ import truststore
 # de autorização por um token — a mesma CA que o navegador aceita sem problema.
 truststore.inject_into_ssl()
 
-import ee  # noqa: E402 — precisa vir depois do inject_into_ssl()
+import ee
 
-from ..config import ConfigError, SETTINGS
+from ..config import SETTINGS, ConfigError
 
 _initialized = False
 

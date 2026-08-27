@@ -1,0 +1,65 @@
+# Fonte única de verdade das classes de cobertura do solo. Decisão fechada do time — ver
+# CLAUDE.md. Não redecide nada aqui; só transforma a decisão em dado consumível por código.
+#
+# Para adicionar uma nova fonte de remap (ex: mapbiomas em SV-05b), edite só a seção `remaps`
+# abaixo — src/sentinela/classes.py não precisa mudar.
+
+classes:
+  0:
+    slug: nodata
+    nome_exibicao: "Sem dado"
+    cor_hex: "#000000"
+    descricao: >
+      Pixel sem classificação válida: fora da área de interesse, mascarado por nuvem, ou código
+      de origem sem mapeamento definido para nenhuma das 5 classes.
+  1:
+    slug: vegetacao_densa
+    nome_exibicao: "Vegetação densa"
+    cor_hex: "#1B5E20"
+    descricao: >
+      Cobertura arbórea nativa ou cultivo denso. Estado "antes" — linha de base do território
+      antes de qualquer transformação.
+  2:
+    slug: vegetacao_rala
+    nome_exibicao: "Vegetação rala / pasto / agricultura leve"
+    cor_hex: "#8BC34A"
+    descricao: >
+      Pastagem, arbusto, campo ou agricultura leve. Intermediário — já degradado em relação à
+      vegetação densa, mas ainda não é obra.
+  3:
+    slug: solo_exposto_obras
+    nome_exibicao: "Solo exposto / em obras"
+    cor_hex: "#C87137"
+    descricao: >
+      Classe crítica — sinal mais forte de início de construção. ATENÇÃO: quando vem do
+      remap do WorldCover, esse código representa solo natural exposto, não necessariamente
+      canteiro de obra — por isso existe a rotulagem manual complementar (SV-09/SV-10).
+  4:
+    slug: construida_urbana
+    nome_exibicao: "Área construída / urbana"
+    cor_hex: "#B03A2E"
+    descricao: >
+      Estado "depois" — inclui o data center e infraestrutura associada. Infraestrutura viária
+      não é classe separada na V1: entra aqui.
+  5:
+    slug: agua
+    nome_exibicao: "Água"
+    cor_hex: "#1565C0"
+    descricao: >
+      Corpos d'água permanentes. Existe como classe própria para evitar confusão com solo
+      exposto em alguns índices espectrais (ex.: BSI).
+
+# codigo_da_fonte -> nosso id de classe. Código ausente na tabela vira 0 (nodata) automaticamente.
+remaps:
+  worldcover:
+    10: 1   # Tree cover
+    20: 2   # Shrubland
+    30: 2   # Grassland
+    40: 2   # Cropland (agricultura leve, conforme CLAUDE.md)
+    50: 4   # Built-up
+    60: 3   # Bare / sparse vegetation — label fraco, ver descrição da classe 3
+    70: 0   # Snow and ice — não ocorre na AOI
+    80: 5   # Permanent water bodies
+    90: 0   # Herbaceous wetland — ambíguo entre água e vegetação rala, descartar é mais seguro
+    95: 0   # Mangroves — não ocorre na AOI
+    100: 0  # Moss and lichen — não ocorre na AOI
