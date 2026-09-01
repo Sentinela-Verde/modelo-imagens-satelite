@@ -33,6 +33,17 @@ Rode com: python -m sentinela.features.indices --sensor <s2|landsat|all> --site 
 Manifest auditável em `data/manifests/features_{sensor}_{site_id}_{ano}.json` (commitado, o .tif
 não é) — os nomes das 13 bandas viram o contrato de coluna do dataset de modelagem (SV-11) e
 precisam ser idênticos nas duas eras (testado em `tests/test_indices.py`).
+
+**Formato de gravação (SV-26, controle de disco):** o cálculo interno (`calcular_indices`/
+`montar_stack`) continua em float32 (reflectância/índice "de verdade") — só a **escrita em disco**
+muda: `_escrever_tif` converte o stack float para **int16 com `FATOR_ESCALA=10000`** (mesmo padrão
+já usado pelas bandas brutas de SV-06/SV-06b), em vez de float32. Índices vivem em [-1, 2.5]; int16
+escalado por 10000 cobre essa faixa com folga (±3.27) e é metade do tamanho de float32 — este era o
+maior diretório de disco do repo (`data/interim/features`), então o ganho é o dobro da capacidade
+para o mesmo espaço. `NODATA` (-9999) é gravado sem escalar (não é `-9999 * FATOR_ESCALA`, que
+estouraria int16) — é um sentinel fora de qualquer faixa física possível nas duas representações.
+`sentinela.dataset` (SV-11, `_ler_stack_features`) já sabe reverter a escala usando o
+`fator_escala` do manifest antes de montar as colunas de feature.
 """
 
 from __future__ import annotations
@@ -55,8 +66,10 @@ from ..gee.harmonizacao import bandas_harmonizadas
 # Constantes / contrato
 # --------------------------------------------------------------------------------------------
 
-NODATA = -9999.0  # sentinel de saída — float, direto em reflectância/índice (sem fator de escala)
+NODATA = -9999  # sentinel de saída — usado tanto no stack float32 interno quanto no int16 gravado
+                 # em disco (nunca escalado por FATOR_ESCALA — ver docstring do módulo)
 EPS = 1e-6  # abaixo disso, denominador é tratado como "zero" -> nodata, nunca NaN/inf
+FATOR_ESCALA = 10000  # int16 gravado em disco = round(valor_float * FATOR_ESCALA); ver docstring
 
 # token de CLI/diretório ("s2"/"landsat", mesma convenção de data/raw/) -> nome completo do sensor
 # gravado dentro do manifest (mesma convenção de sensor usada nos manifests de SV-06/SV-06b e em
@@ -260,12 +273,26 @@ def _ler_raster_origem(tif_path: Path, manifest: dict) -> tuple[dict[str, np.nda
     return refl, pixel_nodata_entrada, perfil
 
 
+def _para_int16(stack_float: np.ndarray) -> np.ndarray:
+    """float32 (reflectância/índice, com sentinel NODATA nos pixels inválidos) -> int16 escalado.
+
+    A máscara de inválidos é conjunta entre as 13 bandas (garantida por `montar_stack`), então
+    basta olhar a banda 0 para saber quais pixels são NODATA em todas — evita escalar o próprio
+    sentinel (`NODATA * FATOR_ESCALA` estouraria int16 e corromperia o valor)."""
+    invalido = stack_float[0] == NODATA
+    escalado = np.round(stack_float.astype(np.float64) * FATOR_ESCALA)
+    arr_int16 = escalado.astype(np.int16)
+    arr_int16[:, invalido] = NODATA
+    return arr_int16
+
+
 def _escrever_tif(path: Path, stack: np.ndarray, perfil: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     bandas = bandas_features()
+    arr_int16 = _para_int16(stack)
     profile = {
         "driver": "GTiff",
-        "dtype": "float32",
+        "dtype": "int16",
         "nodata": NODATA,
         "width": perfil["width"],
         "height": perfil["height"],
@@ -273,10 +300,10 @@ def _escrever_tif(path: Path, stack: np.ndarray, perfil: dict) -> None:
         "crs": perfil["crs"],
         "transform": perfil["transform"],
         "compress": "deflate",
-        "predictor": 3,  # predictor de ponto flutuante (2 é só para inteiro)
+        "predictor": 2,  # predictor de inteiro (3 é só para ponto flutuante)
     }
     with rasterio.open(path, "w", **profile) as ds:
-        ds.write(stack)
+        ds.write(arr_int16)
         ds.descriptions = tuple(bandas)
 
 
@@ -312,6 +339,7 @@ def _escrever_manifest(
         "shape": {"width": perfil["width"], "height": perfil["height"], "bandas": len(bandas_features())},
         "resolucao_m": resolucao_m,
         "nodata": NODATA,
+        "fator_escala": FATOR_ESCALA,
         "pct_pixels_validos": round(pct_pixels_validos, 4),
         "sha256": _sha256_arquivo(tif_path),
         "git_sha": _git_sha(),

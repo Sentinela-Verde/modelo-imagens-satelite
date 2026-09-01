@@ -251,6 +251,15 @@ def processar_combo(
     label_valido = label_arr != nodata_label
     valido_base = feat_valido & label_valido
 
+    # SV-26 (controle de disco): SV-08 grava o stack em int16 x fator_escala em vez de float32
+    # (nodata NÃO escalado — ver docstring de sentinela.features.indices). Descala aqui, DEPOIS de
+    # calcular feat_valido a partir do sentinel inteiro bruto, para as colunas de feature do
+    # dataset continuarem em reflectância/índice "de verdade" — o contrato de SV-11 não muda,
+    # só a forma como o dado chega do disco.
+    fator_escala_feat = feat_manifest.get("fator_escala")
+    if fator_escala_feat and np.issubdtype(feat_arr.dtype, np.integer):
+        feat_arr = feat_arr.astype(np.float32) / np.float32(fator_escala_feat)
+
     sobreposicao = ano in anos_sobreposicao
 
     partes: list[pd.DataFrame] = []

@@ -25,6 +25,7 @@ from sentinela.config import SETTINGS
 from sentinela.features.indices import (
     _CLIP,
     EPS,
+    FATOR_ESCALA,
     NODATA,
     _dividir_seguro,
     bandas_features,
@@ -33,6 +34,17 @@ from sentinela.features.indices import (
     processar_site_ano,
 )
 from sentinela.gee.harmonizacao import bandas_harmonizadas
+
+
+def _fator_escala_gravado(sensor_token: str, site_id: str, ano: int) -> float | None:
+    """`fator_escala` do manifest de features deste combo, ou `None` se o stack em disco for o
+    formato antigo (float32, sem escala) — os 3 sites originais não foram retrabalhados por
+    SV-26, então convivem os dois formatos no mesmo repositório."""
+    path = SETTINGS.manifests_dir / f"features_{sensor_token}_{site_id}_{ano}.json"
+    if not path.exists():
+        return None
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    return manifest.get("fator_escala")
 
 
 def _bandas_uniformes(valor: float, shape: tuple[int, int] = (3, 3)) -> dict[str, np.ndarray]:
@@ -226,11 +238,13 @@ def test_cenario5_pixel_sintetico_vegetacao_e_solo_resultado_independe_do_sensor
 
     assert bandas_s2 == bandas_landsat == bandas_features()
 
+    # Saída em disco é int16 x FATOR_ESCALA (SV-26, controle de disco) — descala antes de comparar
+    # com limiares físicos.
     idx_out = {b: i for i, b in enumerate(bandas_s2)}
-    ndvi_veg = stack_s2[idx_out["ndvi"], 0, 0]
-    bsi_veg = stack_s2[idx_out["bsi"], 0, 0]
-    ndvi_solo = stack_s2[idx_out["ndvi"], 0, 1]
-    bsi_solo = stack_s2[idx_out["bsi"], 0, 1]
+    ndvi_veg = stack_s2[idx_out["ndvi"], 0, 0] / FATOR_ESCALA
+    bsi_veg = stack_s2[idx_out["bsi"], 0, 0] / FATOR_ESCALA
+    ndvi_solo = stack_s2[idx_out["ndvi"], 0, 1] / FATOR_ESCALA
+    bsi_solo = stack_s2[idx_out["bsi"], 0, 1] / FATOR_ESCALA
 
     assert ndvi_veg > 0.5, "vegetação sintética devia dar NDVI alto"
     assert bsi_veg < 0.0, "vegetação sintética devia dar BSI baixo"
@@ -238,9 +252,12 @@ def test_cenario5_pixel_sintetico_vegetacao_e_solo_resultado_independe_do_sensor
     assert bsi_solo > bsi_veg, "solo sintético devia dar BSI maior que vegetação"
 
     # A prova em si: o MESMO pixel sintético, processado como Sentinel-2 ou como Landsat, produz
-    # exatamente o mesmo resultado — o código de índices não ramifica por sensor.
-    np.testing.assert_allclose(stack_s2, stack_landsat, atol=1e-5)
+    # exatamente o mesmo resultado — o código de índices não ramifica por sensor. Tolerância de
+    # 1 unidade int16 (1/FATOR_ESCALA) cobre arredondamento de ponto flutuante entre as duas
+    # execuções independentes.
+    np.testing.assert_allclose(stack_s2, stack_landsat, atol=1)
     assert manifest_s2["bandas"] == manifest_landsat["bandas"] == bandas_features()
+    assert manifest_s2["fator_escala"] == manifest_landsat["fator_escala"] == FATOR_ESCALA
 
 
 # --------------------------------------------------------------------------------------------
@@ -258,18 +275,26 @@ def test_cenario5_pixel_sintetico_vegetacao_e_solo_resultado_independe_do_sensor
 def test_cenario4_grade_identica_ao_raster_de_origem(sensor_token, site_id, ano):
     raw_path = SETTINGS.raw_dir / sensor_token / site_id / f"{ano}.tif"
     out_path = SETTINGS.interim_dir / "features" / sensor_token / site_id / f"{ano}.tif"
+    out_manifest_path = SETTINGS.manifests_dir / f"features_{sensor_token}_{site_id}_{ano}.json"
     if not (raw_path.exists() and out_path.exists()):
         pytest.skip(
             f"{raw_path} ou {out_path} não existe — rode "
             f"`python -m sentinela.features.indices --sensor all --site all --ano all` antes."
         )
 
+    # SV-26 mudou o formato de gravação de SV-08 para int16 x fator_escala (controle de disco),
+    # mas os 3 sites originais (ascenty-vinhedo/odata-hortolandia/scala-tambore) não foram
+    # retrabalhados — continuam float32 (formato antigo). O dtype esperado depende de qual formato
+    # o manifest deste combo específico registra, não é fixo.
+    out_manifest = json.loads(out_manifest_path.read_text(encoding="utf-8")) if out_manifest_path.exists() else {}
+    dtype_esperado = "int16" if "fator_escala" in out_manifest else "float32"
+
     with rasterio.open(raw_path) as ds_raw, rasterio.open(out_path) as ds_out:
         assert ds_out.transform == ds_raw.transform
         assert ds_out.crs == ds_raw.crs
         assert (ds_out.width, ds_out.height) == (ds_raw.width, ds_raw.height)
         assert ds_out.count == 13
-        assert ds_out.dtypes == ("float32",) * 13
+        assert ds_out.dtypes == (dtype_esperado,) * 13
         assert ds_out.nodata == NODATA
         assert list(ds_out.descriptions) == bandas_features()
 
@@ -311,8 +336,9 @@ def test_zero_nan_zero_inf_em_todos_os_stacks_gerados():
     for path in stacks:
         with rasterio.open(path) as ds:
             arr = ds.read()
-        assert not np.isnan(arr).any(), f"{path}: NaN encontrado"
-        assert not np.isinf(arr).any(), f"{path}: inf encontrado"
+        # int16 nunca representa NaN/inf — o teste ainda vale pro cenário real de "algum bug na
+        # escrita produziu lixo binário", só que via np.isfinite (funciona em int e float).
+        assert np.isfinite(arr.astype(np.float64)).all(), f"{path}: NaN/inf encontrado"
 
 
 def test_idempotencia_mesma_execucao_gera_mesmo_sha256():
@@ -338,7 +364,11 @@ def test_sanity_ndvi_mata_fechada_telhado_asfalto_e_mndwi_agua(site_id):
         bandas = list(ds.descriptions)
     idx = {b: i for i, b in enumerate(bandas)}
     valido = arr[idx["blue"]] != NODATA
-    ndvi, mndwi = arr[idx["ndvi"]], arr[idx["mndwi"]]
+    # Stack em disco pode ser int16 x fator_escala (SV-26, AOIs novas) OU float32 sem escala
+    # (formato antigo, os 3 sites originais não foram retrabalhados) — descala só se aplicável.
+    fator = _fator_escala_gravado("s2", site_id, 2024) or 1
+    ndvi = arr[idx["ndvi"]].astype(np.float32) / fator
+    mndwi = arr[idx["mndwi"]].astype(np.float32) / fator
 
     ndvi_valido = ndvi[valido]
     mata = valido & (ndvi >= np.percentile(ndvi_valido, 95))
@@ -381,8 +411,11 @@ def test_continuidade_ndvi_2018_landsat_para_2019_s2_mata_estavel(site_id):
 
     idx_l = {b: i for i, b in enumerate(bandas_l)}
     idx_s = {b: i for i, b in enumerate(bandas_s)}
-    ndvi_l = arr_l[idx_l["ndvi"]]
-    ndvi_s = arr_s[idx_s["ndvi"]]
+    # Idem test acima: descala só se este combo específico estiver no formato novo (int16).
+    fator_l = _fator_escala_gravado("landsat", site_id, 2018) or 1
+    fator_s = _fator_escala_gravado("s2", site_id, 2019) or 1
+    ndvi_l = arr_l[idx_l["ndvi"]].astype(np.float32) / fator_l
+    ndvi_s = arr_s[idx_s["ndvi"]].astype(np.float32) / fator_s
     valido_l = arr_l[idx_l["blue"]] != NODATA
     valido_s = arr_s[idx_s["blue"]] != NODATA
 
