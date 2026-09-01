@@ -28,6 +28,14 @@ cruzada só em 2021. `distancia_safra`/`peso_label` vêm dessa fonte (ver `_peso
 
 Saída: `data/processed/dataset_{versao}.parquet` (gitignored) + `data/manifests/dataset_{versao}.json`
 (commitado).
+
+**SV-27 (v0.2)** estende este módulo para ~16 AOIs (não reescreve nada do parágrafo acima — bloco_id
+e a regra 70/30 continuam idênticas): teto de amostragem parametrizável (`--teto`, recalibrado de
+8.000 porque é linear no nº de AOIs), colunas de estrato `regiao`/`bioma`/`uf`/`tier`/`fase` (nunca
+features do modelo, ver `_COLUNAS_NAO_FEATURE`), reserva de generalização fora-da-amostra
+(`--holdout-tier`: AOIs inteiras de um tier saem do treino, ver `atribuir_split`), e tipos de dado
+otimizados (`_otimizar_dtypes`) para caber em memória. Rode com:
+`python -m sentinela.dataset --versao v0.2 --teto <N> --holdout-tier 2`.
 """
 
 from __future__ import annotations
@@ -48,19 +56,23 @@ from scipy.ndimage import binary_erosion
 from sklearn.model_selection import train_test_split
 
 from . import classes
-from .config import REPO_ROOT, SETTINGS
+from .config import CONFIG_DIR, REPO_ROOT, SETTINGS
 
 # --------------------------------------------------------------------------------------------
 # Constantes / contrato
 # --------------------------------------------------------------------------------------------
 
-TETO_POR_CLASSE_SITE_ANO_SENSOR = 8000
+TETO_POR_CLASSE_SITE_ANO_SENSOR = 8000  # default histórico (v0.1, 3 sites) — v0.2 passa --teto explícito
 TAMANHO_BLOCO_M = 1000.0  # grade 1 km x 1 km, ver docstring do módulo
 TEST_SIZE = 0.30
 PESO_LABEL_DISCORDANCIA_CROSSCHECK = 0.5  # fator aplicado no ano de verificação cruzada (2021)
                                             # quando MapBiomas e WorldCover discordam
 
 SENSORES = ("s2", "landsat")
+
+# Colunas de estrato (SV-27): chaves de análise/estratificação, NUNCA features do modelo — ver
+# _COLUNAS_NAO_FEATURE mais abaixo e o manifest (campo `amostragem.estratos_nao_sao_features`).
+COLUNAS_ESTRATO = ("regiao", "bioma", "uf", "tier", "fase")
 
 
 class DatasetError(RuntimeError):
@@ -114,6 +126,52 @@ def _carregar_json(path: Path) -> dict:
 def _anos_sobreposicao() -> set[int]:
     params = SETTINGS.params()
     return set(params["faixa_a"]["anos_sobreposicao"])
+
+
+# --------------------------------------------------------------------------------------------
+# Metadados de AOI (SV-27, item 2) — regiao/bioma/uf/tier/periodos de fase, de config/sites.geojson.
+# Nunca hardcoda essa lista: lê do geojson, fonte única de verdade das AOIs ativas.
+# --------------------------------------------------------------------------------------------
+
+
+def _carregar_sites_meta() -> dict[str, dict[str, Any]]:
+    path = CONFIG_DIR / "sites.geojson"
+    if not path.exists():
+        raise DatasetError(f"{path} não existe — config das AOIs ausente.")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    meta: dict[str, dict[str, Any]] = {}
+    for feat in data["features"]:
+        p = feat["properties"]
+        site_id = p["site_id"]
+        meta[site_id] = {
+            "regiao": p.get("regiao"),
+            "bioma": p.get("bioma"),
+            "uf": p.get("uf"),
+            "tier": int(p["tier"]) if p.get("tier") is not None else None,
+            "periodo_pre": p.get("periodo_pre"),
+            "periodo_durante": p.get("periodo_durante"),
+            "periodo_pos": p.get("periodo_pos"),
+        }
+    return meta
+
+
+def _parse_periodo(periodo: str | None) -> tuple[int, int] | None:
+    """'YYYY-YYYY' -> (ano_ini, ano_fim); None (AOI sem período documentado) -> None."""
+    if not periodo:
+        return None
+    ini, fim = periodo.split("-")
+    return int(ini), int(fim)
+
+
+def fase_do_ano(ano: int, periodo_pre: str | None, periodo_durante: str | None, periodo_pos: str | None) -> str:
+    """Fase do empreendimento no `ano` dado, contra periodo_pre/durante/pos da AOI (item 2 do
+    enunciado — é o que torna SV-30 possível). 'fora' cobre tanto anos fora de qualquer janela
+    documentada quanto AOIs sem período algum documentado (ex.: odata-hortolandia)."""
+    for fase, periodo in (("pre", periodo_pre), ("durante", periodo_durante), ("pos", periodo_pos)):
+        intervalo = _parse_periodo(periodo)
+        if intervalo is not None and intervalo[0] <= ano <= intervalo[1]:
+            return fase
+    return "fora"
 
 
 # --------------------------------------------------------------------------------------------
@@ -216,6 +274,8 @@ def processar_combo(
     rng: np.random.Generator,
     erosao_acumulada: dict[str, dict[str, int]],
     anos_sobreposicao: set[int],
+    teto: int = TETO_POR_CLASSE_SITE_ANO_SENSOR,
+    sites_meta: dict[str, dict[str, Any]] | None = None,
 ) -> pd.DataFrame:
     """Lê features + label de um combo (sensor, site, ano), erode, amostra e monta as linhas."""
     feat_manifest = _carregar_json(_manifest_features_path(sensor_token, site_id, ano))
@@ -246,6 +306,14 @@ def processar_combo(
                 f"{sensor_token}/{site_id}/{ano}: shape do raster de concordância "
                 f"{concordancia_arr.shape} != shape do label {label_arr.shape}."
             )
+
+    site_meta = (sites_meta or {}).get(site_id)
+    if site_meta is None:
+        raise DatasetError(
+            f"site_id '{site_id}' tem features/labels processados mas não está em "
+            f"config/sites.geojson (ou não foi passado sites_meta) — config desatualizado."
+        )
+    fase = fase_do_ano(ano, site_meta["periodo_pre"], site_meta["periodo_durante"], site_meta["periodo_pos"])
 
     feat_valido = ~np.any(feat_arr == nodata_feat, axis=0)
     label_valido = label_arr != nodata_label
@@ -282,7 +350,7 @@ def processar_combo(
         if n_disponivel == 0:
             continue
 
-        n_amostra = min(TETO_POR_CLASSE_SITE_ANO_SENSOR, n_disponivel)
+        n_amostra = min(teto, n_disponivel)
         if n_amostra < n_disponivel:
             escolhidos = rng.choice(n_disponivel, size=n_amostra, replace=False)
         else:
@@ -312,6 +380,12 @@ def processar_combo(
         df_parte["sobreposicao"] = sobreposicao
         df_parte["distancia_safra"] = distancia_safra
         df_parte["peso_label"] = peso
+        # Estrato (SV-27, item 2) — chave de análise, nunca feature (ver _COLUNAS_NAO_FEATURE).
+        df_parte["regiao"] = site_meta["regiao"]
+        df_parte["bioma"] = site_meta["bioma"]
+        df_parte["uf"] = site_meta["uf"]
+        df_parte["tier"] = site_meta["tier"]
+        df_parte["fase"] = fase
         partes.append(df_parte)
 
     if not partes:
@@ -324,10 +398,39 @@ def processar_combo(
 # --------------------------------------------------------------------------------------------
 
 
-def atribuir_split(df: pd.DataFrame, seed: int) -> tuple[pd.DataFrame, dict[str, int]]:
+def _cobertura_por_estrato(df: pd.DataFrame, coluna: str) -> dict[str, dict[str, Any]]:
+    """Para cada valor do estrato (regiao/bioma), registra se aparece em treino E em teste —
+    material do cenário 5 (SV-27) e do critério de aceite 'toda região/bioma presente aparece em
+    treino e em teste, ou a exceção está listada no manifest'."""
+    if coluna not in df.columns:
+        return {}
+    resultado: dict[str, dict[str, Any]] = {}
+    for valor in sorted(df[coluna].dropna().unique(), key=str):
+        subset = df[df[coluna] == valor]
+        splits_presentes = set(subset["split"].unique())
+        resultado[str(valor)] = {
+            "treino": "treino" in splits_presentes,
+            "teste": "teste" in splits_presentes,
+            "n_aois": int(subset["site_id"].nunique()),
+            "aois": sorted(subset["site_id"].unique().tolist()),
+            "aois_holdout_espacial": sorted(
+                subset.loc[subset["holdout_espacial"], "site_id"].unique().tolist()
+            ),
+        }
+    return resultado
+
+
+def atribuir_split(
+    df: pd.DataFrame, seed: int, holdout_site_ids: frozenset[str] = frozenset()
+) -> tuple[pd.DataFrame, dict[str, int], dict[str, dict[str, dict[str, Any]]]]:
     """Sorteia bloco_id inteiros para treino/teste (nunca pixels) — fecha os 3 vetores de
     vazamento descritos na docstring do módulo. Estratificado por site: cada site tem seu
     próprio sorteio 70/30 sobre a lista (ordenada, determinística) de blocos únicos daquele site.
+
+    SV-27 acrescenta `holdout_site_ids`: AOIs inteiras (tipicamente tier 2) reservadas fora do
+    treino por completo — não participam do sorteio 70/30, todos os seus blocos vão para 'teste'
+    com `holdout_espacial=True`. É ortogonal ao split normal (não muda a regra de bloco_id nem o
+    sorteio das demais AOIs) — ver docstring do módulo SV-27 e item 4 do enunciado.
     """
     bloco_para_split: dict[str, str] = {}
     n_treino = 0
@@ -335,7 +438,10 @@ def atribuir_split(df: pd.DataFrame, seed: int) -> tuple[pd.DataFrame, dict[str,
 
     for site_id in sorted(df["site_id"].unique()):
         blocos_site = sorted(df.loc[df["site_id"] == site_id, "bloco_id"].unique())
-        if len(blocos_site) < 2:
+        if site_id in holdout_site_ids:
+            # Reserva de generalização fora-da-amostra (SV-27 item 4): AOI inteira fora do treino.
+            blocos_treino, blocos_teste = [], blocos_site
+        elif len(blocos_site) < 2:
             # site com um único bloco: não dá pra split — tudo em treino, registrado no manifest.
             blocos_treino, blocos_teste = blocos_site, []
         else:
@@ -351,11 +457,17 @@ def atribuir_split(df: pd.DataFrame, seed: int) -> tuple[pd.DataFrame, dict[str,
 
     df = df.copy()
     df["split"] = df["bloco_id"].map(bloco_para_split)
+    df["holdout_espacial"] = df["site_id"].isin(holdout_site_ids)
 
     ano_mais_recente = int(df["ano"].max())
     df["holdout_temporal"] = df["ano"] == ano_mais_recente
 
-    return df, {"treino": n_treino, "teste": n_teste}
+    cobertura = {
+        "regiao": _cobertura_por_estrato(df, "regiao"),
+        "bioma": _cobertura_por_estrato(df, "bioma"),
+    }
+
+    return df, {"treino": n_treino, "teste": n_teste}, cobertura
 
 
 # --------------------------------------------------------------------------------------------
@@ -363,13 +475,33 @@ def atribuir_split(df: pd.DataFrame, seed: int) -> tuple[pd.DataFrame, dict[str,
 # --------------------------------------------------------------------------------------------
 
 
-def montar_dataset(seed: int) -> tuple[pd.DataFrame, dict[str, Any]]:
+def montar_dataset(
+    seed: int,
+    teto: int = TETO_POR_CLASSE_SITE_ANO_SENSOR,
+    holdout_tier: int | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Monta o dataset de modelagem.
+
+    `teto`: pixels por classe x AOI x ano x sensor (v0.1 usava 8.000 fixo; SV-27/v0.2 recalibra
+    e passa o valor explicitamente — ver módulo `TETO_POR_CLASSE_SITE_ANO_SENSOR` para o default
+    histórico).
+    `holdout_tier`: se dado, toda AOI com esse `tier` em config/sites.geojson fica inteiramente
+    fora do treino (reserva de generalização fora-da-amostra, SV-27 item 4). None (default,
+    comportamento de v0.1) = nenhuma AOI reservada.
+    """
     combos = _combos_disponiveis()
     if not combos:
         raise DatasetError(
             "nenhum combo (sensor, site, ano) com features (SV-08) e label (SV-07) encontrado — "
             "rode os módulos anteriores antes de sentinela.dataset."
         )
+
+    sites_meta = _carregar_sites_meta()
+    holdout_site_ids = frozenset(
+        site_id
+        for site_id, meta in sites_meta.items()
+        if holdout_tier is not None and meta["tier"] == holdout_tier
+    )
 
     lista_features_referencia: list[str] | None = None
     rasters_origem: list[dict[str, Any]] = []
@@ -405,7 +537,10 @@ def montar_dataset(seed: int) -> tuple[pd.DataFrame, dict[str, Any]]:
 
     partes: list[pd.DataFrame] = []
     for sensor_token, site_id, ano in combos:
-        parte = processar_combo(sensor_token, site_id, ano, rng, erosao_acumulada, anos_sobreposicao)
+        parte = processar_combo(
+            sensor_token, site_id, ano, rng, erosao_acumulada, anos_sobreposicao,
+            teto=teto, sites_meta=sites_meta,
+        )
         if not parte.empty:
             partes.append(parte)
 
@@ -413,7 +548,8 @@ def montar_dataset(seed: int) -> tuple[pd.DataFrame, dict[str, Any]]:
         raise DatasetError("nenhuma linha amostrada em nenhum combo — verifique os rasters de entrada.")
 
     df = pd.concat(partes, ignore_index=True)
-    df, n_blocos = atribuir_split(df, seed)
+    df, n_blocos, cobertura = atribuir_split(df, seed, holdout_site_ids=holdout_site_ids)
+    df = _otimizar_dtypes(df, lista_features_referencia or [])
 
     assert lista_features_referencia is not None
     stats: dict[str, Any] = {
@@ -422,6 +558,11 @@ def montar_dataset(seed: int) -> tuple[pd.DataFrame, dict[str, Any]]:
         "erosao": erosao_acumulada,
         "n_blocos": n_blocos,
         "combos": combos,
+        "teto": teto,
+        "sites_meta": sites_meta,
+        "holdout_site_ids": sorted(holdout_site_ids),
+        "holdout_tier": holdout_tier,
+        "cobertura_estrato": cobertura,
     }
     return df, stats
 
@@ -500,11 +641,51 @@ def teste_controle_generalizacao_entre_eras(df: pd.DataFrame, seed: int) -> dict
 _COLUNAS_NAO_FEATURE = {
     "classe_id", "site_id", "ano", "sensor", "resolucao_m", "bloco_id", "linha", "coluna",
     "x", "y", "split", "holdout_temporal", "sobreposicao", "distancia_safra", "peso_label",
+    # Estratos de análise (SV-27, item 2) — NUNCA features do modelo, ver docstring do módulo.
+    "regiao", "bioma", "uf", "tier", "fase", "holdout_espacial",
 }
 
 
 def _colunas_feature(df: pd.DataFrame) -> list[str]:
     return [c for c in df.columns if c not in _COLUNAS_NAO_FEATURE]
+
+
+# --------------------------------------------------------------------------------------------
+# Otimização de tipos (SV-27, item 5) — o que evita os 6-10 GB de RAM projetados para 25 AOIs.
+# --------------------------------------------------------------------------------------------
+
+_COLUNAS_CATEGORY = ("site_id", "bloco_id", "sensor", "regiao", "bioma", "uf", "fase", "split")
+_COLUNAS_INT_ESTREITO: dict[str, type] = {
+    "ano": np.int16,
+    "linha": np.int32,
+    "coluna": np.int32,
+    "tier": np.int8,
+    "distancia_safra": np.int8,
+    "resolucao_m": np.int16,
+    "classe_id": np.uint8,
+}
+_COLUNAS_BOOL = ("sobreposicao", "holdout_temporal", "holdout_espacial")
+
+
+def _otimizar_dtypes(df: pd.DataFrame, lista_features: list[str]) -> pd.DataFrame:
+    """`site_id`/`bloco_id`/`sensor`/`regiao`/`bioma`/`uf`/`fase` -> category; features -> float32;
+    `ano`/`linha`/`coluna` (e demais inteiros pequenos) -> inteiros estreitos. `x`/`y` ficam em
+    float64 (usados para recalcular bloco_id — não arriscar precisão perto de fronteira de bloco).
+    """
+    df = df.copy()
+    for col in lista_features:
+        if col in df.columns:
+            df[col] = df[col].astype(np.float32)
+    for col in _COLUNAS_CATEGORY:
+        if col in df.columns:
+            df[col] = df[col].astype("category")
+    for col, dtype in _COLUNAS_INT_ESTREITO.items():
+        if col in df.columns:
+            df[col] = df[col].astype(dtype)
+    for col in _COLUNAS_BOOL:
+        if col in df.columns:
+            df[col] = df[col].astype(bool)
+    return df
 
 
 # --------------------------------------------------------------------------------------------
@@ -547,6 +728,14 @@ def construir_manifest(df: pd.DataFrame, stats: dict[str, Any], *, versao: str, 
         for sensor in SENSORES
         for split in ("treino", "teste")
     }
+    distribuicao_por_regiao = (
+        {str(v): _distribuicao_classes(df[df["regiao"] == v]) for v in sorted(df["regiao"].dropna().unique(), key=str)}
+        if "regiao" in df.columns else {}
+    )
+    distribuicao_por_bioma = (
+        {str(v): _distribuicao_classes(df[df["bioma"] == v]) for v in sorted(df["bioma"].dropna().unique(), key=str)}
+        if "bioma" in df.columns else {}
+    )
 
     erosao_manifest = {
         sensor: {
@@ -568,6 +757,8 @@ def construir_manifest(df: pd.DataFrame, stats: dict[str, Any], *, versao: str, 
             "por_split": distribuicao_por_split,
             "por_sensor": distribuicao_por_sensor,
             "por_sensor_e_split": distribuicao_por_sensor_e_split,
+            "por_regiao": distribuicao_por_regiao,
+            "por_bioma": distribuicao_por_bioma,
         },
         "n_blocos": stats["n_blocos"],
         "sites": sorted(df["site_id"].unique().tolist()),
@@ -579,14 +770,22 @@ def construir_manifest(df: pd.DataFrame, stats: dict[str, Any], *, versao: str, 
             "bloco_id = grade regular de 1km x 1km sobre coordenadas projetadas (x, y) em "
             "EPSG:31983 (nunca linha/coluna — índices de pixel significam distâncias diferentes "
             "a 10m e a 30m). Blocos inteiros (não pixels) são sorteados 70%/30% para "
-            "treino/teste, com random_state=42, estratificado por site: todos os anos e "
+            "treino/teste, com random_state=42, estratificado por AOI (site_id): cada AOI tem "
+            "seu próprio sorteio 70/30 sobre a lista de blocos únicos dela, e todos os anos e "
             "sensores de um mesmo bloco vão para o mesmo split. Isso fecha os 3 vetores de "
             "vazamento de dados do projeto ao mesmo tempo: espacial (pixels vizinhos), "
             "temporal (mesmo lugar em anos consecutivos) e entre sensores (mesmo lugar, mesmo "
             "ano, duas cópias em resoluções diferentes nos anos de sobreposição 2019-2021). "
-            "holdout_temporal marca o ano mais recente do dataset (2025) como flag informativo "
-            "adicional para validação temporal em SV-12 — não substitui nem sobrepõe o split "
-            "por bloco, que continua sendo a única fonte de verdade da coluna `split`."
+            "Regra idêntica à v0.1 (SV-11) — não foi alterada para SV-27, só aplicada a mais "
+            "AOIs; a estratificação por AOI garante que nenhuma região/bioma vá inteiramente "
+            "para um único split (ver `cobertura_estrato`, `regioes_sem_ambos_splits`, "
+            "`biomas_sem_ambos_splits`). SV-27 acrescenta `holdout_espacial`, ORTOGONAL a "
+            "`split`: AOIs inteiras de `holdout_tier` não participam do sorteio 70/30 — todos os "
+            "seus blocos vão para 'teste' com holdout_espacial=True, para medir generalização a "
+            "uma AOI nunca vista em treino (ver `aois_holdout_espacial`). holdout_temporal marca "
+            "o ano mais recente do dataset (2025) como flag informativo adicional para validação "
+            "temporal em SV-12 — não substitui nem sobrepõe o split por bloco, que continua "
+            "sendo a única fonte de verdade da coluna `split`."
         ),
         "regra_peso_label": (
             "peso_label = 1/(1+distancia_safra) x (1.0 se concorda com WorldCover no ano de "
@@ -600,14 +799,50 @@ def construir_manifest(df: pd.DataFrame, stats: dict[str, Any], *, versao: str, 
         ),
         "erosao": erosao_manifest,
         "amostragem": {
-            "teto_por_classe_site_ano_sensor": TETO_POR_CLASSE_SITE_ANO_SENSOR,
+            "teto_por_classe_site_ano_sensor": stats.get("teto", TETO_POR_CLASSE_SITE_ANO_SENSOR),
             "erosao_borda_px": 1,
             "observacao": (
                 "teto por sensor (não proporcional à contagem de pixels) — um pixel Landsat de "
                 "30m cobre 9x a área de um pixel S2 de 10m; teto proporcional faria a era "
                 "moderna dominar o dataset ~9:1."
             ),
+            "justificativa_teto": (
+                f"v0.1 usava teto=8000 fixo (3 sites), linear no nº de AOIs. Aplicado às AOIs "
+                f"desta rodada ({len(stats.get('sites_meta', {}))} ativas), 8000 projetava um "
+                f"dataset na casa de dezenas de milhões de linhas e um fit de RF de dezenas de "
+                f"minutos — inviável para o ciclo treinar/medir/ajustar do calendário do projeto "
+                f"(ver docs/tarefas/SV-27-dataset-v0.2-expandido.md). Recalibrado para "
+                f"teto={stats.get('teto', TETO_POR_CLASSE_SITE_ANO_SENSOR)}: mais pixels do mesmo "
+                f"lugar não são mais informação (pixels vizinhos são quase idênticos, por isso o "
+                f"split é por bloco) — o ganho da expansão é diversidade de AOI/bioma/contexto, "
+                f"não volume por AOI."
+            ),
         },
+        "estratos_nao_sao_features": sorted(COLUNAS_ESTRATO),
+        "aois": [
+            {
+                "site_id": site_id,
+                "tier": meta["tier"],
+                "regiao": meta["regiao"],
+                "bioma": meta["bioma"],
+                "uf": meta["uf"],
+                "holdout_espacial": site_id in set(stats.get("holdout_site_ids", [])),
+            }
+            for site_id, meta in sorted(stats.get("sites_meta", {}).items())
+            if site_id in set(df["site_id"].unique().tolist())
+        ],
+        "aois_holdout_espacial": stats.get("holdout_site_ids", []),
+        "holdout_tier": stats.get("holdout_tier"),
+        "cobertura_estrato": stats.get("cobertura_estrato", {}),
+        "regioes_sem_ambos_splits": sorted(
+            v for v, cov in stats.get("cobertura_estrato", {}).get("regiao", {}).items()
+            if not (cov["treino"] and cov["teste"])
+        ),
+        "biomas_sem_ambos_splits": sorted(
+            v for v, cov in stats.get("cobertura_estrato", {}).get("bioma", {}).items()
+            if not (cov["treino"] and cov["teste"])
+        ),
+        "memoria_mb": round(float(df.memory_usage(deep=True).sum()) / 1e6, 3),
         "rasters_origem": stats["rasters_origem"],
         "sha256": _sha256_arquivo(parquet_path),
         "git_sha": _git_sha(),
@@ -636,15 +871,25 @@ def salvar_manifest(manifest: dict[str, Any], versao: str) -> Path:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Dataset de modelagem v0.1 (SV-11) — split sem vazamento.")
-    parser.add_argument("--versao", required=True, help="ex.: v0.1")
+    parser = argparse.ArgumentParser(description="Dataset de modelagem (SV-11/SV-27) — split sem vazamento.")
+    parser.add_argument("--versao", required=True, help="ex.: v0.1, v0.2")
     parser.add_argument("--seed", type=int, default=None, help="default: RANDOM_SEED do .env / config (42)")
+    parser.add_argument(
+        "--teto", type=int, default=TETO_POR_CLASSE_SITE_ANO_SENSOR,
+        help=f"pixels por classe x AOI x ano x sensor (default histórico v0.1: {TETO_POR_CLASSE_SITE_ANO_SENSOR}; "
+             f"SV-27/v0.2 recalibra, ver docs/tarefas/SV-27-dataset-v0.2-expandido.md).",
+    )
+    parser.add_argument(
+        "--holdout-tier", type=int, default=None,
+        help="tier (1|2) cujas AOIs ficam inteiramente fora do treino (reserva de generalização "
+             "fora-da-amostra, SV-27 item 4). Default: nenhuma reserva.",
+    )
     args = parser.parse_args(argv)
 
     seed = args.seed if args.seed is not None else SETTINGS.seed
 
-    print(f"Montando dataset {args.versao} (seed={seed})...")
-    df, stats = montar_dataset(seed)
+    print(f"Montando dataset {args.versao} (seed={seed}, teto={args.teto}, holdout_tier={args.holdout_tier})...")
+    df, stats = montar_dataset(seed, teto=args.teto, holdout_tier=args.holdout_tier)
     print(f"OK — {len(df)} linhas amostradas, {len(stats['combos'])} combos (sensor, site, ano).")
 
     parquet_path = salvar_dataset(df, args.versao)
@@ -656,11 +901,17 @@ def main(argv: list[str] | None = None) -> int:
 
     print()
     print(f"n_linhas={manifest['n_linhas']} | n_blocos_treino={manifest['n_blocos']['treino']} | "
-          f"n_blocos_teste={manifest['n_blocos']['teste']}")
+          f"n_blocos_teste={manifest['n_blocos']['teste']} | memoria_mb={manifest['memoria_mb']}")
     print("Distribuição de classes (total):", manifest["distribuicao_classes"]["total"])
     for sensor, dist in manifest["distribuicao_classes"]["por_sensor"].items():
         print(f"  {sensor}: {dist}")
     print("Erosão de borda (pixels descartados por era):", manifest["erosao"])
+    if manifest["aois_holdout_espacial"]:
+        print("AOIs em holdout espacial:", manifest["aois_holdout_espacial"])
+    if manifest["regioes_sem_ambos_splits"]:
+        print("ATENÇÃO — regiões sem os dois splits:", manifest["regioes_sem_ambos_splits"])
+    if manifest["biomas_sem_ambos_splits"]:
+        print("ATENÇÃO — biomas sem os dois splits:", manifest["biomas_sem_ambos_splits"])
 
     return 0
 

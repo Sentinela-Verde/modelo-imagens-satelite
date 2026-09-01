@@ -32,11 +32,13 @@ from sentinela.dataset import (
     TAMANHO_BLOCO_M,
     TETO_POR_CLASSE_SITE_ANO_SENSOR,
     _blocos_id_vetorizado,
+    _carregar_sites_meta,
     _combos_disponiveis,
     _erodir_mascara_classe,
     _xy_pixel_centro,
     atribuir_split,
     bloco_id_de_xy,
+    fase_do_ano,
     montar_dataset,
     peso_label,
 )
@@ -186,7 +188,7 @@ def test_atribuir_split_todas_as_linhas_de_um_bloco_vao_juntas():
             "ano": [2020] * 20,
         }
     )
-    resultado, n_blocos = atribuir_split(df_sintetico, seed=SEED)
+    resultado, n_blocos, _cobertura = atribuir_split(df_sintetico, seed=SEED)
     assert resultado.groupby("bloco_id")["split"].nunique().eq(1).all()
     assert n_blocos["treino"] + n_blocos["teste"] == resultado["bloco_id"].nunique()
 
@@ -199,9 +201,76 @@ def test_atribuir_split_holdout_temporal_marca_ano_mais_recente():
             "ano": [2020] * 5 + [2025] * 5,
         }
     )
-    resultado, _ = atribuir_split(df_sintetico, seed=SEED)
+    resultado, _, _cobertura = atribuir_split(df_sintetico, seed=SEED)
     assert resultado.loc[resultado["ano"] == 2025, "holdout_temporal"].all()
     assert not resultado.loc[resultado["ano"] == 2020, "holdout_temporal"].any()
+
+
+# --------------------------------------------------------------------------------------------
+# atribuir_split — holdout espacial (SV-27, item 4)
+# --------------------------------------------------------------------------------------------
+
+
+def test_atribuir_split_holdout_espacial_fica_inteiro_fora_do_treino():
+    """AOI marcada em holdout_site_ids: TODOS os blocos dela (não uma amostra) vão para 'teste',
+    holdout_espacial=True, e ela não participa do sorteio 70/30 das demais AOIs."""
+    df_sintetico = pd.DataFrame(
+        {
+            "site_id": ["s1"] * 20 + ["s2-holdout"] * 10,
+            "bloco_id": [f"s1_{i // 4}_0" for i in range(20)] + [f"s2h_{i}_0" for i in range(10)],
+            "ano": [2020] * 30,
+        }
+    )
+    resultado, _n_blocos, _cobertura = atribuir_split(
+        df_sintetico, seed=SEED, holdout_site_ids=frozenset({"s2-holdout"})
+    )
+    holdout_rows = resultado[resultado["site_id"] == "s2-holdout"]
+    assert holdout_rows["holdout_espacial"].all()
+    assert set(holdout_rows["split"].unique()) == {"teste"}
+    assert not resultado.loc[resultado["site_id"] == "s1", "holdout_espacial"].any()
+    # s1 continua com sorteio 70/30 normal (algum bloco em treino e algum em teste, com 5 blocos)
+    assert set(resultado.loc[resultado["site_id"] == "s1", "split"].unique()) == {"treino", "teste"}
+
+
+def test_cobertura_por_estrato_relata_treino_e_teste_por_valor():
+    df_sintetico = pd.DataFrame(
+        {
+            "site_id": ["s1"] * 20 + ["s2-holdout"] * 10,
+            "bloco_id": [f"s1_{i // 4}_0" for i in range(20)] + [f"s2h_{i}_0" for i in range(10)],
+            "ano": [2020] * 30,
+            "regiao": ["Sudeste"] * 20 + ["Norte"] * 10,
+            "bioma": ["Mata Atlântica"] * 20 + ["Amazônia"] * 10,
+        }
+    )
+    _resultado, _n_blocos, cobertura = atribuir_split(
+        df_sintetico, seed=SEED, holdout_site_ids=frozenset({"s2-holdout"})
+    )
+    assert cobertura["regiao"]["Sudeste"]["treino"] and cobertura["regiao"]["Sudeste"]["teste"]
+    # "Norte" só existe em s2-holdout: 100% em teste, sem treino -> flag correta de cobertura parcial
+    assert cobertura["regiao"]["Norte"]["teste"] and not cobertura["regiao"]["Norte"]["treino"]
+    assert cobertura["regiao"]["Norte"]["aois_holdout_espacial"] == ["s2-holdout"]
+    assert cobertura["bioma"]["Amazônia"]["aois_holdout_espacial"] == ["s2-holdout"]
+
+
+# --------------------------------------------------------------------------------------------
+# fase_do_ano (SV-27, item 2)
+# --------------------------------------------------------------------------------------------
+
+
+def test_fase_do_ano_pre_durante_pos():
+    assert fase_do_ano(2015, "2014-2016", "2017-2019", "2020-2025") == "pre"
+    assert fase_do_ano(2018, "2014-2016", "2017-2019", "2020-2025") == "durante"
+    assert fase_do_ano(2023, "2014-2016", "2017-2019", "2020-2025") == "pos"
+
+
+def test_fase_do_ano_fora_da_janela():
+    assert fase_do_ano(2013, "2014-2016", "2017-2019", "2020-2025") == "fora"
+
+
+def test_fase_do_ano_sem_periodo_documentado_e_fora():
+    """AOIs sem periodo_pre/durante/pos documentado (ex.: odata-hortolandia) — fase sempre 'fora',
+    nunca estoura exceção."""
+    assert fase_do_ano(2020, None, None, None) == "fora"
 
 
 # --------------------------------------------------------------------------------------------
@@ -456,3 +525,230 @@ def test_cenario9_controle_generalizacao_entre_eras(df):
     resultado = rf_generalizacao_entre_eras(amostra, seed=SEED)
     print(f"\n[cenário 9] generalização entre eras: {resultado}")
     assert resultado, "nenhum par treino/teste entre eras pôde ser montado"
+
+
+# ==============================================================================================
+# SV-27 — dataset v0.2 (expandido, ~16 AOIs, teto recalibrado, estratos, holdout espacial)
+#
+# Todos os cenários antivazamento acima (1-7) continuam bloqueantes e valem também para v0.2
+# (mesmo bloco_id, mesma regra de split — SV-27 não mudou nenhum dos dois). Os testes abaixo
+# cobrem só o que é NOVO em SV-27: teto recalibrado, colunas de estrato, e holdout espacial.
+# ==============================================================================================
+
+VERSAO_V02 = "v0.2"
+
+
+def _parquet_path_v02():
+    return SETTINGS.processed_dir / f"dataset_{VERSAO_V02}.parquet"
+
+
+def _manifest_path_v02():
+    return SETTINGS.manifests_dir / f"dataset_{VERSAO_V02}.json"
+
+
+@pytest.fixture(scope="module")
+def df_v02():
+    path = _parquet_path_v02()
+    if not path.exists():
+        pytest.skip(f"{path} não existe — rode `python -m sentinela.dataset --versao v0.2 ...` antes.")
+    return pd.read_parquet(path)
+
+
+@pytest.fixture(scope="module")
+def manifest_v02():
+    path = _manifest_path_v02()
+    if not path.exists():
+        pytest.skip(f"{path} não existe — rode `python -m sentinela.dataset --versao v0.2 ...` antes.")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+# --------------------------------------------------------------------------------------------
+# Metadados de AOI (funções puras, sem depender do dataset gerado)
+# --------------------------------------------------------------------------------------------
+
+
+def test_carregar_sites_meta_cobre_as_aois_ativas():
+    meta = _carregar_sites_meta()
+    assert len(meta) >= 3  # pelo menos as 3 AOIs originais de v0.1
+    for site_id, campos in meta.items():
+        assert campos["tier"] in (1, 2), f"{site_id}: tier fora de {{1,2}}"
+        assert campos["regiao"], f"{site_id}: regiao ausente"
+        assert campos["bioma"], f"{site_id}: bioma ausente"
+
+
+# --------------------------------------------------------------------------------------------
+# Critérios de aceite específicos de SV-27
+# --------------------------------------------------------------------------------------------
+
+
+def test_v02_n_linhas_na_faixa_3m_a_4_5m(manifest_v02):
+    assert 3_000_000 <= manifest_v02["n_linhas"] <= 4_500_000, (
+        f"n_linhas={manifest_v02['n_linhas']} fora da faixa 3-4,5M do enunciado de SV-27"
+    )
+
+
+def test_v02_memoria_abaixo_de_2_5gb(df_v02):
+    mem_bytes = df_v02.memory_usage(deep=True).sum()
+    assert mem_bytes < 2.5 * 1024**3, f"df.memory_usage(deep=True).sum() = {mem_bytes / 1e9:.2f} GB >= 2.5 GB"
+
+
+def test_v02_teto_amostragem_registrado_e_respeitado(df_v02, manifest_v02):
+    teto = manifest_v02["amostragem"]["teto_por_classe_site_ano_sensor"]
+    assert teto > 0
+    contagens = df_v02.groupby(["site_id", "ano", "sensor", "classe_id"], observed=True).size()
+    assert contagens.max() <= teto, "alguma combinação classe x AOI x ano x sensor excede o teto declarado"
+
+
+def test_v02_colunas_de_estrato_presentes_e_nunca_features(df_v02, manifest_v02):
+    for coluna in ("regiao", "bioma", "uf", "tier", "fase"):
+        assert coluna in df_v02.columns, f"coluna de estrato '{coluna}' ausente do dataset v0.2"
+        assert coluna not in manifest_v02["lista_features"], f"'{coluna}' vazou para lista_features"
+    assert set(manifest_v02["estratos_nao_sao_features"]) >= {"regiao", "bioma", "uf", "tier", "fase"}
+
+
+def test_v02_fase_so_tem_valores_esperados(df_v02):
+    assert set(df_v02["fase"].unique()) <= {"pre", "durante", "pos", "fora"}
+
+
+# --------------------------------------------------------------------------------------------
+# Cenário 4 (SV-27) — holdout espacial: AOI reservada nunca aparece em treino (BLOQUEANTE)
+# --------------------------------------------------------------------------------------------
+
+
+def test_v02_cenario4_holdout_espacial_nunca_em_treino(df_v02, manifest_v02):
+    aois_holdout = manifest_v02["aois_holdout_espacial"]
+    assert aois_holdout, "SV-27 espera pelo menos uma AOI marcada holdout_espacial (~3 AOIs tier 2)"
+    linhas_holdout = df_v02[df_v02["holdout_espacial"]]
+    assert not linhas_holdout.empty
+    assert set(linhas_holdout["split"].unique()) == {"teste"}, (
+        "há linha(s) de AOI em holdout_espacial com split == 'treino' — vazamento do critério "
+        "de generalização fora-da-amostra"
+    )
+    assert set(linhas_holdout["site_id"].unique()) == set(aois_holdout)
+    # e nenhuma AOI fora da lista de holdout está marcada holdout_espacial=True
+    assert set(df_v02.loc[~df_v02["holdout_espacial"], "site_id"].unique()).isdisjoint(set(aois_holdout))
+
+
+# --------------------------------------------------------------------------------------------
+# Cenário 5 (SV-27) — estratificação regional: toda região aparece em treino e teste, ou exceção
+# declarada no manifest
+# --------------------------------------------------------------------------------------------
+
+
+def test_v02_cenario5_cobertura_regional_ou_excecao_declarada(df_v02, manifest_v02):
+    excecoes = set(manifest_v02["regioes_sem_ambos_splits"])
+    contagem = df_v02.groupby(["regiao", "split"], observed=True).size().unstack(fill_value=0)
+    for regiao in contagem.index:
+        tem_treino = contagem.loc[regiao].get("treino", 0) > 0
+        tem_teste = contagem.loc[regiao].get("teste", 0) > 0
+        if tem_treino and tem_teste:
+            continue
+        assert str(regiao) in excecoes, (
+            f"região '{regiao}' não tem os dois splits e NÃO está declarada em "
+            f"regioes_sem_ambos_splits do manifest — exceção escondida"
+        )
+
+
+def test_v02_biomas_sem_ambos_splits_documentado(df_v02, manifest_v02):
+    """Não falha por si só (achado a reportar) — confere que, se existir, a lista bate com os
+    dados reais e não está escondida."""
+    excecoes = set(manifest_v02["biomas_sem_ambos_splits"])
+    contagem = df_v02.groupby(["bioma", "split"], observed=True).size().unstack(fill_value=0)
+    biomas_incompletos = set()
+    for bioma in contagem.index:
+        tem_treino = contagem.loc[bioma].get("treino", 0) > 0
+        tem_teste = contagem.loc[bioma].get("teste", 0) > 0
+        if not (tem_treino and tem_teste):
+            biomas_incompletos.add(str(bioma))
+    assert biomas_incompletos == excecoes, (
+        f"biomas incompletos reais {biomas_incompletos} != declarados no manifest {excecoes}"
+    )
+    print(f"\n[SV-27] biomas sem os dois splits: {sorted(biomas_incompletos) or 'nenhum'}")
+
+
+# --------------------------------------------------------------------------------------------
+# Antivazamento (1-4 de v0.1) reaplicados sobre v0.2 — continuam bloqueantes
+# --------------------------------------------------------------------------------------------
+
+
+def test_v02_antivazamento_espacial(df_v02):
+    blocos_treino = set(df_v02.loc[df_v02["split"] == "treino", "bloco_id"])
+    blocos_teste = set(df_v02.loc[df_v02["split"] == "teste", "bloco_id"])
+    intersecao = blocos_treino & blocos_teste
+    assert intersecao == set(), f"{len(intersecao)} bloco(s) em treino E teste (v0.2)"
+
+
+def test_v02_antivazamento_entre_sensores(df_v02):
+    nunique_por_bloco = df_v02.groupby("bloco_id", observed=True)["split"].nunique()
+    ofensores = nunique_por_bloco[nunique_por_bloco != 1]
+    assert ofensores.empty, f"{len(ofensores)} bloco(s) com splits divergentes dentro do mesmo bloco (v0.2)"
+
+
+def test_v02_sem_duplicata(df_v02):
+    chave = df_v02[["site_id", "ano", "sensor", "linha", "coluna"]]
+    assert not chave.duplicated().any()
+
+
+def test_v02_bloco_id_consistente_com_x_y(df_v02):
+    amostra = df_v02.sample(n=min(5000, len(df_v02)), random_state=SEED)
+    esperado = [
+        bloco_id_de_xy(str(site_id), x, y)
+        for site_id, x, y in zip(amostra["site_id"], amostra["x"], amostra["y"], strict=True)
+    ]
+    assert list(amostra["bloco_id"].astype(str)) == esperado
+
+
+def test_v02_todas_as_5_classes_em_treino_e_teste(df_v02):
+    slugs_esperados = {classes.ID_TO_SLUG[i] for i in range(1, 6)}
+    for split in ("treino", "teste"):
+        classes_no_split = {classes.ID_TO_SLUG[c] for c in df_v02.loc[df_v02["split"] == split, "classe_id"].unique()}
+        faltando = slugs_esperados - classes_no_split
+        assert not faltando, f"split '{split}' (v0.2) sem as classes: {faltando}"
+
+
+def test_v02_classe_3_representacao_no_teste_e_reportada(df_v02):
+    n = int(((df_v02["split"] == "teste") & (df_v02["classe_id"] == 3)).sum())
+    print(f"\n[SV-27] Classe 3 (solo_exposto_obras) no teste: {n} amostras.")
+    if n < 5000:
+        print("ACHADO: classe 3 com menos de 5.000 amostras no teste (critério de aceite de SV-27).")
+
+
+def test_v02_determinismo_sha256(manifest_v02):
+    sha_atual = _sha256_arquivo_local(_parquet_path_v02())
+    assert manifest_v02["sha256"] == sha_atual, (
+        "sha256 do manifest não bate com o parquet em disco — reprodutibilidade quebrada"
+    )
+
+
+def _sha256_arquivo_local(path) -> str:
+    import hashlib
+
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def test_v02_parquet_nao_esta_no_git():
+    resultado = subprocess.run(
+        ["git", "check-ignore", "-q", str(_parquet_path_v02())], cwd=REPO_ROOT, check=False
+    )
+    assert resultado.returncode == 0, "data/processed/dataset_v0.2.parquet deveria estar no .gitignore"
+
+
+def test_v02_manifest_contrato_de_campos_novos(manifest_v02):
+    for campo in (
+        "versao", "n_linhas", "n_features", "lista_features", "distribuicao_classes", "n_blocos",
+        "sites", "anos", "sensores", "fonte_label", "seed", "regra_split", "regra_peso_label",
+        "erosao", "rasters_origem", "sha256", "git_sha", "gerado_em",
+        # novos em SV-27:
+        "estratos_nao_sao_features", "aois", "aois_holdout_espacial", "holdout_tier",
+        "cobertura_estrato", "regioes_sem_ambos_splits", "biomas_sem_ambos_splits", "memoria_mb",
+    ):
+        assert campo in manifest_v02, f"campo '{campo}' ausente do manifest v0.2"
+    assert "por_regiao" in manifest_v02["distribuicao_classes"]
+    assert "por_bioma" in manifest_v02["distribuicao_classes"]
+    assert manifest_v02["seed"] == SEED
+    assert "teto_por_classe_site_ano_sensor" in manifest_v02["amostragem"]
+    assert "justificativa_teto" in manifest_v02["amostragem"]
