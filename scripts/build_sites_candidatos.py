@@ -67,33 +67,33 @@ LISTA20 = [
      "2019-2021", "2021-2022", "2023-2026", "Muito bom caso temporal, pois amplia fortemente a capacidade do campus."],
     [13, "Ascenty São Paulo 4", "SP", "Osasco", "A validar", "A validar", "2022", "2023", "Operacional",
      "2019-2021", "2022-2023", "2024-2026",
-     "Excelente caso pré/durante/pós. Construção iniciada em 2022 e operação em 2023. "
-     "(https://ascenty.com/data-centers/localizacao/brasil/sao-paulo-capital/sao-paulo-4/)"],
+     ("Excelente caso pré/durante/pós. Construção iniciada em 2022 e operação em 2023. "
+     "(https://ascenty.com/data-centers/localizacao/brasil/sao-paulo-capital/sao-paulo-4/)")],
     [14, "Scala Campus Tamboré", "SP", "Barueri", "A validar", "A validar", "2022-2024*", "2023+*",
      "Operacional / expansão", "2019-2021", "2022-2024", "2025-2026",
-     "Muito relevante: grande campus com expansão sucessiva. Há unidades Scala identificadas no "
+     ("Muito relevante: grande campus com expansão sucessiva. Há unidades Scala identificadas no "
      "endereço da Av. Ceci; por isso, o campus deve ser tratado como área de análise. "
-     "(https://www.gbcbrasil.org.br/certificacao/certificacao-leed/empreendimentos/)"],
+     "(https://www.gbcbrasil.org.br/certificacao/certificacao-leed/empreendimentos/)")],
     [15, "Scala SGIGSM01", "RJ", "São João de Meriti", "-22.7999", "-43.3538", "2022-2023*", "2023*", "Operacional",
      "2019-2021", "2022-2023", "2024-2026",
-     "Excelente caso para levar o estudo para fora de SP. A instalação está georreferenciada em fonte "
-     "de infraestrutura de Internet. (PeeringDB: https://www.peeringdb.com/fac/13398)"],
+     ("Excelente caso para levar o estudo para fora de SP. A instalação está georreferenciada em fonte "
+     "de infraestrutura de Internet. (PeeringDB: https://www.peeringdb.com/fac/13398)")],
     [16, "Scala SPOAPA01", "RS", "Porto Alegre", "-30.0028", "-51.1981", "2023", "2023", "Operacional",
      "2020-2022", "2023", "2024-2026",
-     "Importante para representatividade regional e comparação Sul x Sudeste. "
-     "(PeeringDB: https://www.peeringdb.com/fac/14336)"],
+     ("Importante para representatividade regional e comparação Sul x Sudeste. "
+     "(PeeringDB: https://www.peeringdb.com/fac/14336)")],
     [17, "Equinix RJ3", "RJ", "São João de Meriti", "A validar", "A validar", "2024-2025*", "2025*",
      "Operacional / recente", "2021-2023", "2024-2025", "2026",
-     "Excelente caso recente. Foi anunciado em maio de 2024, com início de operação previsto para 2025. "
-     "(https://equinix.mediaroom.com/2024-05-23-Com-investimento-de-US-94-milhoes)"],
+     ("Excelente caso recente. Foi anunciado em maio de 2024, com início de operação previsto para 2025. "
+     "(https://equinix.mediaroom.com/2024-05-23-Com-investimento-de-US-94-milhoes)")],
     [18, "RT-One Uberlândia", "MG", "Uberlândia", "A validar", "A validar", "2025-2026*", "Não iniciada",
      "Em implantação / licenciamento", "2022-2024", "2025-2026", "2027+",
-     "Caso estratégico: terreno >1 milhão m² e projeto de até 400 MW. Excelente para acompanhar a "
-     "transformação enquanto ocorre. (https://www.uberlandia.mg.gov.br/2025/09/24/...)"],
+     ("Caso estratégico: terreno >1 milhão m² e projeto de até 400 MW. Excelente para acompanhar a "
+     "transformação enquanto ocorre. (https://www.uberlandia.mg.gov.br/2025/09/24/...)")],
     [19, "Data Center ByteDance / Pecém", "CE", "São Gonçalo do Amarante", "A validar", "A validar", "2026",
      "Não iniciada", "Em construção", "2023-2025", "2026", "2027+",
-     "Um dos melhores casos: implantação recente e grande escala, permitindo observar transformação "
-     "territorial durante a construção."],
+     ("Um dos melhores casos: implantação recente e grande escala, permitindo observar transformação "
+     "territorial durante a construção.")],
     [20, "Scala AI City", "RS", "Eldorado do Sul", "A validar", "A validar", "2026+*", "Não iniciada",
      "Projeto / implantação", "2023-2025", "2026+", "Pós ainda não disponível",
      "Caso estratégico para estudo de grandes campi de IA e transformação territorial futura."],
@@ -106,8 +106,8 @@ LISTA30_COLS = [
 LISTA30 = [
     [1, "Equinix SP6", "https://www.equinix.com/data-centers/americas-colocation/brazil-colocation/sao-paulo-data-centers/sp6",
      "SP", "Sudeste", "Santana de Parnaíba", "Equinix",
-     "Excelente caso de estudo por ser uma implantação recente. Entrou em operação em 2026, projetado "
-     "para cargas de alta densidade de IA."],
+     ("Excelente caso de estudo por ser uma implantação recente. Entrou em operação em 2026, projetado "
+     "para cargas de alta densidade de IA.")],
     [2, "Equinix SP5x", "https://www.equinix.com/br/pt/data-centers/americas-colocation/brazil-colocation/sao-paulo-data-centers/sp5x",
      "SP", "Sudeste", "Santana de Parnaíba", "Equinix",
      "Importante representante de infraestrutura hyperscale na região metropolitana de São Paulo."],

@@ -30,7 +30,17 @@ from sentinela.labeling.candidatos import (
     _sites_ativos,
 )
 
-SITES = ["ascenty-vinhedo", "odata-hortolandia", "scala-tambore"]
+# Atualizado por SV-25 (validação de coordenadas em escala): config/sites.geojson passou de 3 para
+# 16 AOIs ativas (13 tier 1 + 3 tier 2, ver ADR-005). Os testes parametrizados abaixo já pulam com
+# mensagem clara (`pytest.skip`) para as 13 novas, cujos artefatos de SV-09 (candidatos_*.geojson,
+# PNGs de rotulagem) ainda não existem até a ingestão expandida (SV-26) rodar para elas.
+SITES = [
+    "ascenty-vinhedo", "odata-hortolandia", "scala-tambore",
+    "ascenty-hortolandia", "ascenty-sumare", "ascenty-osasco", "equinix-santana-parnaiba",
+    "scala-sgigsm01", "scala-spoapa01", "angonap-fortaleza", "ascenty-maracanau",
+    "everest-goiania", "clickip-manaus", "ascenty-paulinia", "ascenty-jundiai",
+    "hostdime-joao-pessoa",
+]
 
 
 # --------------------------------------------------------------------------------------------
