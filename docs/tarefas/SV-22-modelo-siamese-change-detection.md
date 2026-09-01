@@ -5,7 +5,12 @@
 - **Bloqueado por:** SV-21
 - **Desbloqueia:** SV-23
 - **Tem seção de risco:** não
-- **Escopo:** **Plus (Deep Learning)** — parte da meta de entrega
+- **Escopo:** ❌ **CANCELADA em 2026-08-31** — usuário confirmou cortar o Plus pra caber a expansão de sites (era: Plus, meta de entrega)
+
+> **Suspensa em 2026-08-31**, junto com SV-21 e SV-23, pela expansão de sites. Ver a justificativa
+> completa no topo de `SV-21`. Esta é a tarefa mais cara (6 h) e mais incerta do plano antigo, e era
+> a que estava no caminho crítico — cortá-la é o que libera o orçamento da expansão sem tocar na
+> reserva de documentação e ensaio (11–13/09). D-11 (treino em GPU/Colab) fica suspensa com ela.
 
 ## Contexto
 

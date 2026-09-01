@@ -1,14 +1,27 @@
 # SV-10 — Rotulagem manual (execução)
 
-- **Fase:** 2 — Dataset · **Data-alvo:** 04/09 · **Tamanho:** M (~2h30 de trabalho humano)
+- **Fase:** 2 — Dataset · **Data-alvo:** 03–04/09 · **Tamanho:** M (**timebox duro de 4h** de trabalho humano)
 - **Responsável sugerido:** **humano** (1 ou 2 integrantes do time)
-- **Bloqueado por:** SV-09
+- **Bloqueado por:** SV-09b (kit estratificado)
 - **Desbloqueia:** SV-16
 - **Tem seção de risco:** não
-- **Tipo:** **TRABALHO HUMANO — isolado do caminho crítico de propósito**
+- **Tipo:** **TRABALHO HUMANO — o único gargalo do projeto que não escala com agentes nem com dinheiro**
 
 > **Revisada em 2026-08-27**: com a série em 2013–2025, as metas de quantidade passam a exigir
 > cobertura das **duas eras de sensor**, não só de anos diferentes.
+>
+> **Revisada em 2026-08-31 (expansão para ~25 AOIs) — leia isto antes de tudo:**
+> as metas de quantidade deixam de ser **por site** e passam a ser **por estrato (bioma × era de
+> sensor)**, definidas em `data/labels_manual/_cotas.csv` (SV-09b). Escalar 60 polígonos por site
+> para 25 AOIs daria ~1.500 polígonos ≈ **21 horas de trabalho humano**, que não cabem nos dias
+> restantes. A correção não é apressar a rotulagem: é que **a unidade de amostragem "site" estava
+> errada**. O classificador não tem `site_id` como feature — rotular a segunda AOI de Hortolândia não
+> ensina nada que a primeira não tenha ensinado. O que ele ainda não viu é **outro tipo de solo**.
+> Daí ~240 polígonos em ~6 estratos ≈ **3,5 h**, cobrindo mais diversidade espectral que os 1.500.
+>
+> **Esta tarefa tem timebox duro de 4 horas.** Ao fim das 4 h, entrega-se o que houver, com a
+> contagem por estrato reportada. Ela não bloqueia a V1 — SV-27/SV-12/SV-13 rodam com labels
+> automáticos, e o resultado desta rotulagem entra em SV-16.
 
 ## Contexto
 
@@ -33,16 +46,25 @@ seus confusores.
    `reports/figures/rotulagem/`, e `data/interim/candidatos_{site}.geojson`.
 3. Rotular polígonos em uma cópia de `data/labels_manual/_template.geojson`, salva como
    `data/labels_manual/{site_id}.geojson`.
-4. **Metas de quantidade** (o mínimo para a classe 3 sair do ruído):
-   - **≥ 40 polígonos de classe 3** (solo exposto/obras) no total, distribuídos entre os sites e
-     entre pelo menos 4 anos diferentes, **com no mínimo 12 deles na era Landsat (2013–2018)**.
-     Não concentre tudo na era moderna: metade da série é Landsat, e sem exemplo de obra a 30 m o
-     modelo não reconhece canteiro justamente no período em que os data centers foram construídos.
-   - **≥ 60 polígonos de negativos difíceis**: classe 2 (lavoura colhida, campo seco) e classe 4
-     (telhado claro, pátio pavimentado) que *parecem* obra. Estes valem tanto quanto os positivos.
-   - **≥ 20 polígonos** das demais classes (1 e 5) como âncora.
-   - Polígonos de **0.5 a 20 ha**. Polígono gigante mistura classes; minúsculo não sobrevive à
-     amostragem de 10 m.
+4. **Metas de quantidade — por estrato, não por site** (revisão de 31/08). A fonte de verdade é
+   `data/labels_manual/_cotas.csv`, gerado por SV-09b. Por estrato existente:
+   - **≥ 15 polígonos de classe 3** (solo exposto/obras), preferencialmente em anos de fase
+     `durante` — é onde o canteiro de fato existe.
+   - **≥ 20 negativos difíceis** (classes 2 e 4 que *parecem* obra **naquele bioma** — o confusor
+     muda: lavoura colhida no Sudeste, campo nativo seco no Pampa, **caatinga decídua no período seco
+     no Nordeste**, que é o mais traiçoeiro de todos). Estes valem tanto quanto os positivos.
+   - **≥ 5 âncoras** das classes 1 e 5.
+   - **Total ~40 por estrato · ~240 no geral.**
+
+   Duas garantias que a estratificação não pode perder de vista:
+   - **≥ 12 polígonos de classe 3 na era Landsat (2013–2018)** no total. Metade da série é Landsat,
+     e sem exemplo de obra a 30 m o modelo não reconhece canteiro justamente no período em que os
+     data centers mais antigos foram construídos.
+   - **Nenhum estrato zerado.** Terminar com 90 polígonos do Sudeste e nenhum do Nordeste é o pior
+     resultado possível desta sessão — seria pagar as 4 h e não comprar diversidade nenhuma.
+     **Rode os estratos em ordem crescente de cobertura atual**, começando pelo que tem menos.
+   - Polígonos de **0.5 a 20 ha** (≥ 1 ha nos estratos Landsat). Polígono gigante mistura classes;
+     minúsculo não sobrevive à amostragem.
 5. Preencher **todos** os campos do schema, incluindo `confianca` e `autor`. Marque `confianca: baixa`
    sem constrangimento — SV-16 pode filtrar por confiança, mas só se o campo estiver honesto.
 6. **Controle de consistência.** O objetivo é detectar critério ambíguo *antes* de ele contaminar
@@ -66,9 +88,14 @@ seus confusores.
 ## Critérios de aceite
 
 - [ ] `data/labels_manual/{site_id}.geojson` existe e está commitado.
-- [ ] ≥ 40 polígonos de classe 3, cobrindo ≥ 4 anos distintos e ≥ 2 sites, com ≥ 12 na era Landsat.
-- [ ] ≥ 60 negativos difíceis (classes 2 e 4).
-- [ ] ≥ 120 polígonos no total.
+- [ ] **Todo estrato de `_cotas.csv` tem pelo menos 1 polígono de classe 3.** Estrato zerado é falha
+      da sessão, mesmo que o total esteja alto.
+- [ ] ≥ 15 polígonos de classe 3 por estrato, **ou** a cota do estrato foi atingida.
+- [ ] ≥ 12 polígonos de classe 3 na era Landsat, no total.
+- [ ] ≥ 20 negativos difíceis por estrato.
+- [ ] ≥ 200 polígonos no total, cobrindo ≥ 4 anos distintos e ≥ 4 AOIs distintas — **ou** o timebox
+      de 4 h estourou e a contagem parcial por estrato está reportada. **Estourar o timebox é uma
+      opção válida; empurrar a rotulagem para o dia seguinte não é.**
 - [ ] Todos os campos do schema preenchidos, sem `null` em `classe_id`, `ano`, `autor`, `confianca`.
 - [ ] Todas as geometrias são polígonos válidos (`geometry.is_valid`), em EPSG:4326, dentro da AOI do site.
 - [ ] Nenhum polígono se sobrepõe a outro com classe diferente (conflito de label).

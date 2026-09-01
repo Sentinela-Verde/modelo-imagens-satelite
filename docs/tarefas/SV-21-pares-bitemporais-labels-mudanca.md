@@ -5,7 +5,24 @@
 - **Bloqueado por:** SV-07 (labels alinhados), SV-08 (features), SV-11 (chaves de split)
 - **Desbloqueia:** SV-22
 - **Tem seção de risco:** não
-- **Escopo:** **Plus (Deep Learning)** — parte da meta de entrega, não item opcional
+- **Escopo:** ❌ **CANCELADA em 2026-08-31** — usuário confirmou cortar o Plus pra caber a expansão de sites (era: Plus, meta de entrega)
+
+> **Suspensa em 2026-08-31.** A expansão de 3 para ~25 AOIs e os 14 dias restantes (contra os 18 de
+> quando o Plus entrou como meta) não comportam as duas coisas. O trio SV-21/22/23 custa ~21 h com
+> margem; a expansão custa ~22 h de trabalho novo, mais 5–9 h de relógio de parede de ingestão.
+> **Não cabem juntos** — ver §2 e §7 de `docs/plano-execucao.md`.
+>
+> **Recomendação: cortar o Plus, manter a expansão.** O motivo não é só de orçamento. O que os ~25
+> casos históricos entregam — uma assinatura territorial pré/durante/pós com grupo de controle
+> pareado (SV-29/SV-30) e projeção para área candidata (SV-31) — é uma **conclusão sobre o problema**.
+> O Siamese entrega uma **demonstração de técnica**, com risco real de não convergir dentro do
+> timebox e um resultado que, no melhor caso, é "detectou mudança um pouco melhor que a diferença
+> das classificações do RF".
+>
+> Esta tarefa **não está cancelada**: fica suspensa, integralmente escrita, e volta ao topo do
+> backlog. Se o usuário preferir o Plus à expansão, o caminho é reduzir o tier 1 para ~6 AOIs e
+> descartar SV-29/SV-30/SV-31 — mas isso é escolher a demonstração de técnica em vez da conclusão,
+> e a recomendação é o contrário.
 
 ## Contexto
 

@@ -8,6 +8,22 @@
 
 > **Revisada em 2026-08-27**: acrescentada a decisão sobre tratar `sensor` como feature, consequência
 > da série multi-sensor de SV-02.
+>
+> **Revisada em 2026-08-31 (expansão de sites) — duas mudanças, e a primeira é de cronograma:**
+>
+> 1. **NÃO espere a expansão.** `dataset_v0.1.parquet` (3 sites) **já existe e está validado**.
+>    Treine `rf_v0.1` sobre ele **agora**, em paralelo com SV-24/SV-25/SV-26. A partir daí o projeto
+>    passa a ter, em qualquer momento, um modelo funcional para apresentar — que é a proteção mais
+>    barata contra a expansão dar errado. Depois de SV-27, re-treine como `rf_v0.2` sobre o dataset
+>    expandido e compare as duas versões: **a comparação v0.1 (3 sites) × v0.2 (~25 AOIs) é material
+>    direto de apresentação** — o modelo melhora ou piora quando o estudo cobre 5 biomas?
+> 2. **Nada de `regiao`, `bioma`, `uf`, `tier` ou `fase` como feature.** Elas existem em
+>    `dataset_v0.2` como chaves de análise (SV-27) e são **proibidas** como entrada do modelo:
+>    o classificador precisa aprender a assinatura espectral do solo exposto, não aprender que
+>    "no Nordeste tende a ser solo exposto" — que desaba na primeira AOI nova. `lista_features`
+>    do manifest continua sendo a única fonte de verdade do que entra.
+> 3. **Custo:** com ~3,5 M de linhas, cronometre um fit antes de lançar `GroupKFold`. Se um fit passar
+>    de 15 min, o teto de amostragem de SV-27 está alto — volte lá e regenere, não espere o CV.
 
 ## Contexto
 

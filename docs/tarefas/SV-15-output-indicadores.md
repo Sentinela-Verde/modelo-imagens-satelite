@@ -8,6 +8,19 @@
 
 > **Revisada em 2026-08-27**: o CSV ganha `sensor` e `resolucao_m`, e uma seção sobre
 > comparabilidade entre eras, por causa da série multi-sensor de SV-02.
+>
+> **Revisada em 2026-08-31 (expansão de sites):** o CSV passa a cobrir ~50 AOIs e ganha quatro
+> colunas, todas com consequência direta na seção de risco desta tarefa:
+> - **`tipo`** (`tratamento`|`controle`) e **`pareado_com`** — o consumidor precisa distinguir os dois,
+>   senão soma controle com tratamento e o número perde o sentido;
+> - **`tier`** (1|2) — tier 2 nunca teve rotulagem manual; a qualidade da classificação lá é
+>   estruturalmente diferente e quem consome tem que saber;
+> - **`precisao_coordenada`** (`exata`|`aproximada`|`inferida`, de SV-25) — **esta é a mais
+>   importante.** O output nomeia empresas reais; uma linha ancorada em coordenada `inferida` não
+>   pode circular com a mesma autoridade de uma `exata`. Propague até o CSV final, não pare no
+>   `sites.geojson`.
+>
+> A seção de risco desta tarefa passa a valer com muito mais força: eram 3 empresas, agora são ~25.
 
 ## Contexto
 

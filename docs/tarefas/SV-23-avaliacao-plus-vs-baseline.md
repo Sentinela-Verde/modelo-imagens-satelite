@@ -5,7 +5,14 @@
 - **Bloqueado por:** SV-14 (classificações do RF), SV-22 (modelo siamês)
 - **Desbloqueia:** SV-17
 - **Tem seção de risco:** não
-- **Escopo:** **Plus (Deep Learning)** — é aqui que o Plus vira contribuição, não demonstração
+- **Escopo:** ❌ **CANCELADA em 2026-08-31** — usuário confirmou cortar o Plus pra caber a expansão de sites (era: Plus, contribuição)
+
+> **Suspensa em 2026-08-31**, junto com SV-21 e SV-22. Ver a justificativa no topo de `SV-21`.
+>
+> **O que se perde é menos do que parece.** A comparação pós-classificação que esta tarefa faria —
+> diferença entre classificações do RF em dois anos — **continua sendo entregue**, agora por SV-30,
+> sobre ~25 AOIs em vez de 3 e com grupo de controle pareado. O que se perde é o braço "Siamese" da
+> comparação, não a análise de mudança.
 
 ## Contexto
 

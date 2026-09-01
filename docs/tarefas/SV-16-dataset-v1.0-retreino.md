@@ -8,6 +8,17 @@
 
 > **Revisada em 2026-08-27**: a tabela comparativa ganha o recorte por era de sensor, e a rasterização
 > dos polígonos manuais passa a ocorrer nas **duas grades**. Consequência da série multi-sensor de SV-02.
+>
+> **Revisada em 2026-08-31 (expansão de sites):** a base é agora `dataset_v0.2` (~25 AOIs, SV-27), e
+> a tabela comparativa ganha um recorte novo, que é o mais informativo do projeto:
+> **desempenho por bioma, com e sem os labels manuais estratificados.** A hipótese que SV-09b/SV-10
+> assumem é que rotular por estrato melhora justamente os biomas que os 3 sites originais não
+> cobriam. **Meça isso.** Se a melhora aparecer só no Sudeste, a estratificação não funcionou e isso
+> precisa estar escrito — é um resultado, e é honesto.
+>
+> Recorte obrigatório na tabela: **desempenho nas AOIs de `holdout_espacial`** (as reservadas
+> inteiras, de SV-27). É a única medida de "o modelo funciona num data center que nunca viu"
+> — a pergunta que a banca vai fazer, e que o dataset de 3 sites não conseguia responder.
 
 ## Contexto
 

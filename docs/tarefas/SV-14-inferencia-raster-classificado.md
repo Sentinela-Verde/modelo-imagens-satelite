@@ -8,6 +8,17 @@
 
 > **Revisada em 2026-08-27**: a inferência agora roda nas **duas eras de sensor**, cada uma na sua
 > resolução nativa. Consequência da série multi-sensor de SV-02.
+>
+> **Revisada em 2026-08-31 (expansão de sites):** a inferência passa a rodar sobre **todas as AOIs
+> ativas** (tier 1 e tier 2) **e sobre as AOIs de controle de SV-29** — ~50 AOIs × 13 anos em vez de
+> 3 × 13. Consequências práticas:
+> - **Ordem importa:** tier 1 → tier 2 → controles. Se o relógio estourar, o que fica sem classificar
+>   é o que menos compromete a entrega.
+> - **É trabalho de lote:** reutilize o executor de SV-26 (retomada, backoff, relatório de status).
+>   Não escreva um segundo mecanismo de lote.
+> - **AOIs de tier 2 são o teste de generalização.** Reporte a distribuição de classes delas em
+>   separado: um modelo treinado em tier 1 que produz saída absurda no tier 2 (ex.: 80% de solo
+>   exposto na Caatinga) é um **achado a reportar em SV-30**, não um bug a maquiar.
 
 ## Contexto
 
