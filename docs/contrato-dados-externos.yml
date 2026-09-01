@@ -1,0 +1,1647 @@
+# Contrato de dados externos — SV-28
+#
+# Uma entrada por variável. Cobre as ~75 linhas da tabela principal da página Notion
+# "Propostas de variáveis" + 18 variáveis adicionadas por este documento (ver `origem`).
+#
+# Campos por entrada:
+#   id                     - identificador estável, snake_case
+#   nome                   - nome legível
+#   dimensao               - ambiental | social | economica | infraestrutura | governanca | temporal
+#   papel                  - A (entrada do modelo) | B (variável de impacto) | C (confundidor/controle)
+#                            | D (contexto/estratificação) — ver docs/requisitos-dados-externos.md secao 1
+#   unidade                - unidade de medida ou "categorico"
+#   granularidade_espacial - pixel | aoi | setor_censitario | municipio | estacao
+#   granularidade_temporal - anual | mensal | estatico
+#   fonte                  - origem do dado
+#   mecanismo_acesso       - como se obtém (API, STAC, download, Overpass, GEE, calculo proprio,
+#                            dado do cliente/operador)
+#   licenca                - licenca/termos de uso da fonte
+#   onda                   - 1 | 2 | 3 | 4 | fora_de_escopo | null
+#                            null = nao e' um pedido de dado externo (ja implementado por este
+#                            repositorio ou metadado proprio de SV-24/25/29/30)
+#   esforco                - baixo | medio | alto
+#   bloqueadores           - texto curto, "nenhum" se nao houver
+#   parecer                - parecer da frente de ML sobre a variavel
+#   usado_neste_repo       - true/false — este repositorio ja entrega (ou vai entregar, dentro do
+#                            seu proprio escopo/roadmap) este dado, sem depender da Engenharia
+#   origem                 - notion_propostas_variaveis | adicionado_sv28 (variavel que NAO estava
+#                            na tabela original do Notion e foi incluida/promovida por este documento)
+
+versao: "1.0"
+gerado_em: "2026-08-31"
+legenda_onda:
+  "1": "habilita afirmacao de impacto — clima + areas protegidas + malhas IBGE"
+  "2": "contexto territorial estatico — OSM/Overpass, SRTM/Copernicus DEM"
+  "3": "hidrologia e fogo — ANA HidroWeb, MapBiomas Fogo/Alerta"
+  "4": "socioeconomico — IBGE setor censitario, RAIS/CAGED (maior esforco, menor poder de deteccao)"
+  fora_de_escopo: "nao publico, nao vinculavel ao empreendimento, ou baixa relacao com o objetivo ambiental"
+  "null": "nao e pedido de dado externo — ja implementado por este repositorio ou metadado proprio"
+
+variaveis:
+
+  # ---------------------------------------------------------------------------
+  # AMBIENTAL
+  # ---------------------------------------------------------------------------
+
+  - id: amb_ndvi
+    nome: "NDVI"
+    dimensao: ambiental
+    papel: A
+    unidade: "indice (-1 a 1)"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja implementado como 1 das 13 features do RF em SV-08. Tambem alimenta a media de AOI usada em SV-30 (papel B), mas o papel primario aqui e entrada de modelo."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: amb_ndbi
+    nome: "NDBI"
+    dimensao: ambiental
+    papel: A
+    unidade: "indice (-1 a 1)"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja implementado em SV-08; separa area construida."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: amb_ndwi
+    nome: "NDWI"
+    dimensao: ambiental
+    papel: A
+    unidade: "indice (-1 a 1)"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja implementado em SV-08; separa agua."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: amb_area_vegetada
+    nome: "Area vegetada"
+    dimensao: ambiental
+    papel: B
+    unidade: "ha"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (SV-14)"
+    mecanismo_acesso: "calculo proprio (SV-15)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja entregue em outputs/indicadores/area_por_classe.csv (ADR-002), somando as classes 1 (vegetacao densa) e 2 (vegetacao rala)."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: amb_area_construida
+    nome: "Area construida"
+    dimensao: ambiental
+    papel: B
+    unidade: "ha"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (SV-14)"
+    mecanismo_acesso: "calculo proprio (SV-15)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja entregue em area_por_classe.csv, classe 4 (construida/urbana)."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: amb_area_solo_exposto
+    nome: "Area de solo exposto"
+    dimensao: ambiental
+    papel: B
+    unidade: "ha"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (SV-14)"
+    mecanismo_acesso: "calculo proprio (SV-15)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja entregue em area_por_classe.csv, classe 3 — a classe critica do projeto (sinal de inicio de obra)."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: amb_cobertura_solo
+    nome: "Cobertura do solo"
+    dimensao: ambiental
+    papel: B
+    unidade: "categorico (5 classes)"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (SV-14)"
+    mecanismo_acesso: "calculo proprio"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "E o proprio raster de saida: data/processed/classificado/{site_id}/{ano}.tif (ADR-002)."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: amb_mudanca_cobertura_solo
+    nome: "Mudanca de cobertura do solo"
+    dimensao: ambiental
+    papel: B
+    unidade: "ha / %"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (SV-14/15)"
+    mecanismo_acesso: "calculo proprio (SV-30)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Delta por classe entre fases pre/pos, com delta_liquido contra o controle pareado — exatamente o que SV-30 produz."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: amb_distancia_corpos_dagua
+    nome: "Distancia a corpos d'agua"
+    dimensao: ambiental
+    papel: D
+    unidade: "m"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "OSM (hidrografia) / ANA"
+    mecanismo_acesso: "Overpass API / download"
+    licenca: "OpenStreetMap — ODbL"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Descreve o caso (proximidade a agua), nao mede efeito do empreendimento. Contexto/estratificacao."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: amb_area_agua
+    nome: "Area de agua"
+    dimensao: ambiental
+    papel: B
+    unidade: "ha"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (SV-14)"
+    mecanismo_acesso: "calculo proprio (SV-15)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja entregue em area_por_classe.csv, classe 5."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: amb_fragmentacao_vegetacao
+    nome: "Fragmentacao da vegetacao"
+    dimensao: ambiental
+    papel: B
+    unidade: "indice de paisagem"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (SV-14)"
+    mecanismo_acesso: "calculo proprio (nao implementado)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: medio
+    bloqueadores: "requer implementar metrica de paisagem (ex.: numero de manchas, razao borda/area) sobre o raster classificado — engenharia de ML interna (Plus), nao depende de dado externo"
+    parecer: "Nao esta na V1. Nao pede nada da Engenharia — se entrar, e trabalho deste repositorio sobre o proprio raster classificado."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: amb_temperatura_superficie
+    nome: "Temperatura de superficie (LST)"
+    dimensao: ambiental
+    papel: B
+    unidade: "°C"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "Landsat (banda termal) / MODIS LST"
+    mecanismo_acesso: "Google Earth Engine"
+    licenca: "USGS/NASA — dominio publico"
+    onda: null
+    esforco: alto
+    bloqueadores: "Sentinel-2 nao tem banda termal — quebra a harmonizacao de 13 features definida em SV-08. Precisaria de uma fonte termal paralela (Landsat/MODIS) so para este indicador."
+    parecer: "Interessante (ilha de calor e um efeito plausivel de data center), mas e decisao de modelagem/Plus, nao um requisito de dado externo para a Engenharia."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: amb_proximidade_area_protegida
+    nome: "Proximidade de area protegida"
+    dimensao: ambiental
+    papel: D
+    unidade: "m / km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "ICMBio / MMA / CNUC (UC, TI, APP)"
+    mecanismo_acesso: "download (shapefile/GeoJSON)"
+    licenca: "ICMBio/MMA — dados abertos (CNUC)"
+    onda: 1
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Estatico, descreve sensibilidade ambiental do entorno — contexto, nao impacto. Ver amb_area_vegetacao_perdida_area_protegida para o calculo de impacto propriamente dito, que depende deste poligono."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: amb_uso_agua_entorno
+    nome: "Uso da agua no entorno"
+    dimensao: ambiental
+    papel: C
+    unidade: "m3/s ou m3/ano"
+    granularidade_espacial: estacao
+    granularidade_temporal: mensal
+    fonte: "ANA HidroWeb"
+    mecanismo_acesso: "API HidroWebService"
+    licenca: "ANA — dados abertos"
+    onda: 3
+    esforco: medio
+    bloqueadores: "nenhum"
+    parecer: "Confundidor: pressao hidrica regional pode explicar variacao de area de agua tanto quanto o empreendimento — precisa ser descontada, nao apresentada como efeito."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: amb_demanda_hidrica
+    nome: "Demanda hidrica"
+    dimensao: ambiental
+    papel: C
+    unidade: "m3/s"
+    granularidade_espacial: estacao
+    granularidade_temporal: mensal
+    fonte: "ANA HidroWeb"
+    mecanismo_acesso: "API HidroWebService"
+    licenca: "ANA — dados abertos"
+    onda: 3
+    esforco: medio
+    bloqueadores: "nenhum"
+    parecer: "Mesmo papel de amb_uso_agua_entorno: confundidor regional, nao efeito do data center."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: amb_bacia_hidrografica
+    nome: "Bacia hidrografica"
+    dimensao: ambiental
+    papel: D
+    unidade: "categorico"
+    granularidade_espacial: municipio
+    granularidade_temporal: estatico
+    fonte: "ANA / IBGE"
+    mecanismo_acesso: "download"
+    licenca: "ANA — dados abertos"
+    onda: 3
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contextualiza hidrologicamente cada AOI; util para agrupar/estratificar, nao mede efeito."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: amb_distancia_rios_lagos
+    nome: "Distancia a rios/lagos"
+    dimensao: ambiental
+    papel: D
+    unidade: "m"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "ANA / OSM"
+    mecanismo_acesso: "Overpass API / download"
+    licenca: "ANA — dados abertos / OpenStreetMap — ODbL"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Redundante com amb_distancia_corpos_dagua na pratica (mesma familia de dado); manter os dois so se a Engenharia precisar distinguir corpo d'agua generico de rio/lago nomeado."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: rf_blue
+    nome: "Banda azul (blue) harmonizada"
+    dimensao: ambiental
+    papel: A
+    unidade: "reflectancia float32 [0,1]"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "1 das 6 bandas harmonizadas do stack de 13 features de SV-08. Nao aparecia como linha na tabela do Notion (so na lista de 'Entradas do RF' com nome B2); incluida aqui para o contrato bater exatamente com o que SV-08 entrega."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: rf_green
+    nome: "Banda verde (green) harmonizada"
+    dimensao: ambiental
+    papel: A
+    unidade: "reflectancia float32 [0,1]"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "1 das 6 bandas harmonizadas (equivalente a B3 na proposta original do Notion)."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: rf_red
+    nome: "Banda vermelha (red) harmonizada"
+    dimensao: ambiental
+    papel: A
+    unidade: "reflectancia float32 [0,1]"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "1 das 6 bandas harmonizadas (equivalente a B4 na proposta original do Notion)."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: rf_nir
+    nome: "Banda infravermelho proximo (nir) harmonizada"
+    dimensao: ambiental
+    papel: A
+    unidade: "reflectancia float32 [0,1]"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "1 das 6 bandas harmonizadas (equivalente a B8 na proposta original do Notion)."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: rf_swir1
+    nome: "Banda SWIR1 harmonizada"
+    dimensao: ambiental
+    papel: A
+    unidade: "reflectancia float32 [0,1]"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "1 das 6 bandas harmonizadas (equivalente a B11 na proposta original do Notion)."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: rf_swir2
+    nome: "Banda SWIR2 harmonizada"
+    dimensao: ambiental
+    papel: A
+    unidade: "reflectancia float32 [0,1]"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "1 das 6 bandas harmonizadas (equivalente a B12 na proposta original do Notion)."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: rf_evi
+    nome: "EVI"
+    dimensao: ambiental
+    papel: A
+    unidade: "indice"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Nao estava na proposta original do Notion (que listava so NDVI/NDWI/NDBI como entrada). Adicionado em SV-08 porque satura menos que NDVI em vegetacao densa, ajudando a separar classe 1 de 2."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: rf_mndwi
+    nome: "MNDWI"
+    dimensao: ambiental
+    papel: A
+    unidade: "indice (-1 a 1)"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Nao estava na proposta original do Notion. Adicionado em SV-08: mais robusto que NDWI em area urbana."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: rf_bsi
+    nome: "BSI"
+    dimensao: ambiental
+    papel: A
+    unidade: "indice (-1 a 1)"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Nao estava na proposta original do Notion. E o indice mais importante para a classe 3 (solo exposto/obras) — a classe critica do projeto."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: rf_ndmi
+    nome: "NDMI"
+    dimensao: ambiental
+    papel: A
+    unidade: "indice (-1 a 1)"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 (2019+) / Landsat 8-9 (2013-2018), harmonizado (SV-02b)"
+    mecanismo_acesso: "Google Earth Engine (SV-04/06/06b)"
+    licenca: "Copernicus / ESA — dados abertos"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Nao estava na proposta original do Notion. Ajuda a separar vegetacao rala (classe 2) de solo exposto (classe 3) pela umidade."
+    usado_neste_repo: true
+    origem: adicionado_sv28
+
+  - id: clima_precipitacao_inmet
+    nome: "Precipitacao mensal acumulada"
+    dimensao: ambiental
+    papel: C
+    unidade: "mm/mes"
+    granularidade_espacial: estacao
+    granularidade_temporal: mensal
+    fonte: "INMET, estacao mais proxima de cada AOI"
+    mecanismo_acesso: "API/dados abertos INMET (BDMEP)"
+    licenca: "INMET — dados abertos (Lei de Acesso a Informacao)"
+    onda: 1
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "PRIORIDADE MAXIMA entre os dados externos. NAO estava na tabela de 75 variaveis do Notion — este documento a promove a requisito. NDVI cai em ano seco em todo lugar, com ou sem data center; sem serie de precipitacao 2013-2025 por AOI, toda afirmacao de perda de vegetacao fica indefensavel diante da primeira pergunta de qualquer revisor ('e o clima daquele ano?'). E barata, publica, e tem a maior razao valor/esforco do conjunto inteiro."
+    usado_neste_repo: false
+    origem: adicionado_sv28
+
+  - id: amb_area_vegetacao_perdida_area_protegida
+    nome: "Area de vegetacao perdida dentro de area protegida"
+    dimensao: ambiental
+    papel: B
+    unidade: "ha"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (interno) ∩ poligono de UC/TI/APP (onda 1, ICMBio/MMA)"
+    mecanismo_acesso: "calculo proprio, apos poligono chegar"
+    licenca: "interno — produzido por este repositorio"
+    onda: 1
+    esforco: medio
+    bloqueadores: "depende do poligono de area protegida (ver amb_proximidade_area_protegida / onda 1) estar disponivel; o calculo em si nao tem bloqueador tecnico"
+    parecer: "O salto de valor de menor custo do conjunto inteiro: transforma '4 ha de vegetacao perdida' em '4 ha, sendo 1,2 em area sensivel'. So depende do poligono de UC/TI/APP chegar da Engenharia — o resto e overlay de raster que este repositorio ja sabe fazer."
+    usado_neste_repo: false
+    origem: adicionado_sv28
+
+  - id: topografia_declividade_dem
+    nome: "Declividade (topografia)"
+    dimensao: ambiental
+    papel: D
+    unidade: "graus / %"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "SRTM (NASA) / Copernicus DEM"
+    mecanismo_acesso: "STAC / download"
+    licenca: "SRTM/NASA — dominio publico; Copernicus DEM — dados abertos"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Nao estava na tabela do Notion. Covariavel estatica util para explicar drenagem/erosao e estratificar sitios por relevo; nao substitui clima como confundidor nem entra como impacto."
+    usado_neste_repo: false
+    origem: adicionado_sv28
+
+  - id: mapbiomas_alerta_desmatamento
+    nome: "Alertas de desmatamento (MapBiomas Alerta)"
+    dimensao: ambiental
+    papel: C
+    unidade: "ha / evento"
+    granularidade_espacial: aoi
+    granularidade_temporal: mensal
+    fonte: "MapBiomas Alerta"
+    mecanismo_acesso: "download / API"
+    licenca: "MapBiomas — uso livre com atribuicao"
+    onda: 3
+    esforco: medio
+    bloqueadores: "nenhum"
+    parecer: "Confundidor: distingue perda de vegetacao associada ao empreendimento de desmatamento regional simultaneo e nao relacionado (ex.: expansao agricola no entorno)."
+    usado_neste_repo: false
+    origem: adicionado_sv28
+
+  - id: mapbiomas_fogo_queimadas
+    nome: "Area queimada (MapBiomas Fogo)"
+    dimensao: ambiental
+    papel: C
+    unidade: "ha"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "MapBiomas Fogo"
+    mecanismo_acesso: "download"
+    licenca: "MapBiomas — uso livre com atribuicao"
+    onda: 3
+    esforco: medio
+    bloqueadores: "nenhum"
+    parecer: "Confundidor: queda de indice de vegetacao por queimada nao e impacto do data center; sem isso um incendio proximo pode ser lido como 'perda causada pelo empreendimento'."
+    usado_neste_repo: false
+    origem: adicionado_sv28
+
+  # ---------------------------------------------------------------------------
+  # SOCIAL
+  # ---------------------------------------------------------------------------
+
+  - id: soc_populacao
+    nome: "Populacao"
+    dimensao: social
+    papel: D
+    unidade: "habitantes"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE (Censo/estimativas)"
+    mecanismo_acesso: "API SIDRA / download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto/estratificacao. Um municipio como Hortolandia ou Uberlandia tem centenas de milhares de habitantes; o efeito de um data center de 40 ha nao e detectavel nesse agregado. Nao e variavel de impacto."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_densidade_populacional
+    nome: "Densidade populacional"
+    dimensao: social
+    papel: D
+    unidade: "hab/km2"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "API SIDRA / download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto/estratificacao — mesma limitacao de granularidade de soc_populacao."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_crescimento_populacional
+    nome: "Crescimento populacional"
+    dimensao: social
+    papel: D
+    unidade: "%"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "API SIDRA / download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "ERRO CLASSICO A EVITAR: 'a populacao do municipio cresceu 8% depois do data center' nao e um impacto medido — e uma coincidencia temporal num agregado municipal que tem dezenas de outras causas. Contexto apenas."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_numero_domicilios
+    nome: "Numero de domicilios"
+    dimensao: social
+    papel: D
+    unidade: "domicilios"
+    granularidade_espacial: municipio
+    granularidade_temporal: estatico
+    fonte: "IBGE (Censo)"
+    mecanismo_acesso: "download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto de ocupacao residencial do municipio; nao mede efeito do empreendimento."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_renda_media
+    nome: "Renda media"
+    dimensao: social
+    papel: D
+    unidade: "R$/mes"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "API SIDRA / download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto socioeconomico municipal — nao e variavel de impacto (ver secao de granularidade)."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_renda_per_capita
+    nome: "Renda per capita"
+    dimensao: social
+    papel: D
+    unidade: "R$/habitante"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "API SIDRA / download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto socioeconomico municipal — mesma limitacao de soc_renda_media."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_emprego_formal
+    nome: "Emprego formal"
+    dimensao: social
+    papel: D
+    unidade: "postos"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "RAIS/CAGED/IBGE"
+    mecanismo_acesso: "download"
+    licenca: "Ministerio do Trabalho (RAIS/CAGED) — dados abertos"
+    onda: 4
+    esforco: medio
+    bloqueadores: "RAIS/CAGED agregam por municipio/setor, nao isolam um empreendimento especifico"
+    parecer: "Contexto do mercado de trabalho local. Nao serve para atribuir empregos ao data center especificamente — isso exigiria microdados de estabelecimento, fora de escopo."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_taxa_desemprego
+    nome: "Taxa de desemprego"
+    dimensao: social
+    papel: D
+    unidade: "%"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "API SIDRA / download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto de mercado de trabalho municipal."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_escolaridade
+    nome: "Escolaridade"
+    dimensao: social
+    papel: D
+    unidade: "anos ou %"
+    granularidade_espacial: municipio
+    granularidade_temporal: estatico
+    fonte: "IBGE"
+    mecanismo_acesso: "download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto socioeconomico municipal — listado explicitamente pela tarefa como papel D, nao variavel de impacto."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_acesso_saneamento
+    nome: "Acesso a saneamento"
+    dimensao: social
+    papel: D
+    unidade: "%"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE/SNIS"
+    mecanismo_acesso: "download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto de infraestrutura social municipal — listado explicitamente pela tarefa como papel D."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_acesso_agua
+    nome: "Acesso a agua"
+    dimensao: social
+    papel: D
+    unidade: "%"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE/SNIS"
+    mecanismo_acesso: "download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto de infraestrutura social municipal."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_acesso_energia
+    nome: "Acesso a energia eletrica"
+    dimensao: social
+    papel: D
+    unidade: "%"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto de infraestrutura basica municipal."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_distancia_areas_residenciais
+    nome: "Distancia a areas residenciais"
+    dimensao: social
+    papel: D
+    unidade: "m/km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "OSM / raster classificado (classe 4)"
+    mecanismo_acesso: "Overpass API"
+    licenca: "OpenStreetMap — ODbL"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto estatico de proximidade a populacao — nao mede efeito, ajuda a interpretar risco social."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_distancia_escolas
+    nome: "Distancia a escolas"
+    dimensao: social
+    papel: D
+    unidade: "m/km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "OSM / dados geograficos publicos (INEP)"
+    mecanismo_acesso: "Overpass API"
+    licenca: "OpenStreetMap — ODbL"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto estatico; baixo custo via Overpass, mesmo lote de OSM da onda 2."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: soc_distancia_hospitais
+    nome: "Distancia a hospitais"
+    dimensao: social
+    papel: D
+    unidade: "m/km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "OSM / dados geograficos publicos (CNES)"
+    mecanismo_acesso: "Overpass API"
+    licenca: "OpenStreetMap — ODbL"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto estatico; mesmo lote de OSM da onda 2."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: ibge_setor_censitario_socioeconomico
+    nome: "Indicadores socioeconomicos por setor censitario"
+    dimensao: social
+    papel: D
+    unidade: "varia (hab, R$, %, conforme indicador)"
+    granularidade_espacial: setor_censitario
+    granularidade_temporal: estatico
+    fonte: "IBGE (Censo 2010 e 2022, malha de setores censitarios)"
+    mecanismo_acesso: "download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: alto
+    bloqueadores: "malha de setores censitarios muda entre 2010 e 2022 — compatibilizar as duas geometrias e o custo real deste item, nao o download em si"
+    parecer: "E a UNICA granularidade socioeconomica que chega perto de ser comparavel a uma AOI de 5 km (buffer ~78 km2). Se a Engenharia quiser socioeconomico com valor real de impacto na escala do projeto, e setor censitario ou nada — as variaveis municipais (soc_*, eco_pib_*) acima sao so contexto/estratificacao, nunca impacto."
+    usado_neste_repo: false
+    origem: adicionado_sv28
+
+  # ---------------------------------------------------------------------------
+  # ECONOMICA
+  # ---------------------------------------------------------------------------
+
+  - id: eco_pib_municipal
+    nome: "PIB municipal"
+    dimensao: economica
+    papel: D
+    unidade: "R$"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "API SIDRA / download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Papel D por definicao explicita da tarefa (PIB municipal e o exemplo canonico de contexto, nao impacto)."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_pib_per_capita
+    nome: "PIB per capita"
+    dimensao: economica
+    papel: D
+    unidade: "R$/hab"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "API SIDRA / download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto de desenvolvimento economico municipal."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_valor_adicionado_industria
+    nome: "Valor adicionado da industria"
+    dimensao: economica
+    papel: D
+    unidade: "R$"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto de perfil economico municipal."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_valor_adicionado_servicos
+    nome: "Valor adicionado de servicos"
+    dimensao: economica
+    papel: D
+    unidade: "R$"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "IBGE"
+    mecanismo_acesso: "download"
+    licenca: "IBGE — dados abertos"
+    onda: 4
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto de perfil economico municipal."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_investimento_anunciado
+    nome: "Investimento anunciado"
+    dimensao: economica
+    papel: D
+    unidade: "R$"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa / imprensa"
+    mecanismo_acesso: "dado do cliente/operador (nao ha API publica sistematica)"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: alto
+    bloqueadores: "nao sistematicamente publico; quando existe, vem de release de imprensa, sem padrao nem garantia de cobertura para todos os sites"
+    parecer: "Nao colocar no caminho critico de nenhum indicador. Se aparecer, e como nota qualitativa por site, nao como coluna confiavel de uma serie."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_capacidade_ti_mw
+    nome: "Capacidade de TI (MW)"
+    dimensao: economica
+    papel: D
+    unidade: "MW"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa"
+    mecanismo_acesso: "dado do cliente/operador; as vezes em licenciamento/imprensa"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: medio
+    bloqueadores: "normalmente nao publico de forma padronizada; levantamento caso a caso, nao automatizavel em pipeline"
+    parecer: "Exemplo canonico de papel D (descreve a escala do caso). Util para estratificar por porte, mas nao e captavel via API/download em lote — e levantamento manual por site."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_consumo_demanda_energia
+    nome: "Consumo/demanda de energia"
+    dimensao: economica
+    papel: D
+    unidade: "MW / MWh"
+    granularidade_espacial: aoi
+    granularidade_temporal: mensal
+    fonte: "empresa / ONS / ANEEL"
+    mecanismo_acesso: "dado do cliente/operador; ONS/ANEEL so agregam por subestacao"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: medio
+    bloqueadores: "ONS/ANEEL disponibilizam por subestacao, nao por operador especifico; consumo real do data center e informacao do cliente"
+    parecer: "Mesma limitacao de eco_capacidade_ti_mw. Nao ha fonte publica que isole o consumo de um data center especifico."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_area_empreendimento
+    nome: "Area do empreendimento"
+    dimensao: economica
+    papel: D
+    unidade: "ha / m2"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa / licenciamento"
+    mecanismo_acesso: "dado do cliente/operador"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: medio
+    bloqueadores: "depende de documento de licenciamento ou disclosure do cliente; nao ha API"
+    parecer: "Contexto util (escala do caso), mas nao publico em lote. Se a Engenharia obtiver caso a caso, e complemento, nao substitui a area medida pela classificacao (amb_area_construida)."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_area_construida_empreendimento
+    nome: "Area construida (declarada pelo empreendimento)"
+    dimensao: economica
+    papel: D
+    unidade: "m2 / ha"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa / licenciamento"
+    mecanismo_acesso: "dado do cliente/operador"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: medio
+    bloqueadores: "depende de documento de licenciamento ou disclosure do cliente"
+    parecer: "ATENCAO AO NOME DUPLICADO: nao confundir com amb_area_construida (papel B, medida pela classificacao de imagem — id diferente por causa disso). Esta e a area declarada pela empresa, contexto, nao substitui a medida."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_numero_racks
+    nome: "Numero de racks"
+    dimensao: economica
+    papel: D
+    unidade: "racks"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa"
+    mecanismo_acesso: "dado do cliente/operador"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: alto
+    bloqueadores: "normalmente nao publico"
+    parecer: "Nao colocar no caminho critico de nenhum indicador. Um KPI que depende de dado que ninguem tem e um KPI que nao existe."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_numero_empregos_gerados
+    nome: "Numero de empregos gerados"
+    dimensao: economica
+    papel: D
+    unidade: "empregos"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa / governo"
+    mecanismo_acesso: "dado do cliente/operador"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: alto
+    bloqueadores: "RAIS e agregada por municipio/setor, nao isola um empreendimento; numero 'gerado' divulgado pela empresa nao e verificavel de forma independente"
+    parecer: "Nao verificavel de forma sistematica. Se aparecer, e nota qualitativa da propria empresa, nunca dado auditavel."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_arrecadacao_municipal
+    nome: "Arrecadacao municipal"
+    dimensao: economica
+    papel: D
+    unidade: "R$"
+    granularidade_espacial: municipio
+    granularidade_temporal: anual
+    fonte: "municipio / IBGE"
+    mecanismo_acesso: "download (mas nao vinculavel a um empreendimento especifico)"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: alto
+    bloqueadores: "arrecadacao e agregada por municipio inteiro, sem como isolar a contribuicao de um empreendimento"
+    parecer: "Listado explicitamente pela tarefa como fora de escopo: nao publico no nivel do empreendimento e nao vinculavel a ele."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: eco_iss_empreendimento
+    nome: "ISS relacionado ao empreendimento"
+    dimensao: economica
+    papel: D
+    unidade: "R$"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "municipio"
+    mecanismo_acesso: "dado do cliente/operador (sigilo fiscal)"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: alto
+    bloqueadores: "protegido por sigilo fiscal; nao ha fonte publica"
+    parecer: "Listado explicitamente pela tarefa como fora de escopo. Nao publico."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: governanca_consumo_agua_operador
+    nome: "Consumo de agua do operador"
+    dimensao: economica
+    papel: D
+    unidade: "m3"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "operador / relatorio ESG"
+    mecanismo_acesso: "dado do cliente/operador"
+    licenca: "nao aplicavel — dado nao publico / do operador"
+    onda: fora_de_escopo
+    esforco: alto
+    bloqueadores: "normalmente nao publico"
+    parecer: "Nao estava na tabela do Notion (aparece na pesquisa do Fabio, tabela dim_data_center). Incluida aqui so para deixar explicito, como a tarefa pede, que nao vai para o caminho critico de nenhum indicador."
+    usado_neste_repo: false
+    origem: adicionado_sv28
+
+  # ---------------------------------------------------------------------------
+  # INFRAESTRUTURA
+  # ---------------------------------------------------------------------------
+
+  - id: infra_distancia_subestacao
+    nome: "Distancia a subestacao eletrica"
+    dimensao: infraestrutura
+    papel: D
+    unidade: "km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "ONS/ANEEL / OSM"
+    mecanismo_acesso: "Overpass API / download"
+    licenca: "OpenStreetMap — ODbL / ONS-ANEEL — dados abertos (agregados)"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto estatico de dependencia energetica; computavel por AOI, sem serie temporal para reconciliar."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: infra_distancia_linha_transmissao
+    nome: "Distancia a linhas de transmissao"
+    dimensao: infraestrutura
+    papel: D
+    unidade: "km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "ONS/ANEEL"
+    mecanismo_acesso: "download"
+    licenca: "ONS/ANEEL — dados abertos (agregados)"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto estatico de acessibilidade energetica."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: infra_distancia_rodovias
+    nome: "Distancia a rodovias"
+    dimensao: infraestrutura
+    papel: D
+    unidade: "km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "DNIT / OSM"
+    mecanismo_acesso: "Overpass API / download"
+    licenca: "OpenStreetMap — ODbL"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto estatico de acessibilidade logistica; mesmo lote OSM da onda 2."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: infra_distancia_aeroportos
+    nome: "Distancia a aeroportos"
+    dimensao: infraestrutura
+    papel: D
+    unidade: "km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "ANAC / OSM"
+    mecanismo_acesso: "Overpass API / download"
+    licenca: "OpenStreetMap — ODbL"
+    onda: 2
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Contexto estatico de conectividade; baixo valor analitico para o objetivo ambiental do projeto, mas barato dentro do mesmo lote OSM."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: infra_distancia_cabos_submarinos
+    nome: "Distancia a cabos submarinos"
+    dimensao: infraestrutura
+    papel: D
+    unidade: "km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "operadores de cabo / TeleGeography"
+    mecanismo_acesso: "nao ha fonte publica consolidada e estruturada"
+    licenca: "comercial/esparsa — nao ha licenca de dado aberto consolidada"
+    onda: fora_de_escopo
+    esforco: alto
+    bloqueadores: "sem fonte publica estruturada e confiavel; baixa relacao com o objetivo ambiental do projeto"
+    parecer: "Nao vale o esforco para este projeto (monitoramento ambiental, nao conectividade). Fora de escopo agora."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: infra_conectividade_fibra
+    nome: "Conectividade de fibra"
+    dimensao: infraestrutura
+    papel: D
+    unidade: "presenca / km"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "operadores / PeeringDB"
+    mecanismo_acesso: "dado comercial esparso, sem cobertura sistematica"
+    licenca: "comercial/esparsa — nao ha licenca de dado aberto consolidada"
+    onda: fora_de_escopo
+    esforco: alto
+    bloqueadores: "cobertura inconsistente entre operadores; baixa relacao com o objetivo ambiental do projeto"
+    parecer: "Mesma logica de infra_distancia_cabos_submarinos: fora de escopo agora, baixo valor para o objetivo ambiental."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: infra_potencia_energetica_disponivel
+    nome: "Potencia energetica disponivel"
+    dimensao: infraestrutura
+    papel: D
+    unidade: "MW"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa / ONS"
+    mecanismo_acesso: "download (ONS disponibiliza por subestacao, nao por operador)"
+    licenca: "ONS/ANEEL — dados abertos (agregados)"
+    onda: 2
+    esforco: medio
+    bloqueadores: "ONS disponibiliza por subestacao, nao por operador — precisa de um passo de atribuicao aproximada"
+    parecer: "Contexto de capacidade de expansao; util mas aproximado, porque a granularidade publica e por subestacao."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  # ---------------------------------------------------------------------------
+  # GOVERNANCA
+  # ---------------------------------------------------------------------------
+  # Nao sao pedidos de dado externo a Engenharia: sao metadados do proprio
+  # cadastro de sites, ja em config/sites.geojson ou planejados em SV-24/25.
+
+  - id: gov_data_center_id
+    nome: "Data center ID"
+    dimensao: governanca
+    papel: D
+    unidade: "categorico"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "base propria deste repositorio"
+    mecanismo_acesso: "cadastro interno (SV-24/25)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja existe como `site_id` em config/sites.geojson."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: gov_empresa_proprietaria
+    nome: "Empresa proprietaria"
+    dimensao: governanca
+    papel: D
+    unidade: "texto"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa"
+    mecanismo_acesso: "cadastro interno (SV-24/25)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "config/sites.geojson so tem o campo `operador`; nao ha campo separado de proprietario quando difere do operador"
+    parecer: "Metadado de identificacao, nao pedido de dado externo. Se proprietario e operador divergirem, e um campo a acrescentar no cadastro interno de sites, nao uma integracao de dado."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: gov_operadora
+    nome: "Operadora"
+    dimensao: governanca
+    papel: D
+    unidade: "texto"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa"
+    mecanismo_acesso: "cadastro interno (SV-24/25)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja existe como `operador` em config/sites.geojson."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: gov_construtora
+    nome: "Construtora"
+    dimensao: governanca
+    papel: D
+    unidade: "texto"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa / licenciamento"
+    mecanismo_acesso: "cadastro interno (SV-24/25), quando disponivel"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "raramente publico separado do operador"
+    parecer: "Metadado de identificacao secundario; nao ha plano de captura sistematica."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: gov_municipio
+    nome: "Municipio"
+    dimensao: governanca
+    papel: D
+    unidade: "texto"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "IBGE"
+    mecanismo_acesso: "cadastro interno (SV-24/25)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja existe como `municipio` em config/sites.geojson."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: gov_estado
+    nome: "Estado"
+    dimensao: governanca
+    papel: D
+    unidade: "UF"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "IBGE"
+    mecanismo_acesso: "cadastro interno (SV-24/25)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja existe como `uf` em config/sites.geojson."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: gov_regiao
+    nome: "Regiao"
+    dimensao: governanca
+    papel: D
+    unidade: "categorico"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "IBGE"
+    mecanismo_acesso: "derivavel de UF (nao armazenado)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Nao esta armazenado explicitamente, mas e trivialmente derivavel de `uf` — nao precisa de dado externo novo."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: gov_latitude
+    nome: "Latitude"
+    dimensao: governanca
+    papel: D
+    unidade: "graus"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "fonte oficial (SV-25)"
+    mecanismo_acesso: "cadastro interno"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja existe como `lat` em config/sites.geojson."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: gov_longitude
+    nome: "Longitude"
+    dimensao: governanca
+    papel: D
+    unidade: "graus"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "fonte oficial (SV-25)"
+    mecanismo_acesso: "cadastro interno"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja existe como `lon` em config/sites.geojson."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: gov_ano_construcao
+    nome: "Ano de construcao"
+    dimensao: governanca
+    papel: D
+    unidade: "ano"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa / licenciamento"
+    mecanismo_acesso: "cadastro interno (SV-24/25/29)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "config/sites.geojson hoje so tem `ano_inicio_operacao_estimado`; ano de inicio de obra (distinto de operacao) ainda nao esta modelado como campo — necessario para os periodos pre/durante/pos de SV-29/30"
+    parecer: "Metadado interno do cadastro de sites, nao pedido de dado externo. Falta preencher, nao falta fonte."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: gov_ano_operacao
+    nome: "Ano de operacao"
+    dimensao: governanca
+    papel: D
+    unidade: "ano"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa"
+    mecanismo_acesso: "cadastro interno (SV-24/25)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "campo existe (`ano_inicio_operacao_estimado`) mas ainda nulo nos 3 sites atuais; sera preenchido na expansao de SV-24/25"
+    parecer: "Campo ja definido no schema (config/sites.geojson); preenchimento e trabalho de SV-24/25, nao pedido a Engenharia."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: gov_status
+    nome: "Status"
+    dimensao: governanca
+    papel: D
+    unidade: "categorico"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "empresa / governo"
+    mecanismo_acesso: "cadastro interno (SV-24/25)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "hoje so existe o campo booleano `ativo`; status granular (operacional/construcao/projeto) nao esta modelado"
+    parecer: "Metadado interno; se necessario, e extensao de schema de SV-24, nao integracao de dado externo."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: gov_fonte_localizacao
+    nome: "Fonte da localizacao"
+    dimensao: governanca
+    papel: D
+    unidade: "texto/URL"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "documental"
+    mecanismo_acesso: "cadastro interno"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja existe como `fonte_coordenada` em config/sites.geojson."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: gov_precisao_coordenada
+    nome: "Precisao da coordenada"
+    dimensao: governanca
+    papel: D
+    unidade: "exata/aprox./inferida"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "controle proprio"
+    mecanismo_acesso: "cadastro interno (SV-25)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Planejado por SV-25 e consumido explicitamente por SV-30 (`precisao_coordenada` propagado ate o CSV final; AOIs 'inferida' excluidas do agregado)."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: gov_data_da_fonte
+    nome: "Data da fonte"
+    dimensao: governanca
+    papel: D
+    unidade: "AAAA-MM-DD"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "documental"
+    mecanismo_acesso: "cadastro interno, quando disponivel"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nao capturado hoje"
+    parecer: "Metadado de rastreabilidade de baixa prioridade; nao bloqueia nenhum indicador."
+    usado_neste_repo: false
+    origem: notion_propostas_variaveis
+
+  - id: ibge_malhas_territoriais
+    nome: "Malhas territoriais IBGE (municipio + setor censitario)"
+    dimensao: governanca
+    papel: D
+    unidade: "geometria (shapefile/geopackage)"
+    granularidade_espacial: municipio
+    granularidade_temporal: estatico
+    fonte: "IBGE (malha municipal e malha de setores censitarios)"
+    mecanismo_acesso: "download (shapefile/geopackage)"
+    licenca: "IBGE — dados abertos"
+    onda: 1
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Nao estava na tabela do Notion como linha propria. E a camada de referencia sem a qual nenhuma variavel municipal ou de setor censitario deste documento pode ser agregada a uma AOI — pre-requisito tecnico barato, por isso onda 1."
+    usado_neste_repo: false
+    origem: adicionado_sv28
+
+  # ---------------------------------------------------------------------------
+  # TEMPORAL
+  # ---------------------------------------------------------------------------
+
+  - id: temp_periodo_pre
+    nome: "Periodo pre"
+    dimensao: temporal
+    papel: D
+    unidade: "intervalo de anos"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "calculo proprio deste repositorio"
+    mecanismo_acesso: "cadastro interno (SV-24/25/29)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Define a fase 'pre' usada por SV-29/30 (t_relativo); nao e dado externo, e desenho do proprio pipeline."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: temp_periodo_durante
+    nome: "Periodo durante"
+    dimensao: temporal
+    papel: D
+    unidade: "intervalo de anos"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "calculo proprio deste repositorio"
+    mecanismo_acesso: "cadastro interno (SV-24/25/29)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Mesma logica de temp_periodo_pre."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: temp_periodo_pos
+    nome: "Periodo pos"
+    dimensao: temporal
+    papel: D
+    unidade: "intervalo de anos"
+    granularidade_espacial: aoi
+    granularidade_temporal: estatico
+    fonte: "calculo proprio deste repositorio"
+    mecanismo_acesso: "cadastro interno (SV-24/25/29)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Mesma logica de temp_periodo_pre."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: temp_ano_imagem
+    nome: "Ano da imagem"
+    dimensao: temporal
+    papel: D
+    unidade: "ano"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 / Landsat"
+    mecanismo_acesso: "manifest de ingestao (SV-06/06b)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja e coluna-chave em area_por_classe.csv (ADR-002)."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: temp_data_imagem
+    nome: "Data da imagem"
+    dimensao: temporal
+    papel: D
+    unidade: "AAAA-MM-DD"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 / Landsat"
+    mecanismo_acesso: "manifest de ingestao (SV-06/06b)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Ja capturada nos manifests de cena da ingestao."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: temp_cobertura_nuvens
+    nome: "Cobertura de nuvens"
+    dimensao: temporal
+    papel: C
+    unidade: "%"
+    granularidade_espacial: pixel
+    granularidade_temporal: anual
+    fonte: "Sentinel-2 / Landsat"
+    mecanismo_acesso: "manifest de ingestao (SV-06/06b)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Confundidor de qualidade: cenas com mais nuvem residual degradam o valor do indice, o que pode ser lido erroneamente como mudanca real. Ja usada como filtro na selecao de mosaico (SV-06/06b)."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: temp_mudanca_pre_pos
+    nome: "Mudanca pre/pos"
+    dimensao: temporal
+    papel: B
+    unidade: "delta / %"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (SV-14/15)"
+    mecanismo_acesso: "calculo proprio (SV-30)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "E exatamente `delta_absoluto`/`delta_relativo` de SV-30, com `delta_liquido` contra o controle pareado (SV-29)."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
+
+  - id: temp_mudanca_durante_pos
+    nome: "Mudanca durante/pos"
+    dimensao: temporal
+    papel: B
+    unidade: "delta / %"
+    granularidade_espacial: aoi
+    granularidade_temporal: anual
+    fonte: "raster classificado deste repositorio (SV-14/15)"
+    mecanismo_acesso: "calculo proprio (SV-30)"
+    licenca: "interno — produzido por este repositorio"
+    onda: null
+    esforco: baixo
+    bloqueadores: "nenhum"
+    parecer: "Mesma logica de temp_mudanca_pre_pos, aplicada as fases 'durante' e 'pos'."
+    usado_neste_repo: true
+    origem: notion_propostas_variaveis
