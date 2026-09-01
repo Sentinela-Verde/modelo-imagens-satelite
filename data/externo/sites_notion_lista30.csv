@@ -1,0 +1,31 @@
+#,data_center_projeto,link,estado,regiao,cidade,empresa,relevancia,fonte_lista
+1,Equinix SP6,https://www.equinix.com/data-centers/americas-colocation/brazil-colocation/sao-paulo-data-centers/sp6,SP,Sudeste,Santana de Parnaíba,Equinix,"Excelente caso de estudo por ser uma implantação recente. Entrou em operação em 2026, projetado para cargas de alta densidade de IA.",lista30
+2,Equinix SP5x,https://www.equinix.com/br/pt/data-centers/americas-colocation/brazil-colocation/sao-paulo-data-centers/sp5x,SP,Sudeste,Santana de Parnaíba,Equinix,Importante representante de infraestrutura hyperscale na região metropolitana de São Paulo.,lista30
+3,Ascenty Vinhedo 1,https://ascenty.com/data-centers/localizacao/brasil/sao-paulo-interior/vinhedo/,SP,Sudeste,Vinhedo,Ascenty,Relevante por estar inserido em um grande campus de data centers em área industrial.,lista30
+4,Ascenty Vinhedo 2,https://ascenty.com/data-centers/localizacao/brasil/sao-paulo-interior/vinhedo/,SP,Sudeste,Vinhedo,Ascenty,Complementa o caso de Vinhedo e permite estudar expansão de um campus.,lista30
+5,Ascenty Campinas CPS1,https://www.datacentermap.com/brazil/campinas/,SP,Sudeste,Campinas,Ascenty,Campinas é um importante polo tecnológico e de conectividade.,lista30
+6,Ascenty Hortolândia HTL6,https://www.datacentermap.com/brazil/campinas/,SP,Sudeste,Hortolândia,Ascenty,Interessante para avaliar a expansão da infraestrutura fora do núcleo da capital.,lista30
+7,Scala Campinas SVCPCP01,https://scaladatacenters.com/data-centers/,SP,Sudeste,Campinas,Scala Data Centers,Caso relevante pela dimensão física do empreendimento; 12.015 m² de área construída e 7 MW.,lista30
+8,TIP Brasil Campinas,https://setup.zeus.tipbrasil.com.br/portal-tip/artigo/tip-brasil-investe-r-500-milhoes-em-datacenter-tier-3-em-campinas,SP,Sudeste,Campinas,TIP Brasil,"R$500 milhões para aquisição, modernização e expansão do data center, capacidade prevista de até 2 mil racks.",lista30
+9,Ascenty SPO06,https://ascenty.com/blog/news-ascenty/ascenty-campus-sao-paulo/,SP,Sudeste,Grande São Paulo,Ascenty,Representa expansão de capacidade de um campus existente.,lista30
+10,Equinix RJ1,https://www.equinix.com/data-centers/americas-colocation/brazil-colocation/rio-de-janeiro-data-centers,RJ,Sudeste,Rio de Janeiro,Equinix,"Infraestrutura digital consolidada, referência histórica.",lista30
+11,Equinix RJ2,https://www.equinix.com/data-centers/americas-colocation/brazil-colocation/rio-de-janeiro-data-centers,RJ,Sudeste,Rio de Janeiro,Equinix,Permite comparar diferentes instalações de um mesmo operador.,lista30
+12,Equinix RJ3,https://www.equinix.com/data-centers/americas-colocation/brazil-colocation/rio-de-janeiro-data-centers,RJ,Sudeste,Rio de Janeiro,Equinix,Útil para estudar concentração espacial de infraestrutura digital.,lista30
+13,RT-One Uberlândia,https://rt-one.com/,MG,Sudeste,Uberlândia,RT-One,"Caso prioritário para o TCC. 100 MW na 1ª fase, expansão até 400 MW.",lista30
+14,Algar Tech Uberlândia – Granja Marileusa,https://www.datacentermap.com/brazil/uberlandia/,MG,Sudeste,Uberlândia,Algar Tech,Infraestrutura já inserida em polo empresarial/tecnológico.,lista30
+15,Cirion CUR1,https://www.ciriontechnologies.com/pt-br/data-center/nossos-data-centers/curitiba-1/,PR,Sul,Curitiba,Cirion Technologies,"Localização física identificada, infraestrutura carrier-neutral.",lista30
+16,Elea CTA1,https://eleadatacenters.com/datacenters/cta1-curitiba/,PR,Sul,Curitiba,Elea Data Centers,Foco em sustentabilidade; energia renovável e conectividade regional.,lista30
+17,Tecto TPOA1,https://www.datacentermap.com/brazil/porto-alegre/tecto-tpoa1/,RS,Sul,Porto Alegre,Tecto Data Centers,"Excelente caso temporal. Projeto anunciado em 2026, terreno de 33 mil m², 20 MW previstos.",lista30
+18,Scala AI City,https://www.eldorado.rs.gov.br/portal/noticias/0/3/4671/eldorado-do-sul-assina-protocolo-de-intencoes-scala,RS,Sul,Eldorado do Sul,Scala Data Centers,"Caso estratégico. Projeto de grande escala voltado a IA, investimento inicial de R$3 bilhões.",lista30
+19,Armazém DC Joinville,https://www.armazem.cloud/,SC,Sul,Joinville,Armazém Cloud,Amplia representatividade da amostra na Região Sul.,lista30
+20,Unifique Timbó DC1,https://unifique.com.br/datacenter,SC,Sul,Timbó,Unifique,Certificações Tier III Design e Facility.,lista30
+21,Elea BSB2,https://eleadatacenters.com/datacenters/bsb2-brasilia/,DF,Centro-Oeste,Brasília,Elea Data Centers,Representa Brasília e a infraestrutura digital associada a um grande centro político.,lista30
+22,Everest Digital Data Center,https://everestdigital.com.br/solucoes/data-center/,GO,Centro-Oeste,Goiânia,Everest Digital,"Data center próprio em Goiânia, certificação Tier III.",lista30
+23,Data Center ByteDance – Pecém,https://www.datacentermap.com/brazil/fortaleza/,CE,Nordeste,São Gonçalo do Amarante,Omnia / Pátria,"Um dos candidatos mais importantes. Complexo do Pecém, projetos de grande escala de IA.",lista30
+24,AngoNAP Fortaleza,https://www.angolacables.com/,CE,Nordeste,Fortaleza,Angola Cables,"Relação entre data center, conectividade internacional e cabos submarinos.",lista30
+25,Scala Fortaleza Campus,https://www.datacentermap.com/brazil/fortaleza/scala-data-centers-fortaleza-campus/,CE,Nordeste,Fortaleza,Scala Data Centers,Expansão do mercado nordestino.,lista30
+26,Atlantic Data Center Recife 1,https://atlanticdatacenters.com/,PE,Nordeste,Recife,Atlantic Data Centers / Um Telecom,Localização estratégica na cidade.,lista30
+27,Surfix Data Center,https://surfix.com.br/data-center/,PE,Nordeste,Recife,Surfix Cloud & Data Center,"Endereço em Boa Viagem, Recife.",lista30
+28,Hostzone Data Center,https://cliente.hostzone.com.br/store/data-center,PB,Nordeste,Campina Grande,Hostzone,CGE1 em Campina Grande e também uma operação em São Paulo.,lista30
+29,ClickIP Datacenters,https://www.datacentermap.com/brazil/manaus/,AM,Norte,Manaus,ClickIP Datacenters,Fundamental para garantir representação da Região Norte.,lista30
+30,Data Center PRODEB,https://www.ba.gov.br/prodeb/servicos,BA,Nordeste,Salvador,PRODEB / Governo da Bahia,Infraestrutura pública.,lista30
