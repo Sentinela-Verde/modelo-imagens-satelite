@@ -28,7 +28,15 @@ outputs/
 !data/manifests/
 !.gitkeep
 
-# PNGs de apoio à rotulagem manual (SV-09): ~120MB, regenerados em segundos via
-# `python -m sentinela.labeling.candidatos` — pesado demais pra versionar, ao contrário dos
-# outros PNGs de reports/figures/ (poucos, leves, e são evidência final, não material de trabalho).
-reports/figures/rotulagem/
+# PNGs de apoio à rotulagem manual (SV-09/SV-09b): recortes RGB/falsa-cor por (site, ano) somam
+# ~120MB (SV-09, por site) / ~185MB (SV-09b, por estrato) e são regenerados em segundos via
+# `python -m sentinela.labeling.candidatos`/`candidatos_estrato` — pesado demais pra versionar, ao
+# contrário dos outros PNGs de reports/figures/ (poucos, leves, e são evidência final, não material
+# de trabalho). Ignora por sufixo de nome (não a pasta inteira) para não arrastar junto a prancha de
+# contexto por estrato (SV-09b, `prancha_contexto.png`) — essa é leve (~150KB cada, ~1MB total) e É
+# evidência final (mostra classe 3 vs. confusor local, citada no relatório), mesma lógica da exceção
+# de data/labels_manual/ acima. Um ignore de pasta inteira com "!" pra reincluir só o prancha_*.png
+# não funciona no git (não desce em pasta já ignorada) — por isso o padrão é por sufixo, não por
+# diretório.
+reports/figures/rotulagem/**/*_rgb.png
+reports/figures/rotulagem/**/*_falsacor.png

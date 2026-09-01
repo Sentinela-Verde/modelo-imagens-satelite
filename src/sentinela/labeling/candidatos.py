@@ -68,6 +68,7 @@ from shapely.validation import make_valid
 
 from .. import classes
 from ..config import REPO_ROOT, SETTINGS
+from ..features.indices import FATOR_ESCALA as FEATURES_FATOR_ESCALA
 from ..features.indices import NODATA as FEATURES_NODATA
 from ..features.indices import bandas_features
 
@@ -162,12 +163,25 @@ def _ler_dados_ano(sensor: str, site_id: str, ano: int) -> dict[str, Any] | None
     idx = {b: i for i, b in enumerate(bandas)}
 
     valido = arr[idx["blue"]] != FEATURES_NODATA  # máscara conjunta (SV-08: mesma nas 13 bandas)
-    refl = {b: arr[idx[b]] for b in ("blue", "green", "red", "nir", "swir1", "swir2")}
+
+    # SV-26 mudou a gravação do stack de SV-08 para int16 x FATOR_ESCALA, mas só para as 13 AOIs
+    # novas processadas por ela — os 3 sites originais (ascenty-vinhedo, odata-hortolandia,
+    # scala-tambore) continuam float32 (SV-26 não os retrabalhou, mesma decisão de dataset.py).
+    # Descalar sempre por 10000 quebraria os 3 originais (valor já correto dividido de novo, achado
+    # real durante a correção desta função em SV-09b, 2026-09-01: percentis saíam ~0.0 pros 3
+    # originais). Decide pelo dtype do próprio array, mesmo critério de
+    # `sentinela.dataset.processar_combo`.
+    arr_float = arr.astype(np.float32)
+    if np.issubdtype(arr.dtype, np.integer):
+        arr_float = arr_float / np.float32(FEATURES_FATOR_ESCALA)
+    arr_float[:, ~valido] = 0.0
+
+    refl = {b: arr_float[idx[b]] for b in ("blue", "green", "red", "nir", "swir1", "swir2")}
 
     return {
         "refl": refl,
-        "ndvi": arr[idx["ndvi"]],
-        "bsi": arr[idx["bsi"]],
+        "ndvi": arr_float[idx["ndvi"]],
+        "bsi": arr_float[idx["bsi"]],
         "valido": valido,
         "transform": transform,
         "crs": crs,

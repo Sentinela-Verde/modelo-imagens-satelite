@@ -197,6 +197,114 @@ resposta anterior**, ao final da sessão. Se você discordar de si mesmo em mais
 critério deste guia está ambíguo — pare, anote onde travou, e trate como um achado a corrigir
 aqui, não como um erro seu.
 
+## 9. Como a classe 3 muda de bioma para bioma (SV-09b)
+
+**Acrescentado em SV-09b.** SV-09 (seções 1-8 acima) foi escrito rotulando só Mata Atlântica/Sudeste
+(`ascenty-vinhedo`, `odata-hortolandia`, `scala-tambore`). A expansão para 13 AOIs de tier 1 (SV-24/
+SV-25) trouxe Caatinga, Cerrado e Amazônia — biomas onde a classe 3 (`solo_exposto_obras`) tem
+**confusores diferentes** dos 5 casos da seção 3, porque o clima e a vegetação de fundo são outros.
+Os candidatos agora vêm por **estrato** (bioma x era de sensor, ver
+`docs/tarefas/SV-09b-kit-rotulagem-estratificado.md`):
+`data/interim/candidatos_estrato_{estrato}.geojson` +
+`reports/figures/rotulagem/{estrato}/` (inclui `prancha_contexto.png`, um painel lado a lado com o
+candidato mais "classe 3 provável" daquele estrato ao lado do confusor mais provável — abra essa
+imagem primeiro ao trocar de bioma no meio de uma sessão, é o que evita o erro de calibração de
+"acabei de ver 30 polígonos de SP e agora estou vendo os do Ceará com o mesmo olho").
+
+Leia esta seção inteira **antes de rotular o primeiro polígono de um estrato fora de Mata
+Atlântica** — é rápido e evita ter que refazer.
+
+### 9.1 Caatinga — ERRO MAIS PROVÁVEL DO CONJUNTO TODO
+
+**Vegetação decídua sem folha no período seco (jun-set, mesma janela de composição do projeto) é
+classe 2 (`vegetacao_rala`), nunca classe 3.** Isto é o oposto do que a primeira impressão sugere:
+caatinga sem folha, no RGB, aparece cinza-acastanhada, sem verde, muito parecida com solo exposto —
+mas é **vegetação lenhosa viva, só sem folhas**, não solo raspado nem canteiro.
+
+Como diferenciar (nesta ordem):
+
+- **Textura na falsa-cor SWIR**: solo mineral exposto de verdade fica **magenta/rosa uniforme**
+  (seção 4). Caatinga decídua, mesmo sem folha, mantém uma textura **heterogênea, pontilhada** —
+  copas e galhos ainda respondem de forma diferente do solo nu entre eles. Se a falsa-cor mostra
+  "salpicado" em vez de um bloco uniforme de cor, é vegetação, não solo.
+- **NDVI não é zero**: mesmo decídua, a caatinga seca tem NDVI baixo mas **positivo e não-extremo**
+  (`ndvi_medio` no candidato). Solo mineral puro (canteiro real) tende ao extremo mais baixo da
+  distribuição do estrato — é por isso que os candidatos deste estrato ordenam por menor NDVI, mas
+  "mais baixo relativo" não é o mesmo que "solo nu": compare com a prancha de contexto do estrato
+  antes de decidir.
+- **Contexto**: canteiro de obra real tem contorno ditado pelo projeto de construção (bordas retas
+  ou curvas de raio de máquina, ligado a estrutura construída/via de acesso). Caatinga decídua segue
+  o relevo natural, sem geometria de projeto.
+- **Teste temporal**: se você tiver o mesmo local em outro ano com chuva (folhas), compare —
+  vegetação decídua **fica verde de novo**; solo raspado de canteiro real não.
+
+Por que isto importa mais aqui do que em qualquer outro bioma: a Caatinga tem a maior proporção de
+solo mineral naturalmente exposto (mesmo sem nenhuma obra) de todos os biomas do projeto — a
+heurística de BSI/NDVI (que não conhece bioma) confunde os dois com mais frequência aqui do que em
+qualquer outro lugar. Ver seção "Conferência dos candidatos" da tarefa SV-09b: a taxa de acerto
+visual dos candidatos caiu especificamente na Caatinga nesta rodada — trate cada candidato deste
+estrato com mais ceticismo do que os de Mata Atlântica, não menos.
+
+### 9.2 Cerrado
+
+Confusor principal: **solo exposto natural em pastagem degradada** (curral/pasto sobrepastejado,
+processo erosivo natural, "voçoroca") **vs. terraplenagem real de canteiro de obra**.
+
+- **Terraplenagem/canteiro** → contorno **geométrico, ditado pelo projeto** (retângulos, curvas de
+  raio de máquina), muitas vezes com maquinário, pilha de material ou contêiner visível na imagem de
+  maior resolução, e **muda de forma de um ano para o outro** conforme a obra avança.
+- **Solo exposto natural / pastagem degradada** → contorno **irregular, ditado pelo relevo e pelo
+  manejo do gado** (trilhas de gado convergindo para bebedouro/cocho são um sinal característico),
+  estável ou piorando gradualmente ano a ano (erosão), não aparecendo repentinamente como um
+  polígono novo e bem definido.
+- Cerrado tem estação seca marcada (mesma janela jun-set do projeto): pasto e vegetação rala ficam
+  amarelados/secos, não confundir com solo exposto — mesma lógica da seção 3.3 (campo de futebol
+  seco), aplicada a pastagem em vez de campo urbano.
+
+### 9.3 Amazônia (se houver candidato do estrato `amazonia`)
+
+Confusor principal: **estrada de terra e pátio de madeira/serraria** (uso consolidado de extração
+madeireira ou acesso rural) **vs. canteiro de obra do data center**.
+
+- **Canteiro de obra** → ligado à estrutura construída do site (ver ponto do site em
+  `config/sites.geojson`), contorno muda de forma entre anos consecutivos, aparece e evolui na
+  janela de `periodo_durante` daquela AOI.
+- **Estrada/pátio de extração madeireira** → traçado **linear e estável ano após ano** (mesma lógica
+  de teste temporal da seção 3.5: se o "clareira"/pátio não muda de forma entre anos, não é canteiro
+  ativo), frequentemente **desconectado** do perímetro do site (não converge para o ponto do data
+  center).
+- Atenção redobrada à escala: a AOI de Amazônia deste projeto (`clickip-manaus`) tem pegada pequena
+  (~0.12 ha, já documentado em SV-24) — um polígono grande demais em relação ao tamanho conhecido do
+  site é mais provavelmente clareira/desmatamento de fundo do que canteiro do próprio
+  empreendimento.
+
+### 9.4 Pampa
+
+**Nenhum candidato deste estrato existe nesta rodada de SV-09b** — nenhuma AOI de tier 1 em
+`config/sites.geojson` tem `bioma == "Pampa"` (a única AOI do Sul, `scala-spoapa01` em Porto Alegre,
+está no domínio de Mata Atlântica, que é o bioma oficial IBGE ali). Documentado aqui mesmo assim
+porque a tabela de SV-09b previa este estrato e uma AOI de Pampa pode entrar em rodadas futuras:
+
+- Confusor principal: **campo nativo seco** (textura de gramínea baixa, comum em toda a metade sul
+  do estado) **vs. solo raspado de verdade**. Campo nativo seco tem NDVI baixo mas positivo (mesma
+  lógica da caatinga decídua, seção 9.1) e textura de grama, visível em alta resolução como um
+  padrão fino e uniforme, não "cru"; solo mineral exposto é liso/sem textura na escala do pixel.
+  Não existe atualmente sinal espectral fácil de separar os dois de forma automática — se este
+  estrato for criado no futuro, trate como regra de borda (mesmo padrão da seção 3.2) até haver
+  material visual de referência.
+
+### 9.5 Regra de desempate — vale para qualquer bioma, não só os novos
+
+**Na dúvida, `confianca: baixa` e siga.** Um polígono honesto de baixa confiança vale mais para o
+dataset do que um polígono confiante e errado: SV-16 pode filtrar por confiança na hora de montar o
+dataset de treino, mas só se o campo for preenchido com honestidade. Não é permitido pular um
+polígono difícil sem rotular — decida com a informação que você tem (falsa-cor, prancha de
+contexto, comparação entre anos), registre o raciocínio em `observacao`, e marque `baixa` sem
+constrangimento. Isso vale em dobro fora de Mata Atlântica: você tem menos anos de experiência
+visual acumulada nesses biomas dentro desta sessão do que tinha em SP depois de 100 polígonos — é
+esperado errar mais no começo, o campo `confianca` existe exatamente para isso ficar registrado em
+vez de escondido.
+
 ---
 
 ## Pendente de confirmação
