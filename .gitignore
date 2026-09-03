@@ -28,6 +28,12 @@ outputs/
 !data/manifests/
 !.gitkeep
 
+# dados-modelo-impacto/ — apoio de dados externos ao modelo de impacto do Guilherme (fora do
+# escopo do classificador deste repo, ver dados-modelo-impacto/README.md). Mesma regra: dado
+# bruto/tratado não commitado até se confirmar que é leve o bastante para abrir exceção.
+dados-modelo-impacto/raw/
+dados-modelo-impacto/processed/
+
 # PNGs de apoio à rotulagem manual (SV-09/SV-09b): recortes RGB/falsa-cor por (site, ano) somam
 # ~120MB (SV-09, por site) / ~185MB (SV-09b, por estrato) e são regenerados em segundos via
 # `python -m sentinela.labeling.candidatos`/`candidatos_estrato` — pesado demais pra versionar, ao

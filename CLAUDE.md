@@ -45,6 +45,14 @@ riscos) vive no Notion: página **"🧭 Plano de Modelos de ML — Product Flow"
   o resíduo entre sensores não bateu tolerância em 3 de 6 bandas (NIR, SWIR1, SWIR2). 3 sites:
   `ascenty-vinhedo`, `odata-hortolandia`, `scala-tambore` — ver `config/sites.geojson`.
 
+## Outras frentes hospedadas neste repositório
+- **`dados-modelo-impacto/`** (a partir de 2026-09-03): pasta separada, fora do escopo do
+  classificador (`src/sentinela/`), dedicada a apoiar o modelo de impacto de outro integrante do
+  time (Guilherme) — levantamento de dados externos (temperatura, população, empregos) para os
+  facilities do estudo. Não segue o cronograma/prazo deste repositório. Ver
+  `dados-modelo-impacto/README.md` para escopo, ressalvas já conhecidas (granularidade de
+  população/emprego, reaproveito do desenho de grupo de controle de SV-29) e status.
+
 ## Regras do repositório
 - Nunca commitar dado bruto pesado (raster/GeoTIFF), credenciais ou artefato de modelo grande — usar
   `.gitignore` desde o início.
