@@ -36,6 +36,32 @@ features do modelo, ver `_COLUNAS_NAO_FEATURE`), reserva de generalização fora
 (`--holdout-tier`: AOIs inteiras de um tier saem do treino, ver `atribuir_split`), e tipos de dado
 otimizados (`_otimizar_dtypes`) para caber em memória. Rode com:
 `python -m sentinela.dataset --versao v0.2 --teto <N> --holdout-tier 2`.
+
+**SV-16 (v1.0)** incorpora `data/labels_manual/*.geojson` (211 polígonos, SV-10) sobre a base de
+v0.2. Dois mecanismos novos, ambos opt-in via flag (v0.1/v0.2 continuam byte-idênticos, flags
+desligadas por padrão):
+
+- `--usar-labels-manuais`: para cada combo (sensor, site, ano) com polígono manual correspondente
+  (mesmo `site_id`/`ano`), rasteriza os polígonos **na grade daquele combo** (10 m ou 30 m,
+  `rasterio.features.rasterize(all_touched=False)`) e aplica **precedência do manual sobre o
+  label automático** (MapBiomas) pixel a pixel, antes de qualquer amostragem — ver
+  `_rasterizar_labels_manuais`/`processar_combo`. A nova coluna `origem_label`
+  (`"mapbiomas"`/`"manual"`) registra a fonte por linha; `peso_label` de amostras manuais é maior
+  (`PESO_LABEL_MANUAL_PADRAO`), reduzido se `confianca == "baixa"`
+  (`PESO_LABEL_MANUAL_BAIXA`) — ver constantes abaixo. Amostras manuais **nunca** são cortadas pelo
+  teto de amostragem (só o pool automático da mesma classe/combo é que respeita `--teto`).
+- `--referencia-split <parquet>`: reutiliza **byte a byte** o mapeamento `bloco_id -> split` de um
+  dataset já gerado (tipicamente `dataset_v0.2.parquet`) em vez de recalcular `train_test_split` do
+  zero. Isso é bloqueante para SV-16: qualquer bloco novo (que só existe porque um polígono manual
+  caiu numa área nunca amostrada automaticamente) recebe um sorteio 70/30 **à parte**, que nunca
+  perturba a ordem/composição da lista de blocos já sorteada em v0.2 — ver `atribuir_split`. Sem
+  esta flag, `atribuir_split` se comporta exatamente como antes (sorteio do zero), preservando
+  v0.1/v0.2 inalterados.
+
+Rode com: `python -m sentinela.dataset --versao v1.0 --teto 4000 --holdout-tier 2
+--usar-labels-manuais --referencia-split data/processed/dataset_v0.2.parquet` (mesmos `--teto`/
+`--holdout-tier`/seed de v0.2 — mudar qualquer um deles junto com a rotulagem manual inviabilizaria
+isolar de onde vem a diferença, ver `docs/tarefas/SV-16-dataset-v1.0-retreino.md`).
 """
 
 from __future__ import annotations
@@ -49,6 +75,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+import geopandas as gpd
 import numpy as np
 import pandas as pd
 import rasterio
@@ -73,6 +100,27 @@ SENSORES = ("s2", "landsat")
 # Colunas de estrato (SV-27): chaves de análise/estratificação, NUNCA features do modelo — ver
 # _COLUNAS_NAO_FEATURE mais abaixo e o manifest (campo `amostragem.estratos_nao_sao_features`).
 COLUNAS_ESTRATO = ("regiao", "bioma", "uf", "tier", "fase")
+
+# --------------------------------------------------------------------------------------------
+# SV-16 (v1.0) — rotulagem manual: precedência sobre o label automático + peso diferenciado.
+# --------------------------------------------------------------------------------------------
+
+ORIGEM_LABEL_AUTOMATICA = "mapbiomas"  # fonte real do VALOR do pixel automático (ADR-004 opção b)
+                                        # — WorldCover só entra como peso no crosscheck de 2021,
+                                        # nunca substitui o valor gravado no raster de label.
+ORIGEM_LABEL_MANUAL = "manual"
+
+PESO_LABEL_MANUAL_PADRAO = 3.0  # confianca in {"alta", "media"} — mais caro de produzir (humano),
+                                  # mais confiável na classe crítica que o WorldCover/MapBiomas
+                                  # nunca capturam bem (canteiro de obras) — ver CLAUDE.md.
+PESO_LABEL_MANUAL_BAIXA = 1.0  # confianca == "baixa": reduzido ao mesmo patamar do peso "cheio"
+                                 # de uma amostra automática comum (1/(1+0)=1.0) — ainda conta,
+                                 # mas não domina o gradiente como uma amostra manual confiável.
+
+LABELS_MANUAIS_GLOB = "*.geojson"
+LABELS_MANUAIS_EXCLUIR = {"_template.geojson"}
+CONFIANCA_CODIGO = {"baixa": 1, "media": 2, "alta": 3}
+CODIGO_CONFIANCA = {v: k for k, v in CONFIANCA_CODIGO.items()}
 
 
 class DatasetError(RuntimeError):
@@ -267,6 +315,113 @@ def _ler_concordancia(path_relativo: str) -> np.ndarray:
         return ds.read(1)
 
 
+# --------------------------------------------------------------------------------------------
+# SV-16 (v1.0) — carregamento e rasterização dos polígonos manuais (SV-10)
+# --------------------------------------------------------------------------------------------
+
+
+def _arquivos_labels_manuais() -> list[Path]:
+    d = SETTINGS.labels_manual_dir
+    if not d.exists():
+        raise DatasetError(f"{d} não existe — SV-10 (rotulagem manual) não rodou?")
+    arquivos = sorted(
+        p for p in d.glob(LABELS_MANUAIS_GLOB) if p.name not in LABELS_MANUAIS_EXCLUIR
+    )
+    if not arquivos:
+        raise DatasetError(
+            f"nenhum geojson de rotulagem manual em {d} (excluindo _template.geojson) — "
+            "SV-10 não produziu labels, ou --usar-labels-manuais foi passado sem necessidade."
+        )
+    return arquivos
+
+
+def labels_manuais_arquivos_meta() -> list[dict[str, Any]]:
+    """Nome + sha256 de cada geojson de rotulagem manual usado — vai pro manifest (item 2 do
+    enunciado de SV-16: 'arquivos de rotulagem usados + sha256')."""
+    return [
+        {"arquivo": f"data/labels_manual/{p.name}", "sha256": _sha256_arquivo(p)}
+        for p in _arquivos_labels_manuais()
+    ]
+
+
+def _carregar_labels_manuais() -> gpd.GeoDataFrame:
+    """Concatena todos os `data/labels_manual/{site_id}.geojson` (exceto o template), reprojeta
+    de EPSG:4326 (CRS84, como os rotuladores desenharam no QGIS) para EPSG:31983 — o CRS comum
+    que todo o pipeline usa para grade/transform/bloco_id (ver docstring do módulo)."""
+    partes: list[gpd.GeoDataFrame] = []
+    for path in _arquivos_labels_manuais():
+        gdf = gpd.read_file(path)
+        if gdf.empty:
+            continue
+        partes.append(gdf)
+    if not partes:
+        raise DatasetError("todos os geojson de rotulagem manual estão vazios (0 features).")
+    gdf_total = pd.concat(partes, ignore_index=True)
+    gdf_total = gpd.GeoDataFrame(gdf_total, geometry="geometry", crs=partes[0].crs)
+
+    obrigatorias = {"site_id", "ano", "classe_id", "confianca"}
+    faltando = obrigatorias - set(gdf_total.columns)
+    if faltando:
+        raise DatasetError(f"labels_manual: coluna(s) obrigatória(s) ausente(s) {faltando}")
+    if gdf_total["classe_id"].isna().any() or gdf_total["ano"].isna().any():
+        raise DatasetError("labels_manual: classe_id/ano com null — schema de SV-10 violado.")
+
+    gdf_total["classe_id"] = gdf_total["classe_id"].astype(int)
+    gdf_total["ano"] = gdf_total["ano"].astype(int)
+    gdf_total["confianca"] = gdf_total["confianca"].fillna("media").astype(str)
+    return gdf_total.to_crs("EPSG:31983")
+
+
+def _agrupar_labels_manuais_por_site_ano(
+    gdf: gpd.GeoDataFrame,
+) -> dict[tuple[str, int], gpd.GeoDataFrame]:
+    grupos: dict[tuple[str, int], gpd.GeoDataFrame] = {}
+    for (site_id, ano), sub in gdf.groupby(["site_id", "ano"]):
+        grupos[(str(site_id), int(ano))] = sub
+    return grupos
+
+
+def _rasterizar_labels_manuais(
+    gdf_site_ano: gpd.GeoDataFrame, shape: tuple[int, int], transform: rasterio.Affine
+) -> tuple[np.ndarray, np.ndarray]:
+    """Rasteriza os polígonos manuais de um (site_id, ano) numa grade específica (10 m ou 30 m,
+    conforme o combo que chama esta função). `all_touched=False` — mesma regra de rasterização
+    usada no resto do pipeline (SV-06b/SV-07), para não inflar a área do polígono manual em
+    relação ao label automático que ele está substituindo.
+
+    Retorna (raster_classe, raster_confianca_baixa): raster_classe tem 0 onde não há polígono
+    manual e o `classe_id` (1-5) onde há; raster_confianca_baixa é bool, True só nos pixels cujo
+    polígono de origem tem `confianca == "baixa"` (usado para reduzir peso_label)."""
+    from rasterio.features import rasterize
+
+    shapes_classe = [
+        (geom, int(cid))
+        for geom, cid in zip(gdf_site_ano.geometry, gdf_site_ano["classe_id"], strict=True)
+        if geom is not None and not geom.is_empty
+    ]
+    if not shapes_classe:
+        vazio = np.zeros(shape, dtype=np.uint8)
+        return vazio, vazio.astype(bool)
+
+    raster_classe = rasterize(
+        shapes_classe, out_shape=shape, transform=transform, fill=0, all_touched=False, dtype=np.uint8
+    )
+
+    shapes_baixa = [
+        (geom, 1)
+        for geom, conf in zip(gdf_site_ano.geometry, gdf_site_ano["confianca"], strict=True)
+        if conf == "baixa" and geom is not None and not geom.is_empty
+    ]
+    if shapes_baixa:
+        raster_baixa = rasterize(
+            shapes_baixa, out_shape=shape, transform=transform, fill=0, all_touched=False, dtype=np.uint8
+        ).astype(bool)
+    else:
+        raster_baixa = np.zeros(shape, dtype=bool)
+
+    return raster_classe, raster_baixa
+
+
 def processar_combo(
     sensor_token: str,
     site_id: str,
@@ -276,8 +431,16 @@ def processar_combo(
     anos_sobreposicao: set[int],
     teto: int = TETO_POR_CLASSE_SITE_ANO_SENSOR,
     sites_meta: dict[str, dict[str, Any]] | None = None,
+    labels_manuais_por_site_ano: dict[tuple[str, int], gpd.GeoDataFrame] | None = None,
+    manual_stats: dict[str, dict[str, Any]] | None = None,
 ) -> pd.DataFrame:
-    """Lê features + label de um combo (sensor, site, ano), erode, amostra e monta as linhas."""
+    """Lê features + label de um combo (sensor, site, ano), erode, amostra e monta as linhas.
+
+    `labels_manuais_por_site_ano` (SV-16, opt-in): se houver polígonos manuais para este
+    (site_id, ano), rasteriza-os NESTA grade (10 m ou 30 m — a mesma da era do combo) e aplica
+    precedência sobre o label automático (MapBiomas) pixel a pixel, ANTES de erosão/amostragem —
+    ver docstring do módulo. `manual_stats` acumula contagens para o manifest (mutado in-place,
+    chave `sensor_token`)."""
     feat_manifest = _carregar_json(_manifest_features_path(sensor_token, site_id, ano))
     label_manifest = _carregar_json(_manifest_labels_path(sensor_token, site_id, ano))
 
@@ -315,6 +478,34 @@ def processar_combo(
         )
     fase = fase_do_ano(ano, site_meta["periodo_pre"], site_meta["periodo_durante"], site_meta["periodo_pos"])
 
+    # --- SV-16: precedência do label manual sobre o automático, ANTES de valido_base/erosão ---
+    mask_manual = np.zeros(label_arr.shape, dtype=bool)
+    raster_confianca_baixa = np.zeros(label_arr.shape, dtype=bool)
+    if labels_manuais_por_site_ano:
+        gdf_poly = labels_manuais_por_site_ano.get((site_id, ano))
+        if gdf_poly is not None and len(gdf_poly):
+            raster_classe_manual, raster_confianca_baixa = _rasterizar_labels_manuais(
+                gdf_poly, label_arr.shape, transform
+            )
+            mask_manual = raster_classe_manual != 0
+            if mask_manual.any():
+                if manual_stats is not None:
+                    stats_manual = manual_stats.setdefault(
+                        sensor_token, {"rasterizado": 0, "sobrescrito_por_classe": {}}
+                    )
+                    stats_manual["rasterizado"] += int(mask_manual.sum())
+                    label_automatico_valido = label_arr != nodata_label
+                    sobrescrito_mask = mask_manual & label_automatico_valido & (label_arr != raster_classe_manual)
+                    if sobrescrito_mask.any():
+                        cids, contagens = np.unique(raster_classe_manual[sobrescrito_mask], return_counts=True)
+                        for cid, cnt in zip(cids, contagens, strict=True):
+                            slug = classes.ID_TO_SLUG[int(cid)]
+                            stats_manual["sobrescrito_por_classe"][slug] = (
+                                stats_manual["sobrescrito_por_classe"].get(slug, 0) + int(cnt)
+                            )
+                # precedência: manual substitui o automático onde houver polígono.
+                label_arr = np.where(mask_manual, raster_classe_manual, label_arr)
+
     feat_valido = ~np.any(feat_arr == nodata_feat, axis=0)
     label_valido = label_arr != nodata_label
     valido_base = feat_valido & label_valido
@@ -350,11 +541,33 @@ def processar_combo(
         if n_disponivel == 0:
             continue
 
-        n_amostra = min(teto, n_disponivel)
-        if n_amostra < n_disponivel:
-            escolhidos = rng.choice(n_disponivel, size=n_amostra, replace=False)
+        # SV-16 item 2: amostras manuais NUNCA entram no teto — só o pool automático é cortado.
+        manual_disp = mask_manual[linhas_disp, colunas_disp]
+        idx_manual = np.nonzero(manual_disp)[0]
+        idx_automatico_todos = np.nonzero(~manual_disp)[0]
+
+        n_auto_disponivel = idx_automatico_todos.size
+        n_amostra_auto = min(teto, n_auto_disponivel)
+        if n_amostra_auto < n_auto_disponivel:
+            escolhidos_auto = rng.choice(n_auto_disponivel, size=n_amostra_auto, replace=False)
+            idx_automatico_sel = idx_automatico_todos[escolhidos_auto]
         else:
-            escolhidos = np.arange(n_disponivel)
+            idx_automatico_sel = idx_automatico_todos
+
+        escolhidos = (
+            np.concatenate([idx_manual, idx_automatico_sel]) if idx_manual.size else idx_automatico_sel
+        )
+        if escolhidos.size == 0:
+            continue
+        n_amostra = escolhidos.size
+
+        if manual_stats is not None and idx_manual.size:
+            stats_manual = manual_stats.setdefault(
+                sensor_token, {"rasterizado": 0, "sobrescrito_por_classe": {}}
+            )
+            slug = classes.ID_TO_SLUG[class_id]
+            usados = stats_manual.setdefault("usado_por_classe", {})
+            usados[slug] = usados.get(slug, 0) + int(idx_manual.size)
 
         linhas_sel = linhas_disp[escolhidos]
         colunas_sel = colunas_disp[escolhidos]
@@ -364,7 +577,18 @@ def processar_combo(
 
         feats_sel = feat_arr[:, linhas_sel, colunas_sel].T  # (n_amostra, n_features)
         conc_sel = concordancia_arr[linhas_sel, colunas_sel] if concordancia_arr is not None else None
-        peso = np.broadcast_to(peso_label(distancia_safra, conc_sel), (n_amostra,)).astype(np.float64)
+        peso_automatico = np.broadcast_to(peso_label(distancia_safra, conc_sel), (n_amostra,)).astype(np.float64)
+
+        origem_sel = np.where(
+            mask_manual[linhas_sel, colunas_sel], ORIGEM_LABEL_MANUAL, ORIGEM_LABEL_AUTOMATICA
+        )
+        is_manual_sel = origem_sel == ORIGEM_LABEL_MANUAL
+        confianca_baixa_sel = raster_confianca_baixa[linhas_sel, colunas_sel]
+        peso_manual = np.where(confianca_baixa_sel, PESO_LABEL_MANUAL_BAIXA, PESO_LABEL_MANUAL_PADRAO)
+        peso = np.where(is_manual_sel, peso_manual, peso_automatico)
+        confianca_manual_sel = np.where(
+            is_manual_sel, np.where(confianca_baixa_sel, "baixa", "alta_media"), ""
+        )
 
         df_parte = pd.DataFrame(feats_sel, columns=lista_features)
         df_parte["classe_id"] = np.uint8(class_id)
@@ -380,6 +604,9 @@ def processar_combo(
         df_parte["sobreposicao"] = sobreposicao
         df_parte["distancia_safra"] = distancia_safra
         df_parte["peso_label"] = peso
+        # SV-16: fonte do label por linha + confiança (só preenchida p/ origem_label=="manual").
+        df_parte["origem_label"] = origem_sel
+        df_parte["confianca_manual"] = confianca_manual_sel
         # Estrato (SV-27, item 2) — chave de análise, nunca feature (ver _COLUNAS_NAO_FEATURE).
         df_parte["regiao"] = site_meta["regiao"]
         df_parte["bioma"] = site_meta["bioma"]
@@ -421,8 +648,11 @@ def _cobertura_por_estrato(df: pd.DataFrame, coluna: str) -> dict[str, dict[str,
 
 
 def atribuir_split(
-    df: pd.DataFrame, seed: int, holdout_site_ids: frozenset[str] = frozenset()
-) -> tuple[pd.DataFrame, dict[str, int], dict[str, dict[str, dict[str, Any]]]]:
+    df: pd.DataFrame,
+    seed: int,
+    holdout_site_ids: frozenset[str] = frozenset(),
+    mapa_referencia: dict[str, str] | None = None,
+) -> tuple[pd.DataFrame, dict[str, int], dict[str, dict[str, dict[str, Any]]], dict[str, list[str]]]:
     """Sorteia bloco_id inteiros para treino/teste (nunca pixels) — fecha os 3 vetores de
     vazamento descritos na docstring do módulo. Estratificado por site: cada site tem seu
     próprio sorteio 70/30 sobre a lista (ordenada, determinística) de blocos únicos daquele site.
@@ -431,29 +661,40 @@ def atribuir_split(
     treino por completo — não participam do sorteio 70/30, todos os seus blocos vão para 'teste'
     com `holdout_espacial=True`. É ortogonal ao split normal (não muda a regra de bloco_id nem o
     sorteio das demais AOIs) — ver docstring do módulo SV-27 e item 4 do enunciado.
-    """
-    bloco_para_split: dict[str, str] = {}
-    n_treino = 0
-    n_teste = 0
+
+    SV-16 acrescenta `mapa_referencia` (opcional): um `dict[bloco_id, split]` de uma rodada
+    anterior (tipicamente `dataset_v0.2`) a REUTILIZAR byte a byte em vez de resortear. Isto é
+    bloqueante para SV-16 — rotulagem manual pode introduzir pixels em blocos que a amostragem
+    automática nunca tocou, e resortear `train_test_split` sobre a lista de blocos MUDADA
+    mudaria a permutação (e portanto o split) de blocos que já existiam em v0.2, invalidando a
+    comparação v0.2-vs-v1.0. A solução: blocos já presentes em `mapa_referencia` mantêm o split
+    de lá, sem exceção; só blocos genuinamente NOVOS (ausentes da referência) passam por um
+    sorteio 70/30 à parte, que nunca é lido nem influencia o sorteio dos blocos antigos. Quando
+    `mapa_referencia=None` (default, comportamento de v0.1/v0.2), TODO bloco é "novo" e o
+    resultado é idêntico ao algoritmo original (mesma chamada de `train_test_split`)."""
+    bloco_para_split: dict[str, str] = dict(mapa_referencia) if mapa_referencia else {}
+    novos_blocos_por_site: dict[str, list[str]] = {}
 
     for site_id in sorted(df["site_id"].unique()):
         blocos_site = sorted(df.loc[df["site_id"] == site_id, "bloco_id"].unique())
+        blocos_novos = [b for b in blocos_site if b not in bloco_para_split]
+        if not blocos_novos:
+            continue
         if site_id in holdout_site_ids:
             # Reserva de generalização fora-da-amostra (SV-27 item 4): AOI inteira fora do treino.
-            blocos_treino, blocos_teste = [], blocos_site
-        elif len(blocos_site) < 2:
-            # site com um único bloco: não dá pra split — tudo em treino, registrado no manifest.
-            blocos_treino, blocos_teste = blocos_site, []
+            blocos_treino, blocos_teste = [], blocos_novos
+        elif len(blocos_novos) < 2:
+            # site com um único bloco novo: não dá pra split — vai pra treino, registrado no manifest.
+            blocos_treino, blocos_teste = blocos_novos, []
         else:
             blocos_treino, blocos_teste = train_test_split(
-                blocos_site, test_size=TEST_SIZE, random_state=seed
+                blocos_novos, test_size=TEST_SIZE, random_state=seed
             )
-        n_treino += len(blocos_treino)
-        n_teste += len(blocos_teste)
         for b in blocos_treino:
             bloco_para_split[b] = "treino"
         for b in blocos_teste:
             bloco_para_split[b] = "teste"
+        novos_blocos_por_site[site_id] = blocos_novos
 
     df = df.copy()
     df["split"] = df["bloco_id"].map(bloco_para_split)
@@ -462,12 +703,16 @@ def atribuir_split(
     ano_mais_recente = int(df["ano"].max())
     df["holdout_temporal"] = df["ano"] == ano_mais_recente
 
+    blocos_presentes = df["bloco_id"].unique()
+    n_treino = int(sum(1 for b in blocos_presentes if bloco_para_split[b] == "treino"))
+    n_teste = int(len(blocos_presentes) - n_treino)
+
     cobertura = {
         "regiao": _cobertura_por_estrato(df, "regiao"),
         "bioma": _cobertura_por_estrato(df, "bioma"),
     }
 
-    return df, {"treino": n_treino, "teste": n_teste}, cobertura
+    return df, {"treino": n_treino, "teste": n_teste}, cobertura, novos_blocos_por_site
 
 
 # --------------------------------------------------------------------------------------------
@@ -475,10 +720,31 @@ def atribuir_split(
 # --------------------------------------------------------------------------------------------
 
 
+def _carregar_mapa_split_referencia(parquet_path: Path) -> dict[str, str]:
+    """Lê `bloco_id -> split` de um dataset já gerado (ver `atribuir_split`, param
+    `mapa_referencia`) — SV-16 reutiliza isto de `dataset_v0.2.parquet` para garantir o mesmo
+    split byte a byte nos blocos que já existiam antes da rotulagem manual."""
+    if not parquet_path.exists():
+        raise DatasetError(f"--referencia-split: {parquet_path} não existe.")
+    df_ref = pd.read_parquet(parquet_path, columns=["bloco_id", "split"])
+    mapa = dict(zip(df_ref["bloco_id"].astype(str), df_ref["split"].astype(str), strict=True))
+    # sanidade: um bloco não pode ter dois splits diferentes na referência (violaria o próprio
+    # invariante que estamos tentando preservar).
+    conf = df_ref.drop_duplicates()
+    if conf["bloco_id"].duplicated().any():
+        raise DatasetError(
+            f"--referencia-split: {parquet_path} tem bloco_id com split ambíguo (mais de um "
+            "valor) — a referência já estava corrompida, não dá pra reutilizar."
+        )
+    return mapa
+
+
 def montar_dataset(
     seed: int,
     teto: int = TETO_POR_CLASSE_SITE_ANO_SENSOR,
     holdout_tier: int | None = None,
+    usar_labels_manuais: bool = False,
+    referencia_split_path: Path | None = None,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Monta o dataset de modelagem.
 
@@ -488,6 +754,11 @@ def montar_dataset(
     `holdout_tier`: se dado, toda AOI com esse `tier` em config/sites.geojson fica inteiramente
     fora do treino (reserva de generalização fora-da-amostra, SV-27 item 4). None (default,
     comportamento de v0.1) = nenhuma AOI reservada.
+    `usar_labels_manuais` (SV-16): incorpora `data/labels_manual/*.geojson` com precedência sobre
+    o label automático — ver docstring do módulo e `processar_combo`.
+    `referencia_split_path` (SV-16): path de um `dataset_{versao}.parquet` cujo mapeamento
+    bloco_id->split deve ser reutilizado byte a byte (ver `atribuir_split`). None (default) =
+    sorteia do zero, comportamento de v0.1/v0.2.
     """
     combos = _combos_disponiveis()
     if not combos:
@@ -531,15 +802,25 @@ def montar_dataset(
             }
         )
 
+    labels_manuais_por_site_ano: dict[tuple[str, int], gpd.GeoDataFrame] | None = None
+    labels_manuais_meta: list[dict[str, Any]] = []
+    if usar_labels_manuais:
+        gdf_manual = _carregar_labels_manuais()
+        labels_manuais_por_site_ano = _agrupar_labels_manuais_por_site_ano(gdf_manual)
+        labels_manuais_meta = labels_manuais_arquivos_meta()
+
     rng = np.random.default_rng(seed)
     anos_sobreposicao = _anos_sobreposicao()
     erosao_acumulada: dict[str, dict[str, int]] = {}
+    manual_stats: dict[str, dict[str, Any]] = {}
 
     partes: list[pd.DataFrame] = []
     for sensor_token, site_id, ano in combos:
         parte = processar_combo(
             sensor_token, site_id, ano, rng, erosao_acumulada, anos_sobreposicao,
             teto=teto, sites_meta=sites_meta,
+            labels_manuais_por_site_ano=labels_manuais_por_site_ano,
+            manual_stats=manual_stats,
         )
         if not parte.empty:
             partes.append(parte)
@@ -548,7 +829,14 @@ def montar_dataset(
         raise DatasetError("nenhuma linha amostrada em nenhum combo — verifique os rasters de entrada.")
 
     df = pd.concat(partes, ignore_index=True)
-    df, n_blocos, cobertura = atribuir_split(df, seed, holdout_site_ids=holdout_site_ids)
+
+    mapa_referencia: dict[str, str] | None = None
+    if referencia_split_path is not None:
+        mapa_referencia = _carregar_mapa_split_referencia(referencia_split_path)
+
+    df, n_blocos, cobertura, novos_blocos_por_site = atribuir_split(
+        df, seed, holdout_site_ids=holdout_site_ids, mapa_referencia=mapa_referencia
+    )
     df = _otimizar_dtypes(df, lista_features_referencia or [])
 
     assert lista_features_referencia is not None
@@ -563,6 +851,18 @@ def montar_dataset(
         "holdout_site_ids": sorted(holdout_site_ids),
         "holdout_tier": holdout_tier,
         "cobertura_estrato": cobertura,
+        "usar_labels_manuais": usar_labels_manuais,
+        "labels_manuais_arquivos": labels_manuais_meta,
+        "manual_stats": manual_stats,
+        "referencia_split_path": (
+            str(referencia_split_path.relative_to(REPO_ROOT))
+            if referencia_split_path is not None and referencia_split_path.is_relative_to(REPO_ROOT)
+            else (str(referencia_split_path) if referencia_split_path is not None else None)
+        ),
+        "novos_blocos_por_site": (
+            {k: sorted(v) for k, v in novos_blocos_por_site.items()}
+            if referencia_split_path is not None else None
+        ),
     }
     return df, stats
 
@@ -643,6 +943,8 @@ _COLUNAS_NAO_FEATURE = {
     "x", "y", "split", "holdout_temporal", "sobreposicao", "distancia_safra", "peso_label",
     # Estratos de análise (SV-27, item 2) — NUNCA features do modelo, ver docstring do módulo.
     "regiao", "bioma", "uf", "tier", "fase", "holdout_espacial",
+    # SV-16: fonte do label — chave de análise (evaluate.py mede desempenho por origem), nunca feature.
+    "origem_label", "confianca_manual",
 }
 
 
@@ -654,7 +956,10 @@ def _colunas_feature(df: pd.DataFrame) -> list[str]:
 # Otimização de tipos (SV-27, item 5) — o que evita os 6-10 GB de RAM projetados para 25 AOIs.
 # --------------------------------------------------------------------------------------------
 
-_COLUNAS_CATEGORY = ("site_id", "bloco_id", "sensor", "regiao", "bioma", "uf", "fase", "split")
+_COLUNAS_CATEGORY = (
+    "site_id", "bloco_id", "sensor", "regiao", "bioma", "uf", "fase", "split",
+    "origem_label", "confianca_manual",
+)
 _COLUNAS_INT_ESTREITO: dict[str, type] = {
     "ano": np.int16,
     "linha": np.int32,
@@ -848,6 +1153,90 @@ def construir_manifest(df: pd.DataFrame, stats: dict[str, Any], *, versao: str, 
         "git_sha": _git_sha(),
         "gerado_em": datetime.now(UTC).isoformat(),
     }
+
+    if stats.get("usar_labels_manuais"):
+        manual_stats = stats.get("manual_stats", {})
+        n_pixels_manuais_por_sensor = {
+            sensor: s.get("rasterizado", 0) for sensor, s in manual_stats.items()
+        }
+        n_pixels_sobrescritos_por_classe: dict[str, int] = {}
+        for s in manual_stats.values():
+            for slug, n in s.get("sobrescrito_por_classe", {}).items():
+                n_pixels_sobrescritos_por_classe[slug] = n_pixels_sobrescritos_por_classe.get(slug, 0) + n
+        n_pixels_usados_por_classe: dict[str, int] = {}
+        for s in manual_stats.values():
+            for slug, n in s.get("usado_por_classe", {}).items():
+                n_pixels_usados_por_classe[slug] = n_pixels_usados_por_classe.get(slug, 0) + n
+
+        distribuicao_por_origem_label = (
+            {
+                str(v): _distribuicao_classes(df[df["origem_label"] == v])
+                for v in sorted(df["origem_label"].dropna().unique(), key=str)
+            }
+            if "origem_label" in df.columns else {}
+        )
+
+        manifest["labels_manuais"] = {
+            "arquivos": stats.get("labels_manuais_arquivos", []),
+            "n_pixels_rasterizados_por_sensor": n_pixels_manuais_por_sensor,
+            "observacao_rasterizacao": (
+                "'rasterizados' = pixels cobertos pelo polígono manual na grade do combo (10m ou "
+                "30m), ANTES de erosão de borda e do corte de disponibilidade — número bruto de "
+                "rasterio.features.rasterize(all_touched=False). Um polígono de ~0.5ha rasteriza "
+                "em ~50px a 10m e ~5-6px a 30m (área do pixel 9x maior); por isso a era Landsat "
+                "recebe ordens de grandeza menos pixels manuais que a era Sentinel-2, mesmo com o "
+                "mesmo número de polígonos, e isso limita o quanto a rotulagem manual consegue "
+                "ajudar a classe crítica na era Landsat."
+            ),
+            "n_pixels_usados_no_dataset_por_classe": n_pixels_usados_por_classe,
+            "n_pixels_sobrescritos_por_classe": n_pixels_sobrescritos_por_classe,
+            "observacao_sobrescritos": (
+                "'sobrescritos' conta só os pixels onde o label AUTOMÁTICO (MapBiomas) já existia, "
+                "era válido e DIFERIA da classe manual — ou seja, o polígono manual de fato mudou "
+                "o rótulo de algo que já tinha um valor, não um pixel que só passou a ter label "
+                "porque estava fora da máscara automática válida. Contagem por classe = a classe "
+                "NOVA (manual) que o pixel recebeu."
+            ),
+            "politica_precedencia": (
+                "onde há polígono manual (rasterizado na grade do combo), ele SUBSTITUI o label "
+                "automático (MapBiomas) pixel a pixel, antes de erosão/amostragem — a fonte real do "
+                "valor gravado no raster de label continua sendo MapBiomas mesmo em anos com "
+                "verificação cruzada do WorldCover (2021): WorldCover só afeta peso_label via "
+                "crosscheck, nunca o valor da classe. Onde não há polígono manual, o automático "
+                "permanece intocado. Coluna `origem_label` registra a fonte por linha: "
+                f"'{ORIGEM_LABEL_AUTOMATICA}' ou '{ORIGEM_LABEL_MANUAL}'."
+            ),
+            "politica_peso": (
+                f"peso_label de amostra manual = {PESO_LABEL_MANUAL_PADRAO} se confianca in "
+                f"{{'alta','media'}}, {PESO_LABEL_MANUAL_BAIXA} se confianca=='baixa' (documentado "
+                f"em `confianca_manual`). Escolha: {PESO_LABEL_MANUAL_PADRAO}x o peso automático "
+                f"típico (1.0) reconhece que a amostra manual é mais cara de produzir (julgamento "
+                f"humano) e mais confiável na classe crítica (solo exposto/obras) que MapBiomas/"
+                f"WorldCover nunca capturam bem (CLAUDE.md); confianca=='baixa' reduz o peso ao "
+                f"mesmo patamar do peso automático 'cheio' ({PESO_LABEL_MANUAL_BAIXA}) — ainda "
+                f"conta, mas não domina o gradiente como uma amostra manual confiável."
+            ),
+            "politica_teto_amostragem": (
+                "amostras manuais NUNCA são cortadas pelo teto de amostragem "
+                f"({stats.get('teto', TETO_POR_CLASSE_SITE_ANO_SENSOR)} px/classe/AOI/ano/sensor) — "
+                "só o pool automático da mesma classe/combo respeita o teto (ver processar_combo)."
+            ),
+            "distribuicao_classes_por_origem_label": distribuicao_por_origem_label,
+            "referencia_split": {
+                "path": stats.get("referencia_split_path"),
+                "novos_blocos_por_site": stats.get("novos_blocos_por_site"),
+                "observacao": (
+                    "blocos listados em 'novos_blocos_por_site' NÃO existiam no dataset de "
+                    "referência (dataset_v0.2) — só foram criados porque um pixel (manual ou "
+                    "automático) caiu numa área que a amostragem de v0.2 nunca havia tocado. Esses "
+                    "blocos passaram por um sorteio 70/30 à parte, seedado, que NUNCA altera o "
+                    "split dos blocos que já existiam em v0.2 (ver atribuir_split, param "
+                    "mapa_referencia) — é o que garante o critério de aceite bloqueante de SV-16: "
+                    "'split idêntico em 100% dos blocos comuns entre v0.2 e v1.0'."
+                ),
+            },
+        }
+
     return manifest
 
 
@@ -884,12 +1273,34 @@ def main(argv: list[str] | None = None) -> int:
         help="tier (1|2) cujas AOIs ficam inteiramente fora do treino (reserva de generalização "
              "fora-da-amostra, SV-27 item 4). Default: nenhuma reserva.",
     )
+    parser.add_argument(
+        "--usar-labels-manuais", action="store_true",
+        help="incorpora data/labels_manual/*.geojson (SV-10/SV-16), com precedência sobre o "
+             "label automático. Default: desligado (comportamento de v0.1/v0.2, inalterado).",
+    )
+    parser.add_argument(
+        "--referencia-split", default=None,
+        help="path (relativo ao repo ou absoluto) de um dataset_{versao}.parquet cujo mapeamento "
+             "bloco_id->split deve ser reutilizado byte a byte, em vez de resortear (SV-16, "
+             "bloqueante para comparar contra uma rodada anterior — ver atribuir_split). "
+             "Ex.: data/processed/dataset_v0.2.parquet. Default: None (sorteia do zero).",
+    )
     args = parser.parse_args(argv)
 
     seed = args.seed if args.seed is not None else SETTINGS.seed
+    referencia_split_path = None
+    if args.referencia_split:
+        p = Path(args.referencia_split)
+        referencia_split_path = p if p.is_absolute() else REPO_ROOT / p
 
-    print(f"Montando dataset {args.versao} (seed={seed}, teto={args.teto}, holdout_tier={args.holdout_tier})...")
-    df, stats = montar_dataset(seed, teto=args.teto, holdout_tier=args.holdout_tier)
+    print(
+        f"Montando dataset {args.versao} (seed={seed}, teto={args.teto}, holdout_tier={args.holdout_tier}, "
+        f"usar_labels_manuais={args.usar_labels_manuais}, referencia_split={referencia_split_path})..."
+    )
+    df, stats = montar_dataset(
+        seed, teto=args.teto, holdout_tier=args.holdout_tier,
+        usar_labels_manuais=args.usar_labels_manuais, referencia_split_path=referencia_split_path,
+    )
     print(f"OK — {len(df)} linhas amostradas, {len(stats['combos'])} combos (sensor, site, ano).")
 
     parquet_path = salvar_dataset(df, args.versao)
@@ -912,6 +1323,16 @@ def main(argv: list[str] | None = None) -> int:
         print("ATENÇÃO — regiões sem os dois splits:", manifest["regioes_sem_ambos_splits"])
     if manifest["biomas_sem_ambos_splits"]:
         print("ATENÇÃO — biomas sem os dois splits:", manifest["biomas_sem_ambos_splits"])
+    if "labels_manuais" in manifest:
+        lm = manifest["labels_manuais"]
+        print()
+        print(f"Labels manuais — rasterizados por sensor: {lm['n_pixels_rasterizados_por_sensor']}")
+        print(f"Labels manuais — usados no dataset por classe: {lm['n_pixels_usados_no_dataset_por_classe']}")
+        print(f"Labels manuais — sobrescreveram automático, por classe: {lm['n_pixels_sobrescritos_por_classe']}")
+        if lm["referencia_split"]["novos_blocos_por_site"]:
+            n_novos = sum(len(v) for v in lm["referencia_split"]["novos_blocos_por_site"].values())
+            print(f"ATENÇÃO — {n_novos} bloco(s) novo(s) (fora da referência), sorteados à parte: "
+                  f"{lm['referencia_split']['novos_blocos_por_site']}")
 
     return 0
 

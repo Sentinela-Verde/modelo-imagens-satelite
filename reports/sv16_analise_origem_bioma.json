@@ -1,0 +1,123 @@
+{
+  "n_teste": 1693912,
+  "por_origem_label": [
+    {
+      "origem_label": "manual",
+      "n": 10678,
+      "accuracy": 0.5266903914590747,
+      "macro_f1": 0.5666191225969307,
+      "f1_classe3": 0.6569930724583412,
+      "precision_classe3": 0.575151614489428,
+      "recall_classe3": 0.7659899585243397
+    },
+    {
+      "origem_label": "mapbiomas",
+      "n": 1683234,
+      "accuracy": 0.7906066536203522,
+      "macro_f1": 0.7761657572501975,
+      "f1_classe3": 0.5744904415743559,
+      "precision_classe3": 0.5952888124128519,
+      "recall_classe3": 0.5550963272803727
+    }
+  ],
+  "por_bioma": [
+    {
+      "bioma": "Amazônia",
+      "n": 60367,
+      "n_manual_no_teste": 1176,
+      "accuracy": 0.7635463084135372,
+      "macro_f1": 0.6873750687607993,
+      "f1_classe3": 0.27842388474223223,
+      "precision_classe3": 0.28012574222843173,
+      "recall_classe3": 0.27674258109040717
+    },
+    {
+      "bioma": "Caatinga",
+      "n": 163326,
+      "n_manual_no_teste": 1569,
+      "accuracy": 0.7834025201131479,
+      "macro_f1": 0.7940337107432687,
+      "f1_classe3": 0.7761103112194041,
+      "precision_classe3": 0.7590857390456589,
+      "recall_classe3": 0.7939160482637512
+    },
+    {
+      "bioma": "Cerrado",
+      "n": 56540,
+      "n_manual_no_teste": 2527,
+      "accuracy": 0.7664308454191723,
+      "macro_f1": 0.6958314316058363,
+      "f1_classe3": 0.49161213563355144,
+      "precision_classe3": 0.4046220133176655,
+      "recall_classe3": 0.6262503789026977
+    },
+    {
+      "bioma": "Mata Atlântica",
+      "n": 1413679,
+      "n_manual_no_teste": 5406,
+      "accuracy": 0.7915679584969431,
+      "macro_f1": 0.7760197759457614,
+      "f1_classe3": 0.5615794725403894,
+      "precision_classe3": 0.5867115597419773,
+      "recall_classe3": 0.5385120363661137
+    }
+  ],
+  "por_bioma_e_origem_label": [
+    {
+      "bioma": "Amazônia",
+      "origem_label": "manual",
+      "n": 1176,
+      "macro_f1": 0.4152012842618011,
+      "f1_classe3": 0.5607476635514018
+    },
+    {
+      "bioma": "Amazônia",
+      "origem_label": "mapbiomas",
+      "n": 59191,
+      "macro_f1": 0.6758270553335765,
+      "f1_classe3": 0.2140268599445747
+    },
+    {
+      "bioma": "Caatinga",
+      "origem_label": "manual",
+      "n": 1569,
+      "macro_f1": 0.6572061584550021,
+      "f1_classe3": 0.8320987654320988
+    },
+    {
+      "bioma": "Caatinga",
+      "origem_label": "mapbiomas",
+      "n": 161757,
+      "macro_f1": 0.7945172682947053,
+      "f1_classe3": 0.7748258086444231
+    },
+    {
+      "bioma": "Cerrado",
+      "origem_label": "manual",
+      "n": 2527,
+      "macro_f1": 0.4078517871956711,
+      "f1_classe3": 0.8058035714285714
+    },
+    {
+      "bioma": "Cerrado",
+      "origem_label": "mapbiomas",
+      "n": 54013,
+      "macro_f1": 0.6529498955809698,
+      "f1_classe3": 0.2580377515038374
+    },
+    {
+      "bioma": "Mata Atlântica",
+      "origem_label": "manual",
+      "n": 5406,
+      "macro_f1": 0.5158353525950103,
+      "f1_classe3": 0.5473361441165198
+    },
+    {
+      "bioma": "Mata Atlântica",
+      "origem_label": "mapbiomas",
+      "n": 1408273,
+      "macro_f1": 0.7768916533909762,
+      "f1_classe3": 0.5618235864085004
+    }
+  ]
+}

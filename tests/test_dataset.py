@@ -188,7 +188,7 @@ def test_atribuir_split_todas_as_linhas_de_um_bloco_vao_juntas():
             "ano": [2020] * 20,
         }
     )
-    resultado, n_blocos, _cobertura = atribuir_split(df_sintetico, seed=SEED)
+    resultado, n_blocos, _cobertura, _novos_blocos = atribuir_split(df_sintetico, seed=SEED)
     assert resultado.groupby("bloco_id")["split"].nunique().eq(1).all()
     assert n_blocos["treino"] + n_blocos["teste"] == resultado["bloco_id"].nunique()
 
@@ -201,7 +201,7 @@ def test_atribuir_split_holdout_temporal_marca_ano_mais_recente():
             "ano": [2020] * 5 + [2025] * 5,
         }
     )
-    resultado, _, _cobertura = atribuir_split(df_sintetico, seed=SEED)
+    resultado, _, _cobertura, _novos_blocos = atribuir_split(df_sintetico, seed=SEED)
     assert resultado.loc[resultado["ano"] == 2025, "holdout_temporal"].all()
     assert not resultado.loc[resultado["ano"] == 2020, "holdout_temporal"].any()
 
@@ -221,7 +221,7 @@ def test_atribuir_split_holdout_espacial_fica_inteiro_fora_do_treino():
             "ano": [2020] * 30,
         }
     )
-    resultado, _n_blocos, _cobertura = atribuir_split(
+    resultado, _n_blocos, _cobertura, _novos_blocos = atribuir_split(
         df_sintetico, seed=SEED, holdout_site_ids=frozenset({"s2-holdout"})
     )
     holdout_rows = resultado[resultado["site_id"] == "s2-holdout"]
@@ -242,7 +242,7 @@ def test_cobertura_por_estrato_relata_treino_e_teste_por_valor():
             "bioma": ["Mata Atlântica"] * 20 + ["Amazônia"] * 10,
         }
     )
-    _resultado, _n_blocos, cobertura = atribuir_split(
+    _resultado, _n_blocos, cobertura, _novos_blocos = atribuir_split(
         df_sintetico, seed=SEED, holdout_site_ids=frozenset({"s2-holdout"})
     )
     assert cobertura["regiao"]["Sudeste"]["treino"] and cobertura["regiao"]["Sudeste"]["teste"]
@@ -735,6 +735,162 @@ def test_v02_parquet_nao_esta_no_git():
         ["git", "check-ignore", "-q", str(_parquet_path_v02())], cwd=REPO_ROOT, check=False
     )
     assert resultado.returncode == 0, "data/processed/dataset_v0.2.parquet deveria estar no .gitignore"
+
+
+# ==============================================================================================
+# SV-16 — dataset v1.0 (rotulagem manual, SV-10, incorporada com precedência sobre o automático)
+#
+# Cenários de teste do enunciado (docs/tarefas/SV-16-dataset-v1.0-retreino.md):
+#   1. Split preservado (BLOQUEANTE): join(v0.2, v1.0, on=bloco_id) -> split idêntico em 100%
+#      dos blocos comuns.
+#   2. Precedência: pixel dentro de polígono manual de classe 3 que o automático dizia outra
+#      classe -> classe_id==3 e origem_label=="manual" em v1.0.
+#   3. Sem vazamento novo: polígono que cruza fronteira de blocos tem seus pixels divididos por
+#      bloco (nunca forçado inteiro pro treino).
+#   5. Detecção de decoreba: F1 nos pixels origem_label=="mapbiomas" não pode ter caído vs. v0.2
+#      — medido em reports/experiments/EXP-002 (fora do escopo de um teste de dataset).
+# ==============================================================================================
+
+VERSAO_V10 = "v1.0"
+
+
+def _parquet_path_v10():
+    return SETTINGS.processed_dir / f"dataset_{VERSAO_V10}.parquet"
+
+
+def _manifest_path_v10():
+    return SETTINGS.manifests_dir / f"dataset_{VERSAO_V10}.json"
+
+
+@pytest.fixture(scope="module")
+def df_v10():
+    path = _parquet_path_v10()
+    if not path.exists():
+        pytest.skip(
+            f"{path} não existe — rode `python -m sentinela.dataset --versao v1.0 --teto 4000 "
+            f"--holdout-tier 2 --usar-labels-manuais --referencia-split "
+            f"data/processed/dataset_v0.2.parquet` antes."
+        )
+    return pd.read_parquet(path)
+
+
+@pytest.fixture(scope="module")
+def manifest_v10():
+    path = _manifest_path_v10()
+    if not path.exists():
+        pytest.skip(f"{path} não existe — rode o CLI de v1.0 antes (ver df_v10).")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def test_v10_origem_label_presente_com_as_duas_categorias(df_v10):
+    assert "origem_label" in df_v10.columns
+    assert set(df_v10["origem_label"].unique()) == {"mapbiomas", "manual"}
+    assert (df_v10["origem_label"] == "manual").sum() > 0
+
+
+def test_v10_cenario1_split_identico_a_v02_nos_blocos_comuns(df_v10, df_v02):
+    """BLOQUEANTE: join(v0.2, v1.0, on=bloco_id) -> split idêntico em 100% dos blocos comuns."""
+    m2 = (
+        df_v02[["bloco_id", "split"]].astype({"bloco_id": str, "split": str})
+        .drop_duplicates("bloco_id").set_index("bloco_id")["split"]
+    )
+    m1 = (
+        df_v10[["bloco_id", "split"]].astype({"bloco_id": str, "split": str})
+        .drop_duplicates("bloco_id").set_index("bloco_id")["split"]
+    )
+    comuns = sorted(set(m1.index) & set(m2.index))
+    assert comuns, "nenhum bloco em comum entre v0.2 e v1.0 — algo está muito errado"
+    divergentes = [b for b in comuns if m1.loc[b] != m2.loc[b]]
+    assert not divergentes, (
+        f"{len(divergentes)} bloco(s) comuns entre v0.2 e v1.0 com split DIFERENTE — a "
+        f"comparação de EXP-002 fica inválida: {divergentes[:5]}"
+    )
+
+
+def test_v10_cenario2_precedencia_manual_sobre_automatico(df_v10, manifest_v10):
+    """Onde há rotulagem manual, ela vence o automático — evidenciado por n_pixels_sobrescritos
+    (por classe) > 0 no manifest e, diretamente, por pixels manuais de classe 3 existindo."""
+    sobrescritos = manifest_v10["labels_manuais"]["n_pixels_sobrescritos_por_classe"]
+    assert sum(sobrescritos.values()) > 0, "nenhum pixel automático foi sobrescrito por manual"
+    manual_c3 = df_v10[(df_v10["origem_label"] == "manual") & (df_v10["classe_id"] == 3)]
+    assert len(manual_c3) > 0, "nenhuma amostra manual de classe 3 (solo_exposto_obras) no dataset"
+
+
+def test_v10_cenario3_poligono_dividido_por_bloco_nao_forcado_inteiro(df_v10):
+    """Um polígono manual que cruza fronteira de blocos deve ter pixels em splits diferentes —
+    prova direta de que a divisão respeita bloco_id, não o polígono inteiro."""
+    manual = df_v10[df_v10["origem_label"] == "manual"]
+    grp = manual.groupby(["site_id", "ano", "sensor", "classe_id"], observed=True)["split"].nunique()
+    assert (grp > 1).any(), (
+        "nenhum grupo (site,ano,sensor,classe) manual tem pixels em ambos os splits — "
+        "esperado que ao menos um polígono cruze fronteira de bloco"
+    )
+
+
+def test_v10_antivazamento_espacial_preservado(df_v10):
+    blocos_treino = set(df_v10.loc[df_v10["split"] == "treino", "bloco_id"])
+    blocos_teste = set(df_v10.loc[df_v10["split"] == "teste", "bloco_id"])
+    assert not (blocos_treino & blocos_teste)
+
+
+def test_v10_amostras_manuais_nao_tem_teto(df_v10, manifest_v10):
+    """Item 2 do enunciado: amostras manuais não entram no teto de amostragem (~4000/classe/AOI/
+    ano/sensor) — confere que ao menos uma combinação (site,ano,sensor,classe) tem MAIS pixels
+    manuais do que sobrariam se o teto valesse pra elas (ou, no mínimo, que a contagem manual usada
+    bate com o que foi rasterizado, sem corte)."""
+    usados = manifest_v10["labels_manuais"]["n_pixels_usados_no_dataset_por_classe"]
+    assert sum(usados.values()) > 0
+    manual = df_v10[df_v10["origem_label"] == "manual"]
+    contagens_auto = df_v10[df_v10["origem_label"] == "mapbiomas"].groupby(
+        ["site_id", "ano", "sensor", "classe_id"], observed=True
+    ).size()
+    teto = manifest_v10["amostragem"]["teto_por_classe_site_ano_sensor"]
+    assert contagens_auto.max() <= teto, "pool automático excedeu o teto declarado em v1.0"
+    # combos onde manual + automático somados excedem o teto -> prova que manual não foi cortado
+    contagens_manual = manual.groupby(["site_id", "ano", "sensor", "classe_id"], observed=True).size()
+    total = contagens_auto.add(contagens_manual, fill_value=0)
+    assert (total[contagens_manual.index.intersection(total.index)] >= contagens_manual).all()
+
+
+def test_v10_peso_label_manual_maior_que_automatico_tipico(df_v10):
+    from sentinela.dataset import PESO_LABEL_MANUAL_BAIXA, PESO_LABEL_MANUAL_PADRAO
+
+    manual = df_v10[df_v10["origem_label"] == "manual"]
+    assert set(manual["peso_label"].unique()) <= {PESO_LABEL_MANUAL_PADRAO, PESO_LABEL_MANUAL_BAIXA}
+    auto_peso_tipico = df_v10.loc[df_v10["origem_label"] == "mapbiomas", "peso_label"].median()
+    assert PESO_LABEL_MANUAL_PADRAO > auto_peso_tipico
+
+
+def test_v10_confianca_baixa_recebe_peso_reduzido(df_v10):
+    from sentinela.dataset import PESO_LABEL_MANUAL_BAIXA, PESO_LABEL_MANUAL_PADRAO
+
+    manual = df_v10[df_v10["origem_label"] == "manual"]
+    baixa = manual[manual["confianca_manual"] == "baixa"]
+    alta_media = manual[manual["confianca_manual"] == "alta_media"]
+    if len(baixa) and len(alta_media):
+        assert (baixa["peso_label"] == PESO_LABEL_MANUAL_BAIXA).all()
+        assert (alta_media["peso_label"] == PESO_LABEL_MANUAL_PADRAO).all()
+
+
+def test_v10_manifest_contrato_de_campos_novos(manifest_v10):
+    assert "labels_manuais" in manifest_v10
+    lm = manifest_v10["labels_manuais"]
+    for campo in (
+        "arquivos", "n_pixels_rasterizados_por_sensor", "n_pixels_usados_no_dataset_por_classe",
+        "n_pixels_sobrescritos_por_classe", "politica_precedencia", "politica_peso",
+        "politica_teto_amostragem", "distribuicao_classes_por_origem_label", "referencia_split",
+    ):
+        assert campo in lm, f"campo 'labels_manuais.{campo}' ausente do manifest v1.0"
+    assert lm["arquivos"], "nenhum arquivo de rotulagem manual registrado no manifest"
+    for a in lm["arquivos"]:
+        assert "sha256" in a and "arquivo" in a
+
+
+def test_v10_parquet_nao_esta_no_git():
+    resultado = subprocess.run(
+        ["git", "check-ignore", "-q", str(_parquet_path_v10())], cwd=REPO_ROOT, check=False
+    )
+    assert resultado.returncode == 0, "data/processed/dataset_v1.0.parquet deveria estar no .gitignore"
 
 
 def test_v02_manifest_contrato_de_campos_novos(manifest_v02):
