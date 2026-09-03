@@ -1,0 +1,69 @@
+{
+  "site_id": "odata-hortolandia",
+  "ano": 2021,
+  "sensor": "s2",
+  "modelo_versao": "rf_v1.0-tuned",
+  "modelo_path": "models\\rf_v1.0-tuned.joblib",
+  "modelo_sha256": "2d38d312706cc7b4dc3525709c06a439074825bd258f252b6b9bf817819d2d86",
+  "dataset_versao": "v1.0",
+  "lista_features": [
+    "blue",
+    "green",
+    "red",
+    "nir",
+    "swir1",
+    "swir2",
+    "ndvi",
+    "evi",
+    "ndwi",
+    "mndwi",
+    "ndbi",
+    "bsi",
+    "ndmi",
+    "sensor_landsat"
+  ],
+  "git_sha": "4cdebd3ee0df2b982690157a1305e662c163d9f8",
+  "gerado_em": "2026-09-03T03:54:21.993736+00:00",
+  "classes": {
+    "0": "nodata",
+    "1": "vegetacao_densa",
+    "2": "vegetacao_rala",
+    "3": "solo_exposto_obras",
+    "4": "construida_urbana",
+    "5": "agua"
+  },
+  "crs": "EPSG:31983",
+  "transform": [
+    10.0,
+    0.0,
+    269820.0,
+    0.0,
+    -10.0,
+    7470930.0
+  ],
+  "shape": {
+    "width": 1002,
+    "height": 1002
+  },
+  "n_pixels_total": 1004004,
+  "n_pixels_validos": 1004004,
+  "n_pixels_nodata": 0,
+  "pct_pixels_validos": 100.0,
+  "distribuicao_classes": {
+    "vegetacao_densa": 59042,
+    "vegetacao_rala": 393531,
+    "solo_exposto_obras": 201063,
+    "construida_urbana": 343456,
+    "agua": 6912
+  },
+  "confianca": {
+    "media": 66.95,
+    "minima": 21,
+    "maxima": 100
+  },
+  "sha256": "00f5914e304e5d31a7bfd82363439749bfbb8407e6f39ccebc75ddb20193b59a",
+  "sha256_nota": "hash dos bytes do array uint8 de classes preditas, NAO do arquivo .tif inteiro (ver docstring do módulo) — é o que garante o critério de determinismo.",
+  "sha256_confianca": "e1e1ea339a12066433874ec4249952367e7c8547c0a46cc9de8a788f7b0c6bce",
+  "tif": "data\\processed\\classificado\\s2\\odata-hortolandia\\2021.tif",
+  "tif_confianca": "data\\processed\\classificado\\s2\\odata-hortolandia\\2021_confianca.tif"
+}

@@ -1,0 +1,69 @@
+{
+  "site_id": "scala-tambore",
+  "ano": 2019,
+  "sensor": "s2",
+  "modelo_versao": "rf_v1.0-tuned",
+  "modelo_path": "models\\rf_v1.0-tuned.joblib",
+  "modelo_sha256": "2d38d312706cc7b4dc3525709c06a439074825bd258f252b6b9bf817819d2d86",
+  "dataset_versao": "v1.0",
+  "lista_features": [
+    "blue",
+    "green",
+    "red",
+    "nir",
+    "swir1",
+    "swir2",
+    "ndvi",
+    "evi",
+    "ndwi",
+    "mndwi",
+    "ndbi",
+    "bsi",
+    "ndmi",
+    "sensor_landsat"
+  ],
+  "git_sha": "4cdebd3ee0df2b982690157a1305e662c163d9f8",
+  "gerado_em": "2026-09-03T04:18:09.288389+00:00",
+  "classes": {
+    "0": "nodata",
+    "1": "vegetacao_densa",
+    "2": "vegetacao_rala",
+    "3": "solo_exposto_obras",
+    "4": "construida_urbana",
+    "5": "agua"
+  },
+  "crs": "EPSG:31983",
+  "transform": [
+    10.0,
+    0.0,
+    309840.0,
+    0.0,
+    -10.0,
+    7405560.0
+  ],
+  "shape": {
+    "width": 1002,
+    "height": 1005
+  },
+  "n_pixels_total": 1007010,
+  "n_pixels_validos": 1007010,
+  "n_pixels_nodata": 0,
+  "pct_pixels_validos": 100.0,
+  "distribuicao_classes": {
+    "vegetacao_densa": 256450,
+    "vegetacao_rala": 129203,
+    "solo_exposto_obras": 151783,
+    "construida_urbana": 442579,
+    "agua": 26995
+  },
+  "confianca": {
+    "media": 71.99,
+    "minima": 21,
+    "maxima": 100
+  },
+  "sha256": "f73ca91409d2de801a0bd7a0a57204b55ec214afadff3be6d8cbbf3501ec12ef",
+  "sha256_nota": "hash dos bytes do array uint8 de classes preditas, NAO do arquivo .tif inteiro (ver docstring do módulo) — é o que garante o critério de determinismo.",
+  "sha256_confianca": "380afd14ca4f085a1532085c5f9b7484880fe7f04c2f87873ccb62957ace4660",
+  "tif": "data\\processed\\classificado\\s2\\scala-tambore\\2019.tif",
+  "tif_confianca": "data\\processed\\classificado\\s2\\scala-tambore\\2019_confianca.tif"
+}

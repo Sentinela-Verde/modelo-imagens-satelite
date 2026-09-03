@@ -1,0 +1,1542 @@
+{
+  "atualizado_em": "2026-09-03T04:22:21.716552+00:00",
+  "iniciado_em": "2026-09-02T20:24:02.192147+00:00",
+  "itens": {
+    "landsat|angonap-fortaleza|2013": {
+      "atualizado_em": "2026-09-03T03:18:01.485244+00:00",
+      "duracao_s": 2.2,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|angonap-fortaleza|2014": {
+      "atualizado_em": "2026-09-03T03:18:03.582663+00:00",
+      "duracao_s": 2.1,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|angonap-fortaleza|2015": {
+      "atualizado_em": "2026-09-03T03:18:05.626116+00:00",
+      "duracao_s": 2.04,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|angonap-fortaleza|2016": {
+      "atualizado_em": "2026-09-03T03:18:07.701853+00:00",
+      "duracao_s": 2.08,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|angonap-fortaleza|2017": {
+      "atualizado_em": "2026-09-03T03:18:09.851727+00:00",
+      "duracao_s": 2.15,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|angonap-fortaleza|2018": {
+      "atualizado_em": "2026-09-03T03:18:11.978981+00:00",
+      "duracao_s": 2.13,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|angonap-fortaleza|2019": {
+      "atualizado_em": "2026-09-03T03:18:14.237023+00:00",
+      "duracao_s": 2.26,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|angonap-fortaleza|2020": {
+      "atualizado_em": "2026-09-03T03:18:16.399688+00:00",
+      "duracao_s": 2.16,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|angonap-fortaleza|2021": {
+      "atualizado_em": "2026-09-03T03:18:18.517456+00:00",
+      "duracao_s": 2.12,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-hortolandia|2013": {
+      "atualizado_em": "2026-09-03T03:20:08.784139+00:00",
+      "duracao_s": 2.96,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-hortolandia|2014": {
+      "atualizado_em": "2026-09-03T03:20:11.621224+00:00",
+      "duracao_s": 2.84,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-hortolandia|2015": {
+      "atualizado_em": "2026-09-03T03:20:14.560564+00:00",
+      "duracao_s": 2.94,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-hortolandia|2016": {
+      "atualizado_em": "2026-09-03T03:20:17.428773+00:00",
+      "duracao_s": 2.87,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-hortolandia|2017": {
+      "atualizado_em": "2026-09-03T03:20:20.290742+00:00",
+      "duracao_s": 2.86,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-hortolandia|2018": {
+      "atualizado_em": "2026-09-03T03:20:23.033705+00:00",
+      "duracao_s": 2.74,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-hortolandia|2019": {
+      "atualizado_em": "2026-09-03T03:20:25.988251+00:00",
+      "duracao_s": 2.95,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-hortolandia|2020": {
+      "atualizado_em": "2026-09-03T03:20:28.798642+00:00",
+      "duracao_s": 2.81,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-hortolandia|2021": {
+      "atualizado_em": "2026-09-03T03:20:31.519188+00:00",
+      "duracao_s": 2.72,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-jundiai|2013": {
+      "atualizado_em": "2026-09-02T21:13:30.320144+00:00",
+      "duracao_s": 3.27,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-jundiai|2014": {
+      "atualizado_em": "2026-09-02T21:13:33.598138+00:00",
+      "duracao_s": 3.28,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-jundiai|2015": {
+      "atualizado_em": "2026-09-02T21:13:36.955813+00:00",
+      "duracao_s": 3.36,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-jundiai|2016": {
+      "atualizado_em": "2026-09-02T21:13:40.202274+00:00",
+      "duracao_s": 3.25,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-jundiai|2017": {
+      "atualizado_em": "2026-09-02T21:13:43.508128+00:00",
+      "duracao_s": 3.31,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-jundiai|2018": {
+      "atualizado_em": "2026-09-02T21:13:46.843222+00:00",
+      "duracao_s": 3.34,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-jundiai|2019": {
+      "atualizado_em": "2026-09-02T21:13:50.128821+00:00",
+      "duracao_s": 3.29,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-jundiai|2020": {
+      "atualizado_em": "2026-09-02T21:13:53.560151+00:00",
+      "duracao_s": 3.43,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-jundiai|2021": {
+      "atualizado_em": "2026-09-02T21:13:56.636561+00:00",
+      "duracao_s": 3.08,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-maracanau|2013": {
+      "atualizado_em": "2026-09-03T03:23:30.022388+00:00",
+      "duracao_s": 2.68,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-maracanau|2014": {
+      "atualizado_em": "2026-09-03T03:23:32.652785+00:00",
+      "duracao_s": 2.63,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-maracanau|2015": {
+      "atualizado_em": "2026-09-03T03:23:35.354526+00:00",
+      "duracao_s": 2.7,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-maracanau|2016": {
+      "atualizado_em": "2026-09-03T03:23:38.013391+00:00",
+      "duracao_s": 2.66,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-maracanau|2017": {
+      "atualizado_em": "2026-09-03T03:23:40.615722+00:00",
+      "duracao_s": 2.6,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-maracanau|2018": {
+      "atualizado_em": "2026-09-03T03:23:43.238329+00:00",
+      "duracao_s": 2.62,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-maracanau|2019": {
+      "atualizado_em": "2026-09-03T03:23:46.102393+00:00",
+      "duracao_s": 2.86,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-maracanau|2020": {
+      "atualizado_em": "2026-09-03T03:23:48.840476+00:00",
+      "duracao_s": 2.74,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-maracanau|2021": {
+      "atualizado_em": "2026-09-03T03:23:51.541794+00:00",
+      "duracao_s": 2.7,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-osasco|2013": {
+      "atualizado_em": "2026-09-03T03:26:09.933603+00:00",
+      "duracao_s": 2.35,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-osasco|2014": {
+      "atualizado_em": "2026-09-03T03:26:12.258875+00:00",
+      "duracao_s": 2.33,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-osasco|2015": {
+      "atualizado_em": "2026-09-03T03:26:14.616192+00:00",
+      "duracao_s": 2.35,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-osasco|2016": {
+      "atualizado_em": "2026-09-03T03:26:16.937380+00:00",
+      "duracao_s": 2.32,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-osasco|2017": {
+      "atualizado_em": "2026-09-03T03:26:19.308103+00:00",
+      "duracao_s": 2.37,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-osasco|2018": {
+      "atualizado_em": "2026-09-03T03:26:21.765047+00:00",
+      "duracao_s": 2.46,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-osasco|2019": {
+      "atualizado_em": "2026-09-03T03:26:24.192878+00:00",
+      "duracao_s": 2.43,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-osasco|2020": {
+      "atualizado_em": "2026-09-03T03:26:26.548305+00:00",
+      "duracao_s": 2.36,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-osasco|2021": {
+      "atualizado_em": "2026-09-03T03:26:28.954861+00:00",
+      "duracao_s": 2.41,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-paulinia|2013": {
+      "atualizado_em": "2026-09-02T21:17:12.717226+00:00",
+      "duracao_s": 3.41,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-paulinia|2014": {
+      "atualizado_em": "2026-09-02T21:17:16.041882+00:00",
+      "duracao_s": 3.32,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-paulinia|2015": {
+      "atualizado_em": "2026-09-02T21:17:19.350419+00:00",
+      "duracao_s": 3.31,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-paulinia|2016": {
+      "atualizado_em": "2026-09-02T21:17:22.658207+00:00",
+      "duracao_s": 3.31,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-paulinia|2017": {
+      "atualizado_em": "2026-09-02T21:17:25.984782+00:00",
+      "duracao_s": 3.33,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-paulinia|2018": {
+      "atualizado_em": "2026-09-02T21:17:29.145604+00:00",
+      "duracao_s": 3.16,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-paulinia|2019": {
+      "atualizado_em": "2026-09-02T21:17:32.489000+00:00",
+      "duracao_s": 3.34,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-paulinia|2020": {
+      "atualizado_em": "2026-09-02T21:17:35.682481+00:00",
+      "duracao_s": 3.19,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-paulinia|2021": {
+      "atualizado_em": "2026-09-02T21:17:38.780389+00:00",
+      "duracao_s": 3.1,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-sumare|2013": {
+      "atualizado_em": "2026-09-03T03:29:20.850832+00:00",
+      "duracao_s": 2.99,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-sumare|2014": {
+      "atualizado_em": "2026-09-03T03:29:23.707499+00:00",
+      "duracao_s": 2.86,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-sumare|2015": {
+      "atualizado_em": "2026-09-03T03:29:26.540980+00:00",
+      "duracao_s": 2.83,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-sumare|2016": {
+      "atualizado_em": "2026-09-03T03:29:29.362498+00:00",
+      "duracao_s": 2.82,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-sumare|2017": {
+      "atualizado_em": "2026-09-03T03:29:32.207611+00:00",
+      "duracao_s": 2.85,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-sumare|2018": {
+      "atualizado_em": "2026-09-03T03:29:34.926291+00:00",
+      "duracao_s": 2.72,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-sumare|2019": {
+      "atualizado_em": "2026-09-03T03:29:37.844043+00:00",
+      "duracao_s": 2.92,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-sumare|2020": {
+      "atualizado_em": "2026-09-03T03:29:40.628002+00:00",
+      "duracao_s": 2.78,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-sumare|2021": {
+      "atualizado_em": "2026-09-03T03:29:43.247234+00:00",
+      "duracao_s": 2.62,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-vinhedo|2013": {
+      "atualizado_em": "2026-09-03T03:32:48.755183+00:00",
+      "duracao_s": 4.11,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-vinhedo|2014": {
+      "atualizado_em": "2026-09-03T03:32:54.354185+00:00",
+      "duracao_s": 5.6,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-vinhedo|2015": {
+      "atualizado_em": "2026-09-03T03:33:00.814044+00:00",
+      "duracao_s": 6.46,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-vinhedo|2016": {
+      "atualizado_em": "2026-09-03T03:33:07.140855+00:00",
+      "duracao_s": 6.33,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-vinhedo|2017": {
+      "atualizado_em": "2026-09-03T03:33:13.400609+00:00",
+      "duracao_s": 6.26,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-vinhedo|2018": {
+      "atualizado_em": "2026-09-03T03:33:19.377342+00:00",
+      "duracao_s": 5.98,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-vinhedo|2019": {
+      "atualizado_em": "2026-09-03T03:33:25.972129+00:00",
+      "duracao_s": 6.59,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-vinhedo|2020": {
+      "atualizado_em": "2026-09-03T03:33:32.126893+00:00",
+      "duracao_s": 6.15,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|ascenty-vinhedo|2021": {
+      "atualizado_em": "2026-09-03T03:33:38.256550+00:00",
+      "duracao_s": 6.13,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|clickip-manaus|2013": {
+      "atualizado_em": "2026-09-03T03:39:21.727790+00:00",
+      "duracao_s": 2.5,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|clickip-manaus|2014": {
+      "atualizado_em": "2026-09-03T03:39:24.164834+00:00",
+      "duracao_s": 2.44,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|clickip-manaus|2015": {
+      "atualizado_em": "2026-09-03T03:39:26.305493+00:00",
+      "duracao_s": 2.14,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|clickip-manaus|2016": {
+      "atualizado_em": "2026-09-03T03:39:28.664894+00:00",
+      "duracao_s": 2.36,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|clickip-manaus|2017": {
+      "atualizado_em": "2026-09-03T03:39:31.173804+00:00",
+      "duracao_s": 2.51,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|clickip-manaus|2018": {
+      "atualizado_em": "2026-09-03T03:39:33.237287+00:00",
+      "duracao_s": 2.06,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|clickip-manaus|2019": {
+      "atualizado_em": "2026-09-03T03:39:35.375279+00:00",
+      "duracao_s": 2.14,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|clickip-manaus|2020": {
+      "atualizado_em": "2026-09-03T03:39:37.074681+00:00",
+      "duracao_s": 1.7,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|clickip-manaus|2021": {
+      "atualizado_em": "2026-09-03T03:39:39.257005+00:00",
+      "duracao_s": 2.18,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|equinix-santana-parnaiba|2013": {
+      "atualizado_em": "2026-09-03T03:41:58.079615+00:00",
+      "duracao_s": 3.44,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|equinix-santana-parnaiba|2014": {
+      "atualizado_em": "2026-09-03T03:42:03.412166+00:00",
+      "duracao_s": 5.33,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|equinix-santana-parnaiba|2015": {
+      "atualizado_em": "2026-09-03T03:42:09.090537+00:00",
+      "duracao_s": 5.68,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|equinix-santana-parnaiba|2016": {
+      "atualizado_em": "2026-09-03T03:42:14.740024+00:00",
+      "duracao_s": 5.65,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|equinix-santana-parnaiba|2017": {
+      "atualizado_em": "2026-09-03T03:42:20.050893+00:00",
+      "duracao_s": 5.31,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|equinix-santana-parnaiba|2018": {
+      "atualizado_em": "2026-09-03T03:42:25.523130+00:00",
+      "duracao_s": 5.47,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|equinix-santana-parnaiba|2019": {
+      "atualizado_em": "2026-09-03T03:42:30.819895+00:00",
+      "duracao_s": 5.3,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|equinix-santana-parnaiba|2020": {
+      "atualizado_em": "2026-09-03T03:42:36.296950+00:00",
+      "duracao_s": 5.48,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|equinix-santana-parnaiba|2021": {
+      "atualizado_em": "2026-09-03T03:42:42.027932+00:00",
+      "duracao_s": 5.73,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|everest-goiania|2013": {
+      "atualizado_em": "2026-09-03T03:48:25.279056+00:00",
+      "duracao_s": 2.94,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|everest-goiania|2014": {
+      "atualizado_em": "2026-09-03T03:48:28.290605+00:00",
+      "duracao_s": 3.01,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|everest-goiania|2015": {
+      "atualizado_em": "2026-09-03T03:48:31.604714+00:00",
+      "duracao_s": 3.31,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|everest-goiania|2016": {
+      "atualizado_em": "2026-09-03T03:48:34.863455+00:00",
+      "duracao_s": 3.26,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|everest-goiania|2017": {
+      "atualizado_em": "2026-09-03T03:48:38.157152+00:00",
+      "duracao_s": 3.29,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|everest-goiania|2018": {
+      "atualizado_em": "2026-09-03T03:48:41.808830+00:00",
+      "duracao_s": 3.65,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|everest-goiania|2019": {
+      "atualizado_em": "2026-09-03T03:48:45.812277+00:00",
+      "duracao_s": 4.0,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|everest-goiania|2020": {
+      "atualizado_em": "2026-09-03T03:48:49.349253+00:00",
+      "duracao_s": 3.54,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|everest-goiania|2021": {
+      "atualizado_em": "2026-09-03T03:48:52.031094+00:00",
+      "duracao_s": 2.68,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|hostdime-joao-pessoa|2013": {
+      "atualizado_em": "2026-09-02T21:20:50.921919+00:00",
+      "duracao_s": 2.59,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|hostdime-joao-pessoa|2014": {
+      "atualizado_em": "2026-09-02T21:20:53.481016+00:00",
+      "duracao_s": 2.56,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|hostdime-joao-pessoa|2015": {
+      "atualizado_em": "2026-09-02T21:20:55.859510+00:00",
+      "duracao_s": 2.38,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|hostdime-joao-pessoa|2016": {
+      "atualizado_em": "2026-09-02T21:20:58.273007+00:00",
+      "duracao_s": 2.41,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|hostdime-joao-pessoa|2017": {
+      "atualizado_em": "2026-09-02T21:21:00.803878+00:00",
+      "duracao_s": 2.53,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|hostdime-joao-pessoa|2018": {
+      "atualizado_em": "2026-09-02T21:21:03.389497+00:00",
+      "duracao_s": 2.59,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|hostdime-joao-pessoa|2019": {
+      "atualizado_em": "2026-09-02T21:21:05.730513+00:00",
+      "duracao_s": 2.34,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|hostdime-joao-pessoa|2020": {
+      "atualizado_em": "2026-09-02T21:21:08.172113+00:00",
+      "duracao_s": 2.44,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|hostdime-joao-pessoa|2021": {
+      "atualizado_em": "2026-09-02T21:21:10.455723+00:00",
+      "duracao_s": 2.28,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|odata-hortolandia|2013": {
+      "atualizado_em": "2026-09-03T03:52:34.262724+00:00",
+      "duracao_s": 6.29,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|odata-hortolandia|2014": {
+      "atualizado_em": "2026-09-03T03:52:40.392791+00:00",
+      "duracao_s": 6.13,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|odata-hortolandia|2015": {
+      "atualizado_em": "2026-09-03T03:52:46.618769+00:00",
+      "duracao_s": 6.23,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|odata-hortolandia|2016": {
+      "atualizado_em": "2026-09-03T03:52:51.761119+00:00",
+      "duracao_s": 5.14,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|odata-hortolandia|2017": {
+      "atualizado_em": "2026-09-03T03:52:54.881608+00:00",
+      "duracao_s": 3.12,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|odata-hortolandia|2018": {
+      "atualizado_em": "2026-09-03T03:52:57.884545+00:00",
+      "duracao_s": 3.0,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|odata-hortolandia|2019": {
+      "atualizado_em": "2026-09-03T03:53:01.040481+00:00",
+      "duracao_s": 3.15,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|odata-hortolandia|2020": {
+      "atualizado_em": "2026-09-03T03:53:04.141788+00:00",
+      "duracao_s": 3.1,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|odata-hortolandia|2021": {
+      "atualizado_em": "2026-09-03T03:53:07.127008+00:00",
+      "duracao_s": 2.98,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-sgigsm01|2013": {
+      "atualizado_em": "2026-09-03T03:58:15.344909+00:00",
+      "duracao_s": 1.96,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-sgigsm01|2014": {
+      "atualizado_em": "2026-09-03T03:58:17.348212+00:00",
+      "duracao_s": 2.0,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-sgigsm01|2015": {
+      "atualizado_em": "2026-09-03T03:58:19.075224+00:00",
+      "duracao_s": 1.73,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-sgigsm01|2016": {
+      "atualizado_em": "2026-09-03T03:58:21.002638+00:00",
+      "duracao_s": 1.93,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-sgigsm01|2017": {
+      "atualizado_em": "2026-09-03T03:58:23.081067+00:00",
+      "duracao_s": 2.08,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-sgigsm01|2018": {
+      "atualizado_em": "2026-09-03T03:58:25.226850+00:00",
+      "duracao_s": 2.15,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-sgigsm01|2019": {
+      "atualizado_em": "2026-09-03T03:58:27.407402+00:00",
+      "duracao_s": 2.18,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-sgigsm01|2020": {
+      "atualizado_em": "2026-09-03T03:58:29.645416+00:00",
+      "duracao_s": 2.24,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-sgigsm01|2021": {
+      "atualizado_em": "2026-09-03T03:58:31.866671+00:00",
+      "duracao_s": 2.22,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-spoapa01|2013": {
+      "atualizado_em": "2026-09-03T04:02:38.915023+00:00",
+      "duracao_s": 4.6,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-spoapa01|2014": {
+      "atualizado_em": "2026-09-03T04:02:43.008378+00:00",
+      "duracao_s": 4.09,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-spoapa01|2015": {
+      "atualizado_em": "2026-09-03T04:02:45.796019+00:00",
+      "duracao_s": 2.79,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-spoapa01|2016": {
+      "atualizado_em": "2026-09-03T04:02:48.303724+00:00",
+      "duracao_s": 2.51,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-spoapa01|2017": {
+      "atualizado_em": "2026-09-03T04:02:50.603794+00:00",
+      "duracao_s": 2.3,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-spoapa01|2018": {
+      "atualizado_em": "2026-09-03T04:02:53.048462+00:00",
+      "duracao_s": 2.44,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-spoapa01|2019": {
+      "atualizado_em": "2026-09-03T04:02:55.667638+00:00",
+      "duracao_s": 2.62,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-spoapa01|2020": {
+      "atualizado_em": "2026-09-03T04:02:57.962003+00:00",
+      "duracao_s": 2.29,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-spoapa01|2021": {
+      "atualizado_em": "2026-09-03T04:03:00.504479+00:00",
+      "duracao_s": 2.54,
+      "erro": null,
+      "status": "ok"
+    },
+    "landsat|scala-tambore|2013": {
+      "atualizado_em": "2026-09-03T04:20:57.988012+00:00",
+      "duracao_s": 0.0,
+      "erro": null,
+      "status": "pulado"
+    },
+    "landsat|scala-tambore|2014": {
+      "atualizado_em": "2026-09-03T04:20:57.988615+00:00",
+      "duracao_s": 0.0,
+      "erro": null,
+      "status": "pulado"
+    },
+    "landsat|scala-tambore|2015": {
+      "atualizado_em": "2026-09-03T04:20:57.989176+00:00",
+      "duracao_s": 0.0,
+      "erro": null,
+      "status": "pulado"
+    },
+    "landsat|scala-tambore|2016": {
+      "atualizado_em": "2026-09-03T04:20:57.989748+00:00",
+      "duracao_s": 0.0,
+      "erro": null,
+      "status": "pulado"
+    },
+    "landsat|scala-tambore|2017": {
+      "atualizado_em": "2026-09-03T04:20:57.990310+00:00",
+      "duracao_s": 0.0,
+      "erro": null,
+      "status": "pulado"
+    },
+    "landsat|scala-tambore|2018": {
+      "atualizado_em": "2026-09-03T04:20:57.990860+00:00",
+      "duracao_s": 0.0,
+      "erro": null,
+      "status": "pulado"
+    },
+    "landsat|scala-tambore|2019": {
+      "atualizado_em": "2026-09-03T04:20:57.991406+00:00",
+      "duracao_s": 0.0,
+      "erro": null,
+      "status": "pulado"
+    },
+    "landsat|scala-tambore|2020": {
+      "atualizado_em": "2026-09-03T04:20:57.991976+00:00",
+      "duracao_s": 0.0,
+      "erro": null,
+      "status": "pulado"
+    },
+    "landsat|scala-tambore|2021": {
+      "atualizado_em": "2026-09-03T04:20:57.992522+00:00",
+      "duracao_s": 0.0,
+      "erro": null,
+      "status": "pulado"
+    },
+    "s2|angonap-fortaleza|2019": {
+      "atualizado_em": "2026-09-03T03:18:35.305047+00:00",
+      "duracao_s": 16.79,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|angonap-fortaleza|2020": {
+      "atualizado_em": "2026-09-03T03:18:50.446094+00:00",
+      "duracao_s": 15.14,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|angonap-fortaleza|2021": {
+      "atualizado_em": "2026-09-03T03:19:04.871700+00:00",
+      "duracao_s": 14.43,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|angonap-fortaleza|2022": {
+      "atualizado_em": "2026-09-03T03:19:20.292495+00:00",
+      "duracao_s": 15.42,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|angonap-fortaleza|2023": {
+      "atualizado_em": "2026-09-03T03:19:35.334630+00:00",
+      "duracao_s": 15.04,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|angonap-fortaleza|2024": {
+      "atualizado_em": "2026-09-03T03:19:50.613353+00:00",
+      "duracao_s": 15.28,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|angonap-fortaleza|2025": {
+      "atualizado_em": "2026-09-03T03:20:05.823611+00:00",
+      "duracao_s": 15.21,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-hortolandia|2019": {
+      "atualizado_em": "2026-09-03T03:20:57.147120+00:00",
+      "duracao_s": 25.63,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-hortolandia|2020": {
+      "atualizado_em": "2026-09-03T03:21:21.923292+00:00",
+      "duracao_s": 24.78,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-hortolandia|2021": {
+      "atualizado_em": "2026-09-03T03:21:46.274714+00:00",
+      "duracao_s": 24.35,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-hortolandia|2022": {
+      "atualizado_em": "2026-09-03T03:22:11.601634+00:00",
+      "duracao_s": 25.33,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-hortolandia|2023": {
+      "atualizado_em": "2026-09-03T03:22:37.171764+00:00",
+      "duracao_s": 25.57,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-hortolandia|2024": {
+      "atualizado_em": "2026-09-03T03:23:02.247238+00:00",
+      "duracao_s": 25.07,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-hortolandia|2025": {
+      "atualizado_em": "2026-09-03T03:23:27.337549+00:00",
+      "duracao_s": 25.09,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-jundiai|2019": {
+      "atualizado_em": "2026-09-02T21:14:23.106870+00:00",
+      "duracao_s": 26.47,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-jundiai|2020": {
+      "atualizado_em": "2026-09-02T21:14:50.226880+00:00",
+      "duracao_s": 27.12,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-jundiai|2021": {
+      "atualizado_em": "2026-09-02T21:15:18.589161+00:00",
+      "duracao_s": 28.36,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-jundiai|2022": {
+      "atualizado_em": "2026-09-02T21:15:47.993883+00:00",
+      "duracao_s": 29.4,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-jundiai|2023": {
+      "atualizado_em": "2026-09-02T21:16:15.195381+00:00",
+      "duracao_s": 27.2,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-jundiai|2024": {
+      "atualizado_em": "2026-09-02T21:16:42.041696+00:00",
+      "duracao_s": 26.85,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-jundiai|2025": {
+      "atualizado_em": "2026-09-02T21:17:09.307056+00:00",
+      "duracao_s": 27.27,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-maracanau|2019": {
+      "atualizado_em": "2026-09-03T03:24:11.468419+00:00",
+      "duracao_s": 19.93,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-maracanau|2020": {
+      "atualizado_em": "2026-09-03T03:24:31.267633+00:00",
+      "duracao_s": 19.8,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-maracanau|2021": {
+      "atualizado_em": "2026-09-03T03:24:50.379422+00:00",
+      "duracao_s": 19.11,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-maracanau|2022": {
+      "atualizado_em": "2026-09-03T03:25:10.015766+00:00",
+      "duracao_s": 19.64,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-maracanau|2023": {
+      "atualizado_em": "2026-09-03T03:25:29.416043+00:00",
+      "duracao_s": 19.4,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-maracanau|2024": {
+      "atualizado_em": "2026-09-03T03:25:48.378052+00:00",
+      "duracao_s": 18.96,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-maracanau|2025": {
+      "atualizado_em": "2026-09-03T03:26:07.578089+00:00",
+      "duracao_s": 19.2,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-osasco|2019": {
+      "atualizado_em": "2026-09-03T03:26:52.506622+00:00",
+      "duracao_s": 23.55,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-osasco|2020": {
+      "atualizado_em": "2026-09-03T03:27:16.933599+00:00",
+      "duracao_s": 24.43,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-osasco|2021": {
+      "atualizado_em": "2026-09-03T03:27:41.102620+00:00",
+      "duracao_s": 24.17,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-osasco|2022": {
+      "atualizado_em": "2026-09-03T03:28:05.544605+00:00",
+      "duracao_s": 24.44,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-osasco|2023": {
+      "atualizado_em": "2026-09-03T03:28:28.826984+00:00",
+      "duracao_s": 23.28,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-osasco|2024": {
+      "atualizado_em": "2026-09-03T03:28:52.766406+00:00",
+      "duracao_s": 23.94,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-osasco|2025": {
+      "atualizado_em": "2026-09-03T03:29:17.855712+00:00",
+      "duracao_s": 25.09,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-paulinia|2019": {
+      "atualizado_em": "2026-09-02T21:18:06.650716+00:00",
+      "duracao_s": 27.87,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-paulinia|2020": {
+      "atualizado_em": "2026-09-02T21:18:33.633137+00:00",
+      "duracao_s": 26.98,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-paulinia|2021": {
+      "atualizado_em": "2026-09-02T21:19:00.240837+00:00",
+      "duracao_s": 26.61,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-paulinia|2022": {
+      "atualizado_em": "2026-09-02T21:19:27.066700+00:00",
+      "duracao_s": 26.83,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-paulinia|2023": {
+      "atualizado_em": "2026-09-02T21:19:54.981430+00:00",
+      "duracao_s": 27.91,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-paulinia|2024": {
+      "atualizado_em": "2026-09-02T21:20:21.805631+00:00",
+      "duracao_s": 26.82,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-paulinia|2025": {
+      "atualizado_em": "2026-09-02T21:20:48.327298+00:00",
+      "duracao_s": 26.52,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-sumare|2019": {
+      "atualizado_em": "2026-09-03T03:30:08.638023+00:00",
+      "duracao_s": 25.39,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-sumare|2020": {
+      "atualizado_em": "2026-09-03T03:30:35.754009+00:00",
+      "duracao_s": 27.12,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-sumare|2021": {
+      "atualizado_em": "2026-09-03T03:31:03.288914+00:00",
+      "duracao_s": 27.53,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-sumare|2022": {
+      "atualizado_em": "2026-09-03T03:31:28.444827+00:00",
+      "duracao_s": 25.16,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-sumare|2023": {
+      "atualizado_em": "2026-09-03T03:31:52.877249+00:00",
+      "duracao_s": 24.43,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-sumare|2024": {
+      "atualizado_em": "2026-09-03T03:32:17.563270+00:00",
+      "duracao_s": 24.69,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-sumare|2025": {
+      "atualizado_em": "2026-09-03T03:32:44.647449+00:00",
+      "duracao_s": 27.08,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-vinhedo|2019": {
+      "atualizado_em": "2026-09-03T03:34:27.163430+00:00",
+      "duracao_s": 48.9,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-vinhedo|2020": {
+      "atualizado_em": "2026-09-03T03:35:16.811592+00:00",
+      "duracao_s": 49.64,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-vinhedo|2021": {
+      "atualizado_em": "2026-09-03T03:36:07.236550+00:00",
+      "duracao_s": 50.42,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-vinhedo|2022": {
+      "atualizado_em": "2026-09-03T03:36:59.739044+00:00",
+      "duracao_s": 52.5,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-vinhedo|2023": {
+      "atualizado_em": "2026-09-03T03:37:50.550250+00:00",
+      "duracao_s": 50.81,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-vinhedo|2024": {
+      "atualizado_em": "2026-09-03T03:38:41.013519+00:00",
+      "duracao_s": 50.46,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|ascenty-vinhedo|2025": {
+      "atualizado_em": "2026-09-03T04:22:21.716509+00:00",
+      "duracao_s": 24.79,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|clickip-manaus|2019": {
+      "atualizado_em": "2026-09-03T03:39:56.044964+00:00",
+      "duracao_s": 16.79,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|clickip-manaus|2020": {
+      "atualizado_em": "2026-09-03T03:40:15.201625+00:00",
+      "duracao_s": 19.16,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|clickip-manaus|2021": {
+      "atualizado_em": "2026-09-03T03:40:37.014660+00:00",
+      "duracao_s": 21.81,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|clickip-manaus|2022": {
+      "atualizado_em": "2026-09-03T03:40:54.255942+00:00",
+      "duracao_s": 17.24,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|clickip-manaus|2023": {
+      "atualizado_em": "2026-09-03T03:41:15.880470+00:00",
+      "duracao_s": 21.62,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|clickip-manaus|2024": {
+      "atualizado_em": "2026-09-03T03:41:33.333044+00:00",
+      "duracao_s": 17.45,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|clickip-manaus|2025": {
+      "atualizado_em": "2026-09-03T03:41:54.637582+00:00",
+      "duracao_s": 21.3,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|equinix-santana-parnaiba|2019": {
+      "atualizado_em": "2026-09-03T03:43:31.116635+00:00",
+      "duracao_s": 49.09,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|equinix-santana-parnaiba|2020": {
+      "atualizado_em": "2026-09-03T03:44:22.185739+00:00",
+      "duracao_s": 51.07,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|equinix-santana-parnaiba|2021": {
+      "atualizado_em": "2026-09-03T03:45:13.832767+00:00",
+      "duracao_s": 51.65,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|equinix-santana-parnaiba|2022": {
+      "atualizado_em": "2026-09-03T03:46:04.659759+00:00",
+      "duracao_s": 50.83,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|equinix-santana-parnaiba|2023": {
+      "atualizado_em": "2026-09-03T03:46:54.023171+00:00",
+      "duracao_s": 49.36,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|equinix-santana-parnaiba|2024": {
+      "atualizado_em": "2026-09-03T03:47:43.932208+00:00",
+      "duracao_s": 49.91,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|equinix-santana-parnaiba|2025": {
+      "atualizado_em": "2026-09-03T03:48:22.336654+00:00",
+      "duracao_s": 38.4,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|everest-goiania|2019": {
+      "atualizado_em": "2026-09-03T04:10:16.509678+00:00",
+      "duracao_s": 27.25,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|everest-goiania|2020": {
+      "atualizado_em": "2026-09-03T04:10:43.451785+00:00",
+      "duracao_s": 26.94,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|everest-goiania|2021": {
+      "atualizado_em": "2026-09-03T04:11:09.473358+00:00",
+      "duracao_s": 26.02,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|everest-goiania|2022": {
+      "atualizado_em": "2026-09-03T04:11:35.331635+00:00",
+      "duracao_s": 25.86,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|everest-goiania|2023": {
+      "atualizado_em": "2026-09-03T04:12:02.311433+00:00",
+      "duracao_s": 26.98,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|everest-goiania|2024": {
+      "atualizado_em": "2026-09-03T04:12:28.961682+00:00",
+      "duracao_s": 26.65,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|everest-goiania|2025": {
+      "atualizado_em": "2026-09-03T04:12:56.263706+00:00",
+      "duracao_s": 27.3,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|hostdime-joao-pessoa|2019": {
+      "atualizado_em": "2026-09-02T21:21:29.474449+00:00",
+      "duracao_s": 19.02,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|hostdime-joao-pessoa|2020": {
+      "atualizado_em": "2026-09-02T21:21:48.631047+00:00",
+      "duracao_s": 19.15,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|hostdime-joao-pessoa|2021": {
+      "atualizado_em": "2026-09-02T21:22:08.347935+00:00",
+      "duracao_s": 19.72,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|hostdime-joao-pessoa|2022": {
+      "atualizado_em": "2026-09-02T21:22:28.999531+00:00",
+      "duracao_s": 20.65,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|hostdime-joao-pessoa|2023": {
+      "atualizado_em": "2026-09-02T21:22:48.810966+00:00",
+      "duracao_s": 19.81,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|hostdime-joao-pessoa|2024": {
+      "atualizado_em": "2026-09-02T21:23:07.969467+00:00",
+      "duracao_s": 19.16,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|hostdime-joao-pessoa|2025": {
+      "atualizado_em": "2026-09-02T21:23:26.813146+00:00",
+      "duracao_s": 18.84,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|odata-hortolandia|2019": {
+      "atualizado_em": "2026-09-03T03:53:39.128247+00:00",
+      "duracao_s": 32.0,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|odata-hortolandia|2020": {
+      "atualizado_em": "2026-09-03T03:54:21.989265+00:00",
+      "duracao_s": 42.86,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|odata-hortolandia|2021": {
+      "atualizado_em": "2026-09-03T03:55:08.154397+00:00",
+      "duracao_s": 46.17,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|odata-hortolandia|2022": {
+      "atualizado_em": "2026-09-03T03:55:55.960091+00:00",
+      "duracao_s": 47.81,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|odata-hortolandia|2023": {
+      "atualizado_em": "2026-09-03T03:56:44.691189+00:00",
+      "duracao_s": 48.73,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|odata-hortolandia|2024": {
+      "atualizado_em": "2026-09-03T03:57:32.025355+00:00",
+      "duracao_s": 47.33,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|odata-hortolandia|2025": {
+      "atualizado_em": "2026-09-03T03:58:13.384986+00:00",
+      "duracao_s": 41.36,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-sgigsm01|2019": {
+      "atualizado_em": "2026-09-03T04:13:27.571231+00:00",
+      "duracao_s": 19.85,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-sgigsm01|2020": {
+      "atualizado_em": "2026-09-03T04:13:47.177309+00:00",
+      "duracao_s": 19.61,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-sgigsm01|2021": {
+      "atualizado_em": "2026-09-03T04:14:07.110384+00:00",
+      "duracao_s": 19.93,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-sgigsm01|2022": {
+      "atualizado_em": "2026-09-03T04:14:26.975998+00:00",
+      "duracao_s": 19.87,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-sgigsm01|2023": {
+      "atualizado_em": "2026-09-03T04:14:45.256882+00:00",
+      "duracao_s": 18.28,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-sgigsm01|2024": {
+      "atualizado_em": "2026-09-03T04:15:04.348998+00:00",
+      "duracao_s": 19.09,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-sgigsm01|2025": {
+      "atualizado_em": "2026-09-03T04:15:24.464291+00:00",
+      "duracao_s": 20.12,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-spoapa01|2019": {
+      "atualizado_em": "2026-09-03T04:15:55.661473+00:00",
+      "duracao_s": 20.0,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-spoapa01|2020": {
+      "atualizado_em": "2026-09-03T04:16:16.193445+00:00",
+      "duracao_s": 20.53,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-spoapa01|2021": {
+      "atualizado_em": "2026-09-03T04:16:37.081020+00:00",
+      "duracao_s": 20.89,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-spoapa01|2022": {
+      "atualizado_em": "2026-09-03T04:16:57.250248+00:00",
+      "duracao_s": 20.17,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-spoapa01|2023": {
+      "atualizado_em": "2026-09-03T04:17:17.798091+00:00",
+      "duracao_s": 20.55,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-spoapa01|2024": {
+      "atualizado_em": "2026-09-03T04:17:36.886853+00:00",
+      "duracao_s": 19.09,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-spoapa01|2025": {
+      "atualizado_em": "2026-09-03T04:17:57.185337+00:00",
+      "duracao_s": 20.3,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-tambore|2019": {
+      "atualizado_em": "2026-09-03T04:18:31.694932+00:00",
+      "duracao_s": 22.43,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-tambore|2020": {
+      "atualizado_em": "2026-09-03T04:18:54.612587+00:00",
+      "duracao_s": 22.92,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-tambore|2021": {
+      "atualizado_em": "2026-09-03T04:19:17.373842+00:00",
+      "duracao_s": 22.76,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-tambore|2022": {
+      "atualizado_em": "2026-09-03T04:19:39.565405+00:00",
+      "duracao_s": 22.19,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-tambore|2023": {
+      "atualizado_em": "2026-09-03T04:20:01.074237+00:00",
+      "duracao_s": 21.51,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-tambore|2024": {
+      "atualizado_em": "2026-09-03T04:20:23.591435+00:00",
+      "duracao_s": 22.52,
+      "erro": null,
+      "status": "ok"
+    },
+    "s2|scala-tambore|2025": {
+      "atualizado_em": "2026-09-03T04:20:45.922130+00:00",
+      "duracao_s": 22.33,
+      "erro": null,
+      "status": "ok"
+    }
+  }
+}

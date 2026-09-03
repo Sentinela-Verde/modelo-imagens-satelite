@@ -1,0 +1,69 @@
+{
+  "site_id": "ascenty-jundiai",
+  "ano": 2013,
+  "sensor": "landsat",
+  "modelo_versao": "rf_v1.0-tuned",
+  "modelo_path": "models\\rf_v1.0-tuned.joblib",
+  "modelo_sha256": "2d38d312706cc7b4dc3525709c06a439074825bd258f252b6b9bf817819d2d86",
+  "dataset_versao": "v1.0",
+  "lista_features": [
+    "blue",
+    "green",
+    "red",
+    "nir",
+    "swir1",
+    "swir2",
+    "ndvi",
+    "evi",
+    "ndwi",
+    "mndwi",
+    "ndbi",
+    "bsi",
+    "ndmi",
+    "sensor_landsat"
+  ],
+  "git_sha": "4cdebd3ee0df2b982690157a1305e662c163d9f8",
+  "gerado_em": "2026-09-03T03:32:49.076753+00:00",
+  "classes": {
+    "0": "nodata",
+    "1": "vegetacao_densa",
+    "2": "vegetacao_rala",
+    "3": "solo_exposto_obras",
+    "4": "construida_urbana",
+    "5": "agua"
+  },
+  "crs": "EPSG:31983",
+  "transform": [
+    30.0,
+    0.0,
+    292890.0,
+    0.0,
+    -30.0,
+    7438890.0
+  ],
+  "shape": {
+    "width": 334,
+    "height": 334
+  },
+  "n_pixels_total": 111556,
+  "n_pixels_validos": 110940,
+  "n_pixels_nodata": 616,
+  "pct_pixels_validos": 99.4478,
+  "distribuicao_classes": {
+    "vegetacao_densa": 39137,
+    "vegetacao_rala": 44739,
+    "solo_exposto_obras": 2454,
+    "construida_urbana": 23938,
+    "agua": 672
+  },
+  "confianca": {
+    "media": 80.23,
+    "minima": 24,
+    "maxima": 100
+  },
+  "sha256": "d53e43c3d4aae98b7ac653185ae067918674ea9a685b7770fcf3241714d6778c",
+  "sha256_nota": "hash dos bytes do array uint8 de classes preditas, NAO do arquivo .tif inteiro (ver docstring do módulo) — é o que garante o critério de determinismo.",
+  "sha256_confianca": "fe2c43c159c379a75b7b150a179d2150ec6a2f1fd31dc9ad09e4c0852cf44894",
+  "tif": "data\\processed\\classificado\\landsat\\ascenty-jundiai\\2013.tif",
+  "tif_confianca": "data\\processed\\classificado\\landsat\\ascenty-jundiai\\2013_confianca.tif"
+}

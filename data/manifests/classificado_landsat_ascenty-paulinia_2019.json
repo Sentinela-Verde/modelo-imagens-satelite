@@ -1,0 +1,69 @@
+{
+  "site_id": "ascenty-paulinia",
+  "ano": 2019,
+  "sensor": "landsat",
+  "modelo_versao": "rf_v1.0-tuned",
+  "modelo_path": "models\\rf_v1.0-tuned.joblib",
+  "modelo_sha256": "2d38d312706cc7b4dc3525709c06a439074825bd258f252b6b9bf817819d2d86",
+  "dataset_versao": "v1.0",
+  "lista_features": [
+    "blue",
+    "green",
+    "red",
+    "nir",
+    "swir1",
+    "swir2",
+    "ndvi",
+    "evi",
+    "ndwi",
+    "mndwi",
+    "ndbi",
+    "bsi",
+    "ndmi",
+    "sensor_landsat"
+  ],
+  "git_sha": "4cdebd3ee0df2b982690157a1305e662c163d9f8",
+  "gerado_em": "2026-09-03T03:42:32.102105+00:00",
+  "classes": {
+    "0": "nodata",
+    "1": "vegetacao_densa",
+    "2": "vegetacao_rala",
+    "3": "solo_exposto_obras",
+    "4": "construida_urbana",
+    "5": "agua"
+  },
+  "crs": "EPSG:31983",
+  "transform": [
+    30.0,
+    0.0,
+    275880.0,
+    0.0,
+    -30.0,
+    7482330.0
+  ],
+  "shape": {
+    "width": 334,
+    "height": 334
+  },
+  "n_pixels_total": 111556,
+  "n_pixels_validos": 111556,
+  "n_pixels_nodata": 0,
+  "pct_pixels_validos": 100.0,
+  "distribuicao_classes": {
+    "vegetacao_densa": 13860,
+    "vegetacao_rala": 55426,
+    "solo_exposto_obras": 769,
+    "construida_urbana": 40446,
+    "agua": 1055
+  },
+  "confianca": {
+    "media": 75.03,
+    "minima": 25,
+    "maxima": 100
+  },
+  "sha256": "22bf89b6a3294cfb6d5dee626dbdbaef1243ed8ef310d78ec02e1e15f0cd6312",
+  "sha256_nota": "hash dos bytes do array uint8 de classes preditas, NAO do arquivo .tif inteiro (ver docstring do módulo) — é o que garante o critério de determinismo.",
+  "sha256_confianca": "d2298f8dfa42ce420a71620db6555931f5402a98dfbb85730dd181e83981d602",
+  "tif": "data\\processed\\classificado\\landsat\\ascenty-paulinia\\2019.tif",
+  "tif_confianca": "data\\processed\\classificado\\landsat\\ascenty-paulinia\\2019_confianca.tif"
+}
