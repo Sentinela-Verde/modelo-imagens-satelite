@@ -321,13 +321,14 @@ RandomForestClassifier(
 
 ## Espaço de busca testado
 
-Nenhum. Cronometramos um fit único antes de decidir (830.018 linhas, 13 features -> ~140s por
-fit com `n_estimators=300`). Uma busca pequena como sugerida no enunciado (`min_samples_leaf ∈
+Nenhum. Cronometramos um fit único antes de decidir ({n_linhas_treino} linhas, {len(importancias_sem_sensor)}
+features -> fit final de referência registrado abaixo em {tempo_treino_final_s:.1f}s com
+`n_estimators=300`). Uma busca pequena como sugerida no enunciado (`min_samples_leaf ∈
 {{1,5,15}}` x `n_estimators ∈ {{200,500}}` = 6 combinações, cada uma com `GroupKFold(5)`) custaria
-da ordem de 1h de CPU só para o tuning, sem garantia de ganho relevante sobre a configuração de
-partida. O próprio enunciado autoriza usar a configuração inicial "se não sobrar tempo — ela é
-razoável", e foi essa a decisão tomada aqui. Fica registrado como candidato de follow-up (não
-bloqueante para o baseline).
+várias vezes o tempo de uma CV única (ver "tempo total da CV" nas duas variantes abaixo), sem
+garantia de ganho relevante sobre a configuração de partida. O próprio enunciado autoriza usar a
+configuração inicial "se não sobrar tempo — ela é razoável", e foi essa a decisão tomada aqui.
+Fica registrado como candidato de follow-up (não bloqueante para o baseline).
 
 ## Piso de comparação: DummyClassifier
 
@@ -387,6 +388,29 @@ existem em `lista_features` do manifest, e a checagem em `carregar_dataset` falh
 dia entrarem — não há sinal de que o modelo esteja "decorando" geografia ou época em vez de
 espectro.
 """
+
+
+def caminho_relatorio(tag: str) -> Path:
+    """Caminho do relatório de experimento, dependente da `tag` (bug corrigido em 2026-09-02).
+
+    A primeira rodada de SV-12 (`tag == "v0.1"`, 3 sites) já está commitada em
+    `EXP-001-rf-baseline.md` — nunca sobrescrever esse arquivo. `tag == "v0.2"` (expansão de
+    SV-27 para 16 sites) grava em `EXP-001b-rf-v0.2-expansao.md`. `tag == "v1.0"` (SV-16 —
+    incorporação da rotulagem manual de SV-10) grava em `EXP-002-rf-v1.0-treino.md`: este módulo
+    só produz o relatório de TREINO/CV (hiperparâmetros, folds, importâncias, piso Dummy) — o
+    nome `EXP-002-rf-labels-manuais.md` que o enunciado de SV-16 pede é reservado para o
+    relatório de COMPARAÇÃO v0.1-vs-v1.0 (accuracy/macro-F1/F1-classe-3/holdout espacial-
+    temporal/por origem_label/por bioma + decisão de modelo oficial), que depende da avaliação em
+    holdout (SV-13/`sentinela.evaluate`, que roda DEPOIS deste treino) e por isso é escrito à
+    parte, reaproveitando os números deste relatório sem depender do nome automático daqui — ver
+    `docs/tarefas/SV-16-dataset-v1.0-retreino.md`. Qualquer outra tag cai no padrão genérico
+    `EXP-001b-rf-{tag}-expansao.md`, para permitir comparar rodadas futuras lado a lado (ver nota
+    de revisão de 2026-08-31 em `docs/tarefas/SV-12-baseline-random-forest.md`)."""
+    if tag == "v0.1":
+        return REPO_ROOT / "reports" / "experiments" / "EXP-001-rf-baseline.md"
+    if tag == "v1.0":
+        return REPO_ROOT / "reports" / "experiments" / "EXP-002-rf-v1.0-treino.md"
+    return REPO_ROOT / "reports" / "experiments" / f"EXP-001b-rf-{tag}-expansao.md"
 
 
 # --------------------------------------------------------------------------------------------
@@ -497,7 +521,7 @@ def main(argv: list[str] | None = None) -> int:
         joblib_sha256=joblib_sha256,
         gerado_em=datetime.now(UTC).isoformat(),
     )
-    relatorio_path = REPO_ROOT / "reports" / "experiments" / "EXP-001-rf-baseline.md"
+    relatorio_path = caminho_relatorio(args.tag)
     relatorio_path.parent.mkdir(parents=True, exist_ok=True)
     relatorio_path.write_text(relatorio, encoding="utf-8")
     print(f"Relatório salvo: {relatorio_path}")
