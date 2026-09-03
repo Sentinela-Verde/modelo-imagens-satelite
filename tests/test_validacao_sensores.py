@@ -179,7 +179,7 @@ def test_cenario4_borda_tem_concordancia_pior_que_interior_por_construcao():
 
 @pytestmark_dados_reais
 def test_cenario1_pareamento_mesmo_site_mesmo_ano():
-    pares = vs.localizar_pares("rf_v1.0", sites=["ascenty-vinhedo"])
+    pares = vs.localizar_pares("rf_v1.0-tuned", sites=["ascenty-vinhedo"])
     assert len(pares) == 3  # 3 anos de sobreposição
     for par in pares:
         assert par.site_id == "ascenty-vinhedo"
@@ -196,7 +196,7 @@ def test_cenario1_pareamento_mesmo_site_mesmo_ano():
 @pytestmark_dados_reais
 def test_cenario1_pareamento_falha_alto_se_site_nao_existe():
     with pytest.raises(Exception):
-        vs.localizar_pares("rf_v1.0", sites=["site-que-nao-existe"])
+        vs.localizar_pares("rf_v1.0-tuned", sites=["site-que-nao-existe"])
 
 
 # --------------------------------------------------------------------------------------------
@@ -207,7 +207,7 @@ def test_cenario1_pareamento_falha_alto_se_site_nao_existe():
 
 @pytestmark_dados_reais
 def test_integracao_1_site_identidades_e_formato():
-    resultado = vs.rodar_validacao("rf_v1.0", sites=["ascenty-vinhedo"])
+    resultado = vs.rodar_validacao("rf_v1.0-tuned", sites=["ascenty-vinhedo"])
     df_classe = resultado["df_classe"]
 
     assert len(df_classe) == 3 * len(vs.CLASS_IDS)  # 3 anos x 5 classes
