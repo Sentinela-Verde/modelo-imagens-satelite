@@ -1,0 +1,145 @@
+site_id,municipio,uf,codigo_ibge,ano,populacao,tipo_estimativa,fonte,data_extracao
+angonap-fortaleza,Fortaleza,CE,2304400,2016,2609716,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2017,2627482,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2018,2643247,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2019,2669342,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2020,2686612,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2021,2703391,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2022,2428708,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2024,2574412,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2025,2578483,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2016,219039,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2017,222186,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2018,227353,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2019,230851,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2020,234259,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2021,237570,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2022,236641,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2024,247331,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2025,248842,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2016,405740,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2017,409497,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2018,414810,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2019,418962,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2020,423006,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2021,426935,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2022,443221,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2024,460313,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2025,463039,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2016,223188,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2017,224804,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2018,226128,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2019,227886,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2020,229458,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2021,230986,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2022,234509,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2024,249684,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2025,251613,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2016,696382,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2017,697886,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2018,696850,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2019,698418,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2020,699944,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2021,701428,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2022,728615,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2024,756952,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2025,759524,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2016,100128,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2017,102499,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2018,106776,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2019,109424,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2020,112003,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2021,114508,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2022,110537,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2024,115690,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2025,116674,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2016,269522,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2017,273007,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2018,278571,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2019,282441,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2020,286211,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2021,289875,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2022,279545,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2024,289787,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2025,291116,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2016,73855,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2017,75129,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2018,77308,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2019,78728,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2020,80111,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2021,81516,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2022,76540,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2024,79235,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2025,79089,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+clickip-manaus,Manaus,AM,1302603,2016,2094391,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+clickip-manaus,Manaus,AM,1302603,2017,2130264,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+clickip-manaus,Manaus,AM,1302603,2018,2145444,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+clickip-manaus,Manaus,AM,1302603,2019,2182763,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+clickip-manaus,Manaus,AM,1302603,2020,2219580,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+clickip-manaus,Manaus,AM,1302603,2021,2255903,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+clickip-manaus,Manaus,AM,1302603,2022,2063689,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2024,2279686,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+clickip-manaus,Manaus,AM,1302603,2025,2303732,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2016,129261,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2017,131887,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2018,136517,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2019,139447,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2020,142301,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2021,145073,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2022,154105,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2024,162341,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2025,163787,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+everest-goiania,Goiânia,GO,5208707,2016,1448639,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+everest-goiania,Goiânia,GO,5208707,2017,1466105,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+everest-goiania,Goiânia,GO,5208707,2018,1495705,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+everest-goiania,Goiânia,GO,5208707,2019,1516113,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+everest-goiania,Goiânia,GO,5208707,2020,1536097,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+everest-goiania,Goiânia,GO,5208707,2021,1555626,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+everest-goiania,Goiânia,GO,5208707,2022,1437366,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2024,1494599,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+everest-goiania,Goiânia,GO,5208707,2025,1503256,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2016,801718,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2017,811598,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2018,800323,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2019,809015,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2020,817511,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2021,825796,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2022,833932,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2024,888679,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2025,897633,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2016,219039,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2017,222186,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2018,227353,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2019,230851,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2020,234259,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2021,237570,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2022,236641,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2024,247331,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2025,248842,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2016,460541,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2017,460461,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2018,471888,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2019,472406,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2020,472906,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2021,473385,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2022,440962,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2024,466536,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2025,466503,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2016,1481019,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2017,1484941,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2018,1479101,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2019,1483771,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2020,1488252,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2021,1492530,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2022,1332845,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2024,1389322,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2025,1388794,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-tambore,Barueri,SP,3505708,2016,264935,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-tambore,Barueri,SP,3505708,2017,267534,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-tambore,Barueri,SP,3505708,2018,271306,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-tambore,Barueri,SP,3505708,2019,274182,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-tambore,Barueri,SP,3505708,2020,276982,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-tambore,Barueri,SP,3505708,2021,279704,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-tambore,Barueri,SP,3505708,2022,316473,censo,"IBGE - Censo Demografico 2022, SIDRA tabela 9514 (Populacao residente)",2026-09-03
+scala-tambore,Barueri,SP,3505708,2024,330339,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03
+scala-tambore,Barueri,SP,3505708,2025,333737,estimativa_intercensitaria,IBGE - SIDRA tabela 6579 (Populacao residente estimada),2026-09-03

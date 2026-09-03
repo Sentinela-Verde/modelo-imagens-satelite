@@ -19,6 +19,7 @@ python-dotenv==1.2.3
 tqdm==4.70.0
 requests==2.34.2
 truststore==0.10.4
+openpyxl==3.1.5  # exportação de planilhas .xlsx (dados-modelo-impacto/), não usado pelo classificador
 
 # PyTorch é do Plus (Siamese CNN / change detection), NÃO do baseline V1 — decisão D-01/D-02 em
 # docs/plano-execucao.md. Instalar separadamente quando SV-22 começar (Colab, não aqui).

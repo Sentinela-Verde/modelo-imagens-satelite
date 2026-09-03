@@ -62,13 +62,48 @@ dados-modelo-impacto/
 └── README.md     # este arquivo
 ```
 
-`raw/` e `processed/` estão no `.gitignore` por padrão, seguindo a mesma regra do resto do
-repositório (nunca commitar dado bruto pesado). Se os arquivos finais forem pequenos (séries de
-temperatura/população/emprego para ~20 sites × 10 anos tendem a ser leves — CSVs de poucos KB a
-poucos MB), vale reavaliar e commitar `processed/` explicitamente, do mesmo jeito que
-`data/labels_manual/` e `data/manifests/` têm exceção aberta no `.gitignore` principal.
+`raw/` fica de fora do git (respostas brutas de API, ~7,5MB, reproduzível rodando os scripts de
+novo). `processed/` **é commitado** (~384KB, é o resultado útil — mesma lógica de
+`data/manifests/` no repositório principal).
+
+## Lista de trabalho: 19 facilities
+
+16 sites já validados deste repositório (`config/sites.geojson`) + 3 novos, reconciliados a partir
+do scraping do Guilherme
+(`datacenter-extracao-modelos/data/02_silver/datacentermap_enriquecido.csv`, 21 facilities, 17 já
+batiam com os nossos 16 — inclusive confirmando de forma independente o agrupamento de campus com
+vários prédios que já tínhamos): **Scala AI City** (Eldorado do Sul/RS), **Pecém Data Center** (São
+Gonçalo do Amarante/CE — aparecia duplicado no scraping do Guilherme, vale avisar ele), **RT-One
+Uberlândia** (MG, primeira facility em Triângulo Mineiro). Essas 3 não passaram pela validação de
+coordenada em 5 camadas que os 16 originais tiveram — ver coluna `origem_lista` nas planilhas.
+
+## Arquivos finais (`processed/`)
+
+| Arquivo | Conteúdo | Cobertura |
+|---|---|---|
+| `consolidado_painel_anual.csv` | 1 linha por site×ano: temperatura (LST), população, emprego formal, PIB, área por classe do classificador (vegetação/água/construída/solo exposto) | 232 linhas, 19 sites — **os 3 sites novos só têm PIB e área do classificador; temperatura/população/emprego cobrem só os 16 originais** (coletados antes da reconciliação) |
+| `consolidado_desemprego.csv` | Taxa de desocupação anual | Só **5 dos 18 municípios** — o IBGE só publica essa taxa em nível municipal pras capitais de estado |
+| `consolidado_renda.csv` | Renda média/mediana per capita | 19 sites, só 2022 (Censo, não é anual) |
+| `consolidado_escolaridade.csv` | Nível de instrução por faixa etária, formato longo | 19 sites × 2 censos (2010, 2022) — cortes etários diferentes entre os dois, não é 1:1 comparável |
+| `consolidado_facilities.csv` | Atributos estáticos por site: bioma/região/tier (nosso) + MW construído/tier projetado/nº prédios (scraping do Guilherme) | 19 sites |
+| `consolidado_apoio_impacto.xlsx` | As 5 tabelas acima, uma aba cada | — |
+
+Script que gera tudo isso: `scripts/montar_planilha_consolidada.py` (idempotente, roda de novo se
+qualquer fonte for atualizada).
+
+## Ressalva que vale repetir sempre que esses dados forem usados
+
+**Nenhuma das variáveis socioeconômicas/demográficas acima (população, emprego, PIB, renda,
+desemprego, escolaridade) tem granularidade suficiente pra sustentar uma afirmação de impacto
+causado por um data center específico** — são todas em nível de município, e um empreendimento de
+dezenas de hectares é uma fração ínfima da população/economia de um município inteiro. Servem como
+**contexto/estratificação dos casos**, não como evidência de efeito. Detalhe completo em
+`docs/requisitos-dados-externos.md` (raiz do repositório).
 
 ## Status
 
-Só a estrutura de pastas foi criada até agora — nenhum dado baixado, nenhum script escrito. Este
-README é o ponto de partida.
+Coleta inicial concluída (2026-09-03): temperatura, população, emprego, PIB, renda, desemprego e
+escolaridade levantados; lista reconciliada com o scraping do Guilherme; planilha consolidada
+montada. Pendências conhecidas: (1) temperatura/população/emprego não cobrem os 3 sites novos; (2)
+desemprego municipal só existe pra 5 dos 18 municípios; (3) nada foi validado com a mesma cascata
+de 5 camadas (V1-V5) que os 16 sites originais tiveram.

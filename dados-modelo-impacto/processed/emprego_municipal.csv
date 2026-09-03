@@ -1,0 +1,145 @@
+site_id,municipio,uf,codigo_ibge,ano,emprego_formal_total,pessoal_ocupado_total,numero_empresas,fonte,data_extracao
+angonap-fortaleza,Fortaleza,CE,2304400,2016,764914,847545,59046,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2017,757867,841351,58323,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2018,766815,849045,56922,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2019,763558,849116,60618,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2020,729661,818765,62532,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2021,754786,848283,65610,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2022,802592,951646,112708,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2023,794017,954678,122950,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+angonap-fortaleza,Fortaleza,CE,2304400,2024,853909,1025173,132367,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2016,43916,49728,4551,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2017,45683,51170,4340,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2018,43989,49529,4437,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2019,46222,51965,4759,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2020,46849,53067,5044,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2021,48701,55322,5502,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2022,52612,63078,8386,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2023,56564,67732,9002,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-hortolandia,Hortolândia,SP,3519071,2024,58099,69827,9701,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2016,165524,188904,17099,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2017,161787,186225,17707,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2018,164279,188446,17788,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2019,167534,194183,20143,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2020,162810,191073,20889,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2021,177226,206743,21969,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2022,181896,225325,31733,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2023,193296,240216,33889,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-jundiai,Jundiaí,SP,3525904,2024,199782,249195,36583,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2016,53956,58251,3557,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2017,54196,58347,3422,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2018,56220,60175,3462,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2019,60691,64490,3515,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2020,60589,64856,3764,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2021,61622,66202,3988,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2022,62628,70298,6650,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2023,69058,76953,7021,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-maracanau,Maracanaú,CE,2307650,2024,69510,77819,7357,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2016,157538,177943,16072,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2017,156613,176694,16133,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2018,158207,177863,15878,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2019,161102,181906,18330,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2020,158995,180746,18952,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2021,178496,201049,20631,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2022,191047,232878,38468,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2023,209469,253872,40717,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-osasco,Osasco,SP,3534401,2024,223756,269480,41851,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2016,43167,47447,3481,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2017,40120,44501,3585,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2018,41249,45683,3573,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2019,44576,49189,3932,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2020,43098,48122,4253,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2021,46086,51639,4758,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2022,50393,59074,6975,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2023,54177,63401,7393,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-paulinia,Paulínia,SP,3536505,2024,55276,65056,7966,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2016,55230,62878,5800,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2017,52747,60279,5750,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2018,54288,61985,5947,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2019,54015,61649,6163,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2020,54139,62198,6449,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2021,56552,65129,6891,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2022,61576,75198,10988,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2023,69294,83656,11568,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-sumare,Sumaré,SP,3552403,2024,70323,85185,12157,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2016,35123,39411,3397,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2017,34638,38925,3426,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2018,35386,39677,3403,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2019,36987,41726,3960,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2020,37756,43122,4239,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2021,40639,46359,4545,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2022,42677,52342,6854,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2023,43031,53267,7248,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+ascenty-vinhedo,Vinhedo,SP,3556701,2024,43021,53538,7589,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2016,475393,504078,22679,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2017,476487,505682,22830,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2018,478264,507738,22960,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2019,486727,518306,25652,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2020,492343,526003,27395,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2021,519130,554913,28737,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2022,554669,636830,67347,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2023,570748,658099,72121,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+clickip-manaus,Manaus,AM,1302603,2024,599717,692491,77108,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2016,57191,71016,9187,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2017,54197,68205,9034,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2018,53866,66464,8260,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2019,55042,67582,9427,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2020,53933,66805,9496,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2021,55735,68748,9606,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2022,60682,83151,15190,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2023,62749,85979,15675,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2024,65863,89466,16392,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2016,575096,652958,59337,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2017,597379,676045,59776,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2018,580767,658062,59951,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2019,578917,661028,65866,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2020,546141,633958,68827,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2021,575699,670431,74298,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2022,618316,779881,118063,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2023,652049,826232,128111,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+everest-goiania,Goiânia,GO,5208707,2024,674435,859452,137098,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2016,273087,300491,18651,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2017,265153,292793,18638,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2018,260937,288866,18545,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2019,267971,296943,20316,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2020,262019,292533,21584,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2021,274381,306975,23253,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2022,278720,326148,40087,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2023,319286,371343,44131,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+hostdime-joao-pessoa,João Pessoa,PB,2507507,2024,324808,381401,48049,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2016,43916,49728,4551,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2017,45683,51170,4340,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2018,43989,49529,4437,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2019,46222,51965,4759,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2020,46849,53067,5044,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2021,48701,55322,5502,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2022,52612,63078,8386,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2023,56564,67732,9002,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+odata-hortolandia,Hortolândia,SP,3519071,2024,58099,69827,9701,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2016,57188,64916,5270,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2017,54693,62292,5185,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2018,53650,60853,4907,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2019,54378,61437,5069,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2020,50672,57378,4909,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2021,51990,58691,5077,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2022,54023,65538,8888,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2023,62684,74324,9182,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-sgigsm01,São João de Meriti,RJ,3305109,2024,60793,72323,9209,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2016,709997,819865,82365,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2017,685467,795011,81222,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2018,678387,784708,80124,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2019,673982,785806,85956,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2020,637650,753720,87459,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2021,644623,764557,90258,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2022,660355,843244,136102,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2023,683450,874230,141750,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-spoapa01,Porto Alegre,RS,4314902,2024,699207,892726,146301,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-tambore,Barueri,SP,3505708,2016,255718,272562,13461,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-tambore,Barueri,SP,3505708,2017,252909,269840,13397,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-tambore,Barueri,SP,3505708,2018,263148,280439,13889,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-tambore,Barueri,SP,3505708,2019,278250,298498,16923,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-tambore,Barueri,SP,3505708,2020,286841,309916,18195,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-tambore,Barueri,SP,3505708,2021,312802,337990,19885,"IBGE - SIDRA tabela 1685 (CEMPRE (serie encerrada em 2021)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-tambore,Barueri,SP,3505708,2022,351261,397393,32866,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-tambore,Barueri,SP,3505708,2023,372191,423055,36329,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
+scala-tambore,Barueri,SP,3505708,2024,382619,439018,41015,"IBGE - SIDRA tabela 9509 (CEMPRE (metodologia atual)), variavel 708 'Pessoal ocupado assalariado'",2026-09-03
