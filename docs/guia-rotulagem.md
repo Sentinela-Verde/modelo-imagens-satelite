@@ -103,6 +103,38 @@ separada. Mas uma via de acesso **temporária**, aberta só para a obra, é part
   extensão em todos os anos). Se a "estrada" muda de forma/desaparece, é canteiro. Se é estável
   ano após ano, é via.
 
+### 3.6 Mancha alaranjada/avermelhada em contexto urbano-rural misto → 3 confusores, não 2
+  (achado do controle de consistência de SV-10, estrato `mataatlantica_s2`)
+
+Os casos 3.1 (telhado) e 3.5 (via) já cobrem dois confusores. O controle de consistência de SV-10
+(10 polígonos re-julgados às cegas, ver seção 8) achou um terceiro que o guia não nomeava: **terra
+roxa arada** (solo agrícola avermelhado, comum em áreas de cana/café do interior de SP) tem cor
+muito parecida tanto com telhado de telha cerâmica quanto com solo mineral exposto de obra — no RGB
+os três aparecem em tons de laranja/vermelho/terracota muito próximos. De 3 candidatos deste
+formato revisados às cegas nesta rodada, o revisor independente leu **lavoura arada (classe 2)** nos
+3, enquanto a rotulagem original havia decidido **classe 4** em todos (2 delas já por resolução de
+conflito de overlap com o agente irmão, não por leitura visual direta — ver seção 8). Nenhuma das
+duas leituras é claramente "a errada"; é um confusor genuíno de 3 vias que a seção 3.1 não cobria.
+
+Como diferenciar os três (nesta ordem):
+
+- **Padrão de sulcos/textura**: terra roxa arada tem sulcos de plantio paralelos e regulares, visíveis
+  mesmo em manchas pequenas e mesmo com a cor dominando a imagem — a mesma pista do caso 3.4, só que
+  aplicada a uma cor que também pode enganar como telhado. Telhado e solo de obra não têm esse
+  padrão listrado.
+- **Forma**: talhão agrícola tende a acompanhar a geometria da propriedade rural (bordas retas mas
+  não necessariamente retangulares regulares); telhado é geometricamente reto/retangular; solo de
+  obra é irregular/orgânico.
+- **Contexto**: se a mancha está cercada de outros talhões (alguns verdes, alguns arados) → forte
+  sinal de lavoura, mesmo perto de área urbana. Se está cercada de outras estruturas construídas
+  (ruas, outros telhados) → mais provável telhado.
+- **Teste temporal continua sendo o desempate mais forte**: se a mesma mancha aparece em vários anos
+  com a mesma forma/cor → provavelmente telhado (estável) ou lavoura em rotação (muda de cor/verde
+  entre estações, mas mantém os sulcos); se aparece/desaparece ou muda de forma de um ano para o
+  outro sem virar vegetação nem prédio → mais chance de ser solo de obra.
+- Na dúvida real entre os três, `confianca: baixa` e registre em `observacao` os três candidatos
+  considerados — não force uma escolha confiante quando a cor sozinha não decide.
+
 ## 4. Como usar a falsa-cor SWIR para desempatar
 
 Os PNGs `{ano}_falsacor.png` usam **SWIR1 no canal vermelho, NIR no canal verde, Red no canal
@@ -196,6 +228,42 @@ Depois de rotular os primeiros 10 polígonos, **volte e rotule os mesmos 10 de n
 resposta anterior**, ao final da sessão. Se você discordar de si mesmo em mais de 2 de 10, o
 critério deste guia está ambíguo — pare, anote onde travou, e trate como um achado a corrigir
 aqui, não como um erro seu.
+
+### 8.1 Resultado do controle de consistência — estrato `mataatlantica_s2` (SV-10, 2026-09-02)
+
+Executado com um segundo revisor independente (não o agente que rotulou originalmente, sem acesso
+aos `classe_id` já gravados) julgando os 10 primeiros polígonos de origem `candidato` da era S2
+(ordenados por site, depois ano): `ascenty-hortolandia` (5 polígonos, anos 2020/2021) e
+`ascenty-osasco` (5 polígonos, anos 2020/2023).
+
+- **Concordância bruta: 4/10 (40%)** — abaixo da meta de 80%.
+- **Mas a discordância não está distribuída igualmente pela confiança original:**
+  - Nos 2 polígonos originalmente marcados `confianca: alta` → **2/2 concordância (100%)**.
+  - Nos 3 marcados `media` → 1/3.
+  - Nos 5 marcados `baixa` → 1/5.
+- Ou seja: quando o rotulador original já estava confiante, o segundo revisor confirmou sempre.
+  A discordância se concentra exatamente onde o campo `confianca` já dizia "duvidoso" — o que é o
+  comportamento correto do campo, não uma falha do critério de classe em si.
+- **Causa 1 (4 dos 6 discordantes):** confusor de 3 vias não documentado — ver seção 3.6, achado
+  desta rodada. Mancha alaranjada/avermelhada em contexto urbano-rural misto foi lida como
+  `construida_urbana` (telhado) na rotulagem original e como `vegetacao_rala` (terra roxa arada)
+  pelo segundo revisor — as duas leituras são defensáveis, o guia não tinha essa terceira hipótese.
+  **Ação tomada:** seção 3.6 adicionada ao guia; os polígonos afetados já estavam com
+  `confianca: baixa`/`media` e registro do dilema em `observacao` — não foram forçados a mudar de
+  classe (não há evidência de que a leitura original esteja errada, só que é genuinamente ambígua).
+- **Causa 2 (2 dos 6 discordantes):** a regra 3.5 (estrada temporária de canteiro vs. via estável)
+  depende de comparação **multi-ano** — o segundo revisor, ao julgar um recorte de un único ano por
+  vez, não tem essa informação e não pode aplicar o teste corretamente. Isso é uma limitação do
+  método de controle de consistência para casos que dependem de série temporal, não
+  necessariamente um sinal de guia ambíguo — registrado aqui para quem for repetir este controle em
+  outro estrato: **o revisor às cegas precisa ver os PNGs de pelo menos 2 anos do mesmo local para
+  poder aplicar a seção 3.5/3.6 corretamente**, não só o ano do polígono.
+- **Não houve correção forçada de nenhum `classe_id`** nesta rodada: os 4 casos da seção 3.6 já
+  tinham confiança baixa/média e observação honesta; os 2 casos dependentes de série temporal não
+  têm informação nova que justifique mudar a leitura original (que teve acesso ao histórico
+  multi-ano; o revisor às cegas não teve). O achado documentado aqui serve para SV-16 (dataset de
+  treino) e para futuras rodadas de rotulagem, não como convite a reabrir os 74 polígonos do
+  estrato.
 
 ## 9. Como a classe 3 muda de bioma para bioma (SV-09b)
 
