@@ -100,6 +100,220 @@ dezenas de hectares é uma fração ínfima da população/economia de um munic�
 **contexto/estratificação dos casos**, não como evidência de efeito. Detalhe completo em
 `docs/requisitos-dados-externos.md` (raiz do repositório).
 
+## Rodada 2 (2026-09-05) — painel de cobertura do solo pareado, pelo classificador
+
+Segunda entrega desta pasta, a partir de dois CSVs que o Guilherme mandou (12 data centers e
+6 candidatos a controle para cada um). O produto é o **painel final de área por classe, por ano,
+para tratamento e controle de cada campus** — `processed/painel_impacto_area_por_classe.csv`.
+
+Três coisas mudaram em relação ao que o briefing pedia, todas medidas antes de decidir:
+
+1. **Os 12 data centers do Guilherme já eram sites validados daqui** — 8 campi, não 12 pontos
+   novos (vários são prédios do mesmo campus, a 56–193 m um do outro; num buffer de 5 km, o mesmo
+   recorte de terreno). Como já eram validados, o `ano_inicio_obra` de todos já estava pesquisado.
+   A amostra foi ampliada para **15 campi** com os sites validados que não estavam na lista dele.
+2. **A tabela de candidatos a controle dele não foi usada** — 14 dos 72 pontos caíam a menos de
+   10 km de um data center do estudo (buffers sobrepostos), e 3 campi tinham candidatos em outro
+   estado, um deles em outro bioma. O diagnóstico numérico, escrito para ele, está em
+   `raw/controles-rf/DIAGNOSTICO-TABELA-GUILHERME.md`. Os controles foram regerados com o desenho
+   de SV-29 que esta pasta já usava, mas decidindo pela saída do classificador.
+3. **A ingestão Landsat foi estendida de 2021 para 2024** para que a janela `obra-3 .. obra+3` de
+   cada campus caiba num sensor só e nunca cruze a fronteira 2018/2019 medida por SV-20. Isso
+   acrescenta linhas a `outputs/indicadores/area_por_classe.csv` do repositório principal.
+
+Metodologia completa: `raw/controles-rf/METODOLOGIA.md`. Scripts: `scripts/impacto_dc_*.py`,
+numerados na ordem de execução.
+
+### O consolidado para o modelo (2026-09-06)
+
+`processed/consolidado_impacto_painel.csv` — **204 linhas × 51 colunas**, uma por (ponto, ano),
+juntando cobertura do solo, LST, socioeconômico e os atributos estáticos do data center. Também em
+`consolidado_impacto_modelo.xlsx` (abas `painel`, `pareamento`, `dicionario`) e com dicionário de
+colunas em `consolidado_impacto_dicionario.csv`.
+
+Para que tratamento e controle fossem comparáveis em **toda** variável, e não só na cobertura do
+solo, dois blocos foram recoletados (passos 8 e 9), sempre pelo mesmo código e na mesma execução
+para as duas pontas:
+
+- **LST** dos 30 pontos, e a série estendida de 2016 para **2013** — o corte em 2016 era o "10 anos
+  de histórico" do briefing anterior, não limite do MODIS. Cobertura: 204/204 nos dois lados.
+- **População, emprego e PIB** dos 27 municípios do painel (13 deles são de controle e nunca
+  tinham sido coletados), também de 2013. Cobertura idêntica nos dois lados: população 85/102,
+  emprego 99/102, PIB 94/102 — as lacunas são de fonte (a estimativa do IBGE não cobre 2013-2015
+  nem 2023; CEMPRE vai até 2024; PIB municipal até 2023).
+
+**Duas ressalvas que precisam acompanhar este arquivo:**
+
+1. **`mw_construido_total` só existe para 10 dos 15 campi, e a lacuna tem padrão geográfico:**
+   9/9 no Sudeste e 1/1 no Sul, **0 de 5** no Nordeste, Norte e Centro-Oeste. Usar MW como medida
+   de intensidade do tratamento derruba a amostra para 10 campi e elimina *todos* os biomas fora
+   da Mata Atlântica — inclusive os pares de pior qualidade. O modelo pareceria melhor por um
+   motivo que nada tem a ver com data center.
+2. **As colunas socioeconômicas são de nível municipal** e não variam dentro do município: o
+   contraste tratamento/controle nelas é entre dois municípios inteiros. Em `everest-goiania` as
+   duas pontas caem no mesmo município e o contraste é literalmente zero — marcado em
+   `municipio_compartilhado_com_par`.
+3. **Os municípios pareados têm portes muito diferentes.** A razão de população
+   controle/tratamento vai de **0,03** (`hostdime-joao-pessoa`: João Pessoa 818 mil × Conde 25 mil)
+   a **15,0** (`ascenty-vinhedo`: Vinhedo 82 mil × Campinas 1,2 milhão), e **11 dos 15 pares** ficam
+   fora da faixa 0,5–2,0. O pareamento foi feito por **cobertura do solo num buffer de 5 km**, que
+   é o que o classificador mede — não por porte de município, que não entrou em critério nenhum.
+   Consequência prática: **comparar nível** de população, emprego ou PIB entre tratamento e
+   controle não significa nada; só a **variação relativa dentro de cada município** ao longo do
+   tempo é interpretável.
+
+Renda, desemprego e escolaridade ficaram **fora** do painel de propósito: existem só do lado do
+tratamento e com cobertura irregular, e uma variável que existe de um lado só da comparação não é
+utilizável num desenho com grupo de controle. Seguem disponíveis nas tabelas originais.
+
+### Detecção: área agregada não vê a obra, trajetória de pixel vê (2026-09-06)
+
+Passos 11 e 12. Este é o resultado que mais importa para o modelo do Guilherme.
+
+**Somar área por classe no buffer não detecta a construção.** Testado em 6 raios (0,5 a 5 km) e nas
+3 classes relevantes: a fração de pares em que o tratamento sobe mais que o controle fica em torno
+de 0,5 na faixa inteira, e o pico de "solo exposto" cai na fase de obra **menos** vezes que o acaso
+previria (4/15 contra 5,1 esperados). **Reduzir o buffer não resolve** — a hipótese de que a janela
+era grande demais para o objeto foi testada e refutada.
+
+A causa é conhecida: `solo_exposto_obras` é a pior classe do classificador (F1 **0,579**, precisão
+0,587, recall 0,572 — contra 0,74 a 0,92 das outras), porque o MapBiomas não tem classe "canteiro
+de obras" e os rótulos são um proxy de solo nu natural (ADR-004). Numa soma de área, cada falso
+positivo pesa igual a um pixel verdadeiro.
+
+**Trocar a estatística resolve.** Em vez de somar área, contar pixels que cumprem uma **trajetória
+ordenada e persistente**: não ser construída nos 2 primeiros anos da janela, ser construída nos 2
+últimos, e permanecer. Um falso positivo isolado não satisfaz uma sequência; três anos coerentes
+satisfazem.
+
+| assinatura | raio | pares com excesso | p | Bonferroni (×12) |
+|---|---:|---:|---:|---:|
+| `virou_construida` | 0,5 km | **13/15** | 0,0037 | 0,044 |
+| `virou_construida` | 1 km | **13/15** | 0,0037 | 0,044 |
+| `virou_construida_via_solo` | 1 km | **13/15** | 0,0037 | 0,044 |
+
+Duas validações acompanham o achado, ambas no script:
+
+1. **O excesso é localizado, não regional.** De 0,5 km para 5 km o disco cresce 100×, mas o excesso
+   cresce só 11,6× (1,53 → 17,75 ha) — a densidade cai 7×. É a assinatura de mudança concentrada no
+   terreno, não de uma região urbanizando por inteiro.
+2. **As tendências pré-obra são paralelas.** Antes da obra, o tratamento crescia em área construída
+   mais rápido que o controle em apenas **6 de 14** pares (p=0,79; diferença mediana −0,16 pp/ano).
+   Ou seja: não há evidência de que os data centers tenham sido construídos onde a região já
+   urbanizava mais rápido. É a hipótese identificadora do desenho, e ela se sustenta.
+
+Com N=15 isso é sugestivo, não conclusivo — 2 dos 15 pares vão na direção contrária. Mas é a
+primeira medida desta frente que sobrevive a um teste estatístico e às duas checagens que tentaram
+derrubá-la.
+
+### O excesso não é o prédio: é o entorno (passos 13 e 14)
+
+Puxamos o **footprint real** de cada data center no OpenStreetMap (Overpass). Coberura: **14 de 15**
+campi, sendo **7 com `building=data_center` explícito** — três deles a 13–14 m do ponto que o
+repositório já tinha validado por outras cinco camadas, o que confirma as coordenadas de forma
+independente. Área mediana do footprint: **1,29 ha**.
+
+Dentro do footprint, só **4,8%** dos pixels (mediana) "viraram construída". Isso parece falha do
+classificador, e não é: **50% (mediana) já eram construída antes da obra** — e nos casos extremos,
+85 a 90% (`ascenty-jundiai`, `ascenty-osasco`, `ascenty-sumare`, `scala-tambore`). Não havia o que
+ver aparecer. Bate com as tags `Retrofitted` da planilha do Guilherme e com os footprints
+`landuse=industrial`: **estes data centers foram erguidos dentro de parques industriais que já
+existiam**. O contra-exemplo confirma a regra: `clickip-manaus` é o único com 0% de terreno já
+construído, e ali o classificador viu **75%** dos pixels virarem construída.
+
+**A consequência inverte a leitura do passo 12:** o excesso medido não é o prédio — é conversão no
+**entorno** dele, decaindo com a distância:
+
+| zona | pares com excesso | p | excesso mediano |
+|---|---:|---:|---:|
+| 0–0,5 km | **12/14** | 0,006 | +2,06 pp |
+| 0,5–1 km | **12/14** | 0,006 | +1,15 pp |
+| 1–2 km | 8/14 | 0,395 | +0,51 pp |
+
+Essa é a afirmação que interessa ao modelo de impacto — e a que exige mais cautela. Ela se sustenta
+em N=14, com tendências pré-obra paralelas, mas não é uma estimativa de magnitude.
+
+### Onde havia terreno para converter, o efeito é mais nítido (passo 15)
+
+Estratificando pelo `pct_ja_construida` do footprint, na zona de 0–0,5 km:
+
+- **greenfield** (< 50% já construído): **6 de 6** pares positivos, p=0,016, excesso mediano +2,40 pp
+- **brownfield** (≥ 50%): 5 de 7, p=0,227, mediana +0,77 pp
+
+Isso explica os **dois únicos pares negativos** do estudo inteiro: `ascenty-jundiai` (−5,37 pp) e
+`ascenty-sumare` (−3,08 pp) são os mais saturados, com 86% e 88% do footprint já construído. Num
+sítio saturado sobra pouco terreno convertível, e o excesso encolhe por motivo **mecânico**, não por
+ausência de efeito.
+
+O corte de 50% foi escolhido **depois** de ver os dados. O script varre 7 limiares e publica todos:
+greenfield fica 100% positivo em toda a faixa de 40% a 80%. O teste contínuo equivalente (Spearman
+−0,31, n=13) tem direção consistente mas magnitude fraca — **a leitura defensável é a do padrão,
+não a do coeficiente**.
+
+**Anomalias registradas, não corrigidas:** `ascenty-maracanau` ficou sem pixel válido no footprint
+(0,82 ha ≈ 9 pixels Landsat, todos com nodata em algum ano); `equinix-santana-parnaiba` tem
+footprint de 9,89 ha com só 1,4% classificado como construída ao fim — o polígono do OSM
+provavelmente cobre o lote inteiro, não a edificação; `scala-sgigsm01` tem 71% construída no início
+e 21% no fim, instabilidade de classificação num tecido urbano muito denso (São João de Meriti,
+prop. construída 0,77).
+
+**Para apresentar:** `notebooks/01_modelo_impacto.ipynb` (na raiz do repositório) percorre a
+rodada inteira com as figuras — o problema, por que a tabela de candidatos não serviu, o funil de
+pareamento, os 15 pares, a regra do sensor único e o painel final, terminando em limitações e
+conclusão. Ele **consome** os artefatos já gerados pelos scripts, não recalcula nada — mesma
+convenção do `00_demo_preview.ipynb`, que é o notebook do classificador.
+
+**Esta rodada é paralela a `raw/controles/`, não a substitui.** Aquela pareia pelo MapBiomas e
+cobre os 16 sites; esta pareia pelo classificador e cobre os 15 com ano de obra conhecido. São
+critérios diferentes, e vale poder comparar os dois.
+
+### Temperatura: nulo, mas nulo SEM PODER (passo 16, 2026-09-10)
+
+A LST estava coletada desde o passo 8 — 204/204 ponto-ano, equilibrada em 102 tratamento e 102
+controle, 2013-2025, mesmo código nas duas pontas — e **nunca tinha sido analisada**.
+
+O resultado do desenho pareado sobre ela é nulo: **6 de 15** campi aqueceram mais que seu controle,
+mediana **−0,07 °C**, p=0,61.
+
+**Esse nulo não é evidência de ausência de aquecimento, e o script publica a prova disso.** A LST
+vem do `MOD11A2`, de **1 km** de resolução, medida num disco de **5 km**. O efeito de construção
+vive no anel de 0-0,5 km — menor que um único pixel MODIS. Convertendo: +2,06 p.p. num anel de
+78,5 ha são ~1,6 ha, que é 0,02% do disco. Contra isso:
+
+| | valor |
+|---|---:|
+| efeito esperado no disco de 5 km, pela diluição | **0,0015 °C** |
+| efeito mínimo detectável do desenho (n=15, α=0,05, poder 80%) | **0,636 °C** |
+| razão | **427×** |
+
+O dado de LST em si está sadio, e o script mede isso também: ao longo dos 204 ponto-ano, LST e
+proporção de área construída correlacionam a **r=0,49**, com contraste implícito de **7,2 °C** entre
+0% e 100% construído. A física está lá; o que falta é escala. Responder essa pergunta de verdade
+exige a **banda termal do Landsat (30 m)**, não MODIS.
+
+Script: `scripts/impacto_dc_16_lst_did.py` · saídas `raw/controles-rf/lst_did*.csv` ·
+figura `fig_10_lst_did.png`.
+
+### Planilha de resultados para o time (passo 17)
+
+`processed/consolidado_impacto_resultados.xlsx` — 9 abas com as tabelas dos passos 12 a 16, mais
+uma aba `leia_primeiro` com os quatro avisos que precisam acompanhar o arquivo.
+
+Existe porque `consolidado_impacto_modelo.xlsx` entrega o **painel**, e as colunas de cobertura
+dele (`area_ha_*` / `prop_*`) são justamente a estatística que os passos 10-11 refutaram. Quem
+receber só o painel e modelar naquelas colunas repete um beco sem saída já medido aqui.
+
+Script: `scripts/impacto_dc_17_planilha_resultados.py`.
+
+### Para onde isso foi
+
+A camada de modelo em cima destes resultados **não fica nesta pasta** — está em
+`modelo-impacto-score/` (frente separada, criada em 2026-09-10): boletim por eixo com selo de
+evidência, teste de poder preditivo e projeção por classe de referência. O resultado central de lá,
+que vale registrar aqui: **a magnitude do impacto não é predizível** com as features disponíveis
+(R² LOOCV negativo em 13 modelos, permutação p=0,53) — o que se sustenta é o padrão, não o
+coeficiente, exatamente como o passo 15 já suspeitava.
+
 ## Status
 
 Coleta inicial concluída (2026-09-03): temperatura, população, emprego, PIB, renda, desemprego e
@@ -107,3 +321,9 @@ escolaridade levantados; lista reconciliada com o scraping do Guilherme; planilh
 montada. Pendências conhecidas: (1) temperatura/população/emprego não cobrem os 3 sites novos; (2)
 desemprego municipal só existe pra 5 dos 18 municípios; (3) nada foi validado com a mesma cascata
 de 5 camadas (V1-V5) que os 16 sites originais tiveram.
+
+Rodada 2 concluída (2026-09-05): pareamento pelo classificador e painel de área por classe por ano
+gerados para os 15 campi com ano de obra conhecido. Pendências conhecidas: (1) `odata-hortolandia`
+segue sem `ano_inicio_obra` e por isso fora do painel; (2) `ascenty-maracanau` entra com janela de
+5 anos em vez de 7 (precisaria de 2011-2012, faixa_b desabilitada); (3) `clickip-manaus` e
+`scala-spoapa01` entram com 6 anos (obra de 2023, o terceiro ano depois ainda não aconteceu).

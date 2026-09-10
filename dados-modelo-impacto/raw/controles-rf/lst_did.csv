@@ -1,0 +1,16 @@
+pareado_com,sensor,ano_inicio_obra,ano_min,ano_max,n_anos,lst_pre_tratamento,lst_pos_tratamento,delta_tratamento_c,delta_controle_c,excesso_c,qualidade_par,municipio_compartilhado_com_par
+scala-spoapa01,s2,2023,2020,2025,6,24.955,22.984,-1.97,-3.153,1.183,ruim,False
+ascenty-maracanau,landsat,2014,2013,2017,5,33.806,33.175,-0.631,-1.193,0.562,ruim,False
+angonap-fortaleza,landsat,2017,2014,2020,7,31.379,31.519,0.14,-0.281,0.421,aceitavel,False
+ascenty-hortolandia,landsat,2018,2015,2022,8,31.026,31.246,0.221,-0.131,0.352,bom,False
+ascenty-jundiai,landsat,2019,2016,2022,7,27.377,26.851,-0.526,-0.631,0.105,bom,False
+ascenty-sumare,landsat,2017,2014,2020,7,31.742,31.896,0.154,0.142,0.012,ruim,False
+ascenty-paulinia,landsat,2019,2016,2022,7,31.209,31.275,0.066,0.075,-0.009,bom,False
+ascenty-osasco,landsat,2020,2017,2023,7,28.697,28.048,-0.648,-0.577,-0.071,ruim,False
+equinix-santana-parnaiba,landsat,2020,2017,2023,7,26.76,26.003,-0.757,-0.436,-0.321,ruim,False
+ascenty-vinhedo,landsat,2019,2016,2022,7,28.247,28.058,-0.189,0.22,-0.408,aceitavel,False
+hostdime-joao-pessoa,landsat,2017,2014,2020,7,30.079,30.188,0.11,0.579,-0.47,ruim,False
+scala-tambore,landsat,2021,2018,2024,7,29.076,27.84,-1.237,-0.63,-0.607,ruim,False
+scala-sgigsm01,s2,2022,2019,2025,7,34.678,31.158,-3.52,-2.697,-0.823,ruim,False
+everest-goiania,landsat,2021,2018,2024,7,35.388,33.561,-1.827,-0.957,-0.871,ruim,True
+clickip-manaus,s2,2023,2020,2025,6,34.773,32.166,-2.606,0.112,-2.719,ruim,False
