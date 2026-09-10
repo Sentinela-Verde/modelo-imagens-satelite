@@ -1,0 +1,3 @@
+zona,n_pares,n_aqueceu_mais,excesso_mediano_c,p_bilateral,desvio_c,efeito_minimo_detectavel_c,area_anel_ha,pixels_30m_no_anel,mde_modis_passo16_c,n_pares_necessario_para_detectar,mde_melhorou_vs_modis
+0-0.5km,12,8,0.513,0.3877,1.0166,0.8217,78.5,872,0.636,31,False
+0.5-1km,12,7,0.202,0.7744,0.975,0.7881,235.6,2617,0.636,183,False

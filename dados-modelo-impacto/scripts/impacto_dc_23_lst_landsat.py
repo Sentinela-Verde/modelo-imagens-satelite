@@ -255,7 +255,18 @@ def fase_analise() -> None:
             "area_anel_ha": round(area_ha, 1),
             "pixels_30m_no_anel": int(area_ha * 1e4 / 900),
             "mde_modis_passo16_c": float(modis.efeito_minimo_detectavel_c),
-            "ganho_de_poder_vs_modis": round(float(modis.efeito_minimo_detectavel_c) / mde, 2) if mde else None,
+            # Quantos pares seriam necessários para que o efeito ESTIMADO aqui atingisse
+            # significância com este desvio. É a pergunta útil quando o resultado é nulo:
+            # "nulo" e "precisaríamos de N=31" dizem coisas muito diferentes ao leitor.
+            "n_pares_necessario_para_detectar": (
+                int(math.ceil((2.80 * sigma / abs(float(np.median(e)))) ** 2))
+                if np.median(e) != 0 else None
+            ),
+            # A resolução melhorou 33x (1 km -> 30 m), mas poder estatístico não é resolução:
+            # MDE = 2,80*sigma/sqrt(n), e aqui n caiu de 15 para 12 (só os pares Landsat) e o
+            # sigma entre pares subiu. Registrar isso explicitamente evita a leitura ingênua de
+            # que "sensor melhor = resultado melhor".
+            "mde_melhorou_vs_modis": bool(mde < float(modis.efeito_minimo_detectavel_c)),
         })
     resumo = pd.DataFrame(linhas)
     C.salvar_csv(resumo, SAIDA_RESUMO)
@@ -299,11 +310,16 @@ def fase_analise() -> None:
     print("\n--- LST no anel (Landsat 30 m) ---")
     for _, r in resumo.iterrows():
         print(f"  {r.zona}: {r.n_aqueceu_mais}/{r.n_pares} aqueceram mais que o controle · "
-              f"mediana {r.excesso_mediano_c:+.3f} °C · p={r.p_bilateral:.3f}")
-        print(f"    MDE {r.efeito_minimo_detectavel_c:.3f} °C contra "
-              f"{r.mde_modis_passo16_c:.3f} °C do MODIS "
-              f"({r.ganho_de_poder_vs_modis}x mais sensível) · "
+              f"mediana {r.excesso_mediano_c:+.3f} °C · p={r.p_bilateral:.3f} · "
               f"{r.pixels_30m_no_anel} pixels no anel")
+        print(f"    MDE {r.efeito_minimo_detectavel_c:.3f} °C "
+              f"({'melhorou' if r.mde_melhorou_vs_modis else 'PIOROU'} vs "
+              f"{r.mde_modis_passo16_c:.3f} °C do MODIS) · "
+              f"precisaria de n={r.n_pares_necessario_para_detectar} pares para detectar "
+              f"o proprio efeito estimado")
+    print("\nA resolucao melhorou 33x, o poder NAO: MDE = 2,80*sigma/sqrt(n), e aqui n caiu de 15")
+    print("para 12 (so os pares Landsat) enquanto o sigma entre pares subiu. Resolucao e poder")
+    print("estatistico sao coisas diferentes, e este passo e o contraexemplo.")
 
 
 def main() -> int:
