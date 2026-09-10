@@ -1,0 +1,10 @@
+raio_km,assinatura,placebo_n_pares,placebo_n_positivo,placebo_frac_positivo,placebo_p_unilateral,placebo_excesso_mediano_pp,real_frac_positivo,real_p_unilateral,real_excesso_mediano_pp
+0.5,virou_construida,15,8,0.533,0.5,0.2183,0.867,0.0037,1.9331
+0.5,virou_construida_via_solo,15,4,0.267,0.9824,-0.0119,0.6,0.3036,0.23
+0.5,vegetacao_para_construida,15,8,0.533,0.5,0.1146,0.733,0.0592,0.6638
+1.0,virou_construida,15,7,0.467,0.6964,-0.258,0.867,0.0037,0.8879
+1.0,virou_construida_via_solo,15,5,0.333,0.9408,-0.1142,0.867,0.0037,0.3827
+1.0,vegetacao_para_construida,15,6,0.4,0.8491,-0.2572,0.733,0.0592,0.5857
+2.0,virou_construida,15,7,0.467,0.6964,-0.3655,0.6,0.3036,0.62
+2.0,virou_construida_via_solo,15,7,0.467,0.6964,-0.0286,0.8,0.0176,0.1591
+2.0,vegetacao_para_construida,15,5,0.333,0.9408,-0.44,0.6,0.3036,0.2013
