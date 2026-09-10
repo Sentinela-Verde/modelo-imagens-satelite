@@ -21,6 +21,7 @@ em `obra-3`), nunca a série inteira.
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 
 import numpy as np
@@ -40,9 +41,9 @@ N_ANOS_PONTA = 2  # mesma convenção do passo 12 de dados-modelo-impacto
 # propriedade do EIXO (quão bem aquela pergunta foi respondida no conjunto), não de um campus.
 EIXOS = {
     "construcao_0_500m": {
-        "rotulo": "Conversão para construída, anel 0–500 m",
+        "rotulo": "Conversão para construída, anel 0–500 m (SEM o prédio)",
         "unidade": "p.p.",
-        "fonte": "footprint_vs_anel.csv",
+        "fonte": "footprint_vs_anel.csv (footprint subtraído)",
         "direcao_ruim": +1,  # mais conversão = mais impacto
     },
     "construcao_500m_1km": {
@@ -72,9 +73,50 @@ ZONA_POR_EIXO = {
 }
 
 
+def _sem_footprint(anel: pd.DataFrame, zona: str, assinatura: str) -> pd.DataFrame:
+    """Recalcula uma zona removendo os pixels do footprint do data center.
+
+    **Por que isto existe.** No passo 14 a zona "0-0.5km" é um DISCO (`r_int == 0`), não um anel:
+    ela contém o próprio prédio do data center. Com footprint mediano de 1,29 ha num disco de
+    78,5 ha, o prédio é 1,6% da zona — e o excesso medido é ~1,6 ha. Reportar esse número como
+    "impacto no entorno" mistura o empreendimento com o efeito dele, e a leitura vira circular:
+    *"depois de construir um data center, detectamos um data center."*
+
+    A correção é subtração exata, não estimativa: a linha `zona == "footprint"` traz a contagem de
+    pixels válidos e de pixels que cumpriram a assinatura DENTRO do footprint, então basta
+    descontar as duas do disco. Não precisa reprocessar raster nenhum.
+
+    Só o tratamento tem footprint; no controle a zona fica inalterada, que é o comportamento certo
+    (o controle não tem prédio a descontar, e é justamente a hipótese nula do disco do tratamento).
+    """
+    disco = anel[anel.zona == zona].set_index("site_id")
+    fp = anel[anel.zona == "footprint"].set_index("site_id")
+
+    linhas = []
+    for sid, r in disco.iterrows():
+        px, marcados = r.pixels_validos_mascara, r[assinatura]
+        if sid in fp.index:
+            f = fp.loc[sid]
+            if pd.notna(f.pixels_validos_mascara) and f.pixels_validos_mascara > 0:
+                px = px - f.pixels_validos_mascara
+                marcados = marcados - f[assinatura]
+        linhas.append(
+            {
+                "site_id": sid, "pareado_com": r.pareado_com, "tipo": r.tipo,
+                f"pct_{assinatura}": 100.0 * marcados / px if px > 0 else np.nan,
+            }
+        )
+    return pd.DataFrame(linhas)
+
+
 def _excesso_por_zona(anel: pd.DataFrame, zona: str, coluna: str) -> pd.Series:
-    """Excesso tratamento − controle de `coluna` na `zona`, indexado por campus."""
-    z = anel[anel.zona == zona]
+    """Excesso tratamento − controle de `coluna` na `zona`, indexado por campus.
+
+    Para a zona "0-0.5km" o cálculo passa por `_sem_footprint` — ver a docstring de lá: aquela
+    zona é um disco e conteria o próprio prédio.
+    """
+    assinatura = coluna.replace("pct_", "")
+    z = _sem_footprint(anel, zona, assinatura) if zona == "0-0.5km" else anel[anel.zona == zona]
     t = z[z.tipo == "tratamento"].set_index("pareado_com")[coluna]
     c = z[z.tipo == "controle"].set_index("pareado_com")[coluna]
     return (t - c).dropna()
@@ -91,21 +133,33 @@ def selos_de_evidencia() -> pd.DataFrame:
     lst = pd.read_csv(DIR_RESULTADOS / "lst_did_resumo.csv")
     poder = pd.read_csv(DIR_RESULTADOS / "lst_did_poder.csv")
 
+    # A zona 0-0.5km precisa do teste de sinal RECALCULADO sem o footprint — o resumo publicado
+    # pelo passo 14 é do disco com o prédio dentro. As demais zonas são anéis de verdade e o
+    # resumo serve como está.
+    bruto = pd.read_csv(DIR_RESULTADOS / "footprint_vs_anel.csv")
+
     linhas = []
     for eixo, (zona, coluna) in ZONA_POR_EIXO.items():
         assinatura = coluna.replace("pct_", "")
-        r = anel[(anel.zona == zona) & (anel.assinatura == assinatura)]
-        if r.empty:
-            continue
-        r = r.iloc[0]
-        p = float(r.p_unilateral)
+        if zona == "0-0.5km":
+            e = _excesso_por_zona(bruto, zona, coluna).to_numpy(float)
+            n_p, k = len(e), int((e > 0).sum())
+            p = sum(math.comb(n_p, i) * 0.5**n_p for i in range(k, n_p + 1))
+            mediana = float(np.median(e))
+        else:
+            r0 = anel[(anel.zona == zona) & (anel.assinatura == assinatura)]
+            if r0.empty:
+                continue
+            r0 = r0.iloc[0]
+            n_p, k = int(r0.n_pares), int(r0.n_positivo)
+            p, mediana = float(r0.p_unilateral), float(r0.excesso_mediano_pp)
         linhas.append(
             {
                 "eixo": eixo,
-                "n_pares": int(r.n_pares),
-                "n_positivo": int(r.n_positivo),
+                "n_pares": n_p,
+                "n_positivo": k,
                 "p": round(p, 4),
-                "excesso_mediano": round(float(r.excesso_mediano_pp), 3),
+                "excesso_mediano": round(mediana, 3),
                 "selo": "forte" if p < 0.05 else ("sugestivo" if p < 0.15 else "nulo_informativo"),
                 "razao_do_selo": (
                     "teste de sinal unilateral sobre os pares; direção e magnitude consistentes"
