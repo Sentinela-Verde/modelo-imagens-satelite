@@ -176,7 +176,7 @@ def fase_controles() -> None:
     passou a incluir os 10 da expansão.
     """
     import impacto_dc_03_gerar_controles as P3
-    import impacto_dc_geo as G
+    import gerar_controles_pareados as G
 
     df = pd.read_csv(SAIDA_LISTA)
     novos = df[df.elegivel].copy()
