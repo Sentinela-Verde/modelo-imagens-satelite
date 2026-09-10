@@ -1,5 +1,5 @@
-eixo,n_pares,n_positivo,p,excesso_mediano,selo,razao_do_selo
-construcao_0_500m,14,12,0.0065,1.498,forte,teste de sinal unilateral sobre os pares; direção e magnitude consistentes
-construcao_500m_1km,14,12,0.0065,1.155,forte,teste de sinal unilateral sobre os pares; direção e magnitude consistentes
-vegetacao_0_500m,14,11,0.0287,0.517,forte,teste de sinal unilateral sobre os pares; direção e magnitude consistentes
-temperatura,15,6,0.6072,-0.071,nulo_sem_poder,efeito mínimo detectável 0.636 °C contra efeito esperado 0.00149 °C (426.8x) — MODIS 1 km num disco de 5 km dilui o sinal; o nulo não informa sobre a existência do efeito
+eixo,n_pares,n_positivo,p,excesso_mediano,selo,validado_por_placebo,razao_do_selo
+construcao_0_500m,14,12,0.0065,1.498,forte,"sim — a mesma estatística aplicada a 15 pares SEM data center dá 8/15 (p=0.50, mediana +0.22 p.p.): não produz falso positivo",teste de sinal unilateral sobre os pares; direção e magnitude consistentes
+construcao_500m_1km,14,12,0.0065,1.155,forte,"sim — a mesma estatística aplicada a 15 pares SEM data center dá 8/15 (p=0.50, mediana +0.22 p.p.): não produz falso positivo",teste de sinal unilateral sobre os pares; direção e magnitude consistentes
+vegetacao_0_500m,14,11,0.0287,0.517,forte,"sim — a mesma estatística aplicada a 15 pares SEM data center dá 8/15 (p=0.50, mediana +0.22 p.p.): não produz falso positivo",teste de sinal unilateral sobre os pares; direção e magnitude consistentes
+temperatura,15,6,0.6072,-0.071,nulo_sem_poder,não se aplica — outra estatística; ver o cálculo de poder,efeito mínimo detectável 0.636 °C contra efeito esperado 0.00149 °C (426.8x) — MODIS 1 km num disco de 5 km dilui o sinal; o nulo não informa sobre a existência do efeito

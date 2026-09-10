@@ -122,6 +122,32 @@ def _excesso_por_zona(anel: pd.DataFrame, zona: str, coluna: str) -> pd.Series:
     return (t - c).dropna()
 
 
+def placebo_da_estatistica() -> str:
+    """Resumo, em uma linha, do teste placebo que valida a estatística por trás dos eixos fortes.
+
+    Todo eixo de conversão deste boletim usa a mesma estatística: contagem de pixels com
+    trajetória ordenada e persistente (passo 12 de `dados-modelo-impacto`). O passo 19 aplicou
+    essa estatística a 15 pares de lugares onde **nada** foi construído — controle contra
+    controle, mesma janela, mesmo ano de obra fictício.
+
+    Isso é o que separa um selo `forte` aqui de um p-valor solto: sabemos qual é a taxa de falso
+    positivo do instrumento, porque ela foi medida, e não assumida.
+    """
+    caminho = DIR_RESULTADOS / "placebo_resumo.csv"
+    if not caminho.exists():
+        return "placebo não executado"
+    pl = pd.read_csv(caminho)
+    r = pl[(pl.assinatura == "virou_construida") & (pl.raio_km == 0.5)]
+    if r.empty:
+        return "placebo sem linha para a assinatura principal"
+    r = r.iloc[0]
+    return (
+        f"sim — a mesma estatística aplicada a {int(r.placebo_n_pares)} pares SEM data center dá "
+        f"{int(r.placebo_n_positivo)}/{int(r.placebo_n_pares)} (p={r.placebo_p_unilateral:.2f}, "
+        f"mediana {r.placebo_excesso_mediano_pp:+.2f} p.p.): não produz falso positivo"
+    )
+
+
 def selos_de_evidencia() -> pd.DataFrame:
     """Selo de qualidade de evidência por eixo, lido dos resumos já publicados.
 
@@ -161,6 +187,7 @@ def selos_de_evidencia() -> pd.DataFrame:
                 "p": round(p, 4),
                 "excesso_mediano": round(mediana, 3),
                 "selo": "forte" if p < 0.05 else ("sugestivo" if p < 0.15 else "nulo_informativo"),
+                "validado_por_placebo": placebo_da_estatistica(),
                 "razao_do_selo": (
                     "teste de sinal unilateral sobre os pares; direção e magnitude consistentes"
                     if p < 0.05
@@ -178,6 +205,10 @@ def selos_de_evidencia() -> pd.DataFrame:
             "n_pares": int(rl.n_pares),
             "n_positivo": int(rl.n_aqueceu_mais_que_controle),
             "p": round(float(rl.p_bilateral), 4),
+            # O placebo do passo 19 validou a estatística de TRAJETÓRIA de pixel. A LST usa outra
+            # medida (diferença-em-diferenças sobre a média do disco), então herdar aquela
+            # validação aqui seria falso. O que este eixo tem no lugar é o cálculo de poder.
+            "validado_por_placebo": "não se aplica — outra estatística; ver o cálculo de poder",
             "excesso_mediano": round(float(rl.excesso_mediano_c), 3),
             "selo": "nulo_sem_poder",
             "razao_do_selo": (
