@@ -1,0 +1,13 @@
+id_datacenter,nome_datacenter,cidade_guilherme,lat_guilherme,lon_guilherme,ano_operacional_guilherme,site_id,distancia_ao_site_km,casou,ano_inicio_obra_repo,ano_inicio_operacao_repo,municipio_repo,uf_repo,n_predios_no_campus
+dc_23c0e2a666,Ascenty - Hortolandia HTL2,Hortolândia,-22.8949687,-47.1794405,2019,ascenty-hortolandia,0.118,True,2018,2015,Hortolândia,SP,4
+dc_2b7c5d95d1,Ascenty - Hortolandia HTL4,Hortolândia,-22.8948579,-47.1789044,2021,ascenty-hortolandia,0.134,True,2018,2015,Hortolândia,SP,4
+dc_3357273eaa,Ascenty - Hortolandia HTL3,Hortolândia,-22.8942092,-47.1797024,2019,ascenty-hortolandia,0.206,True,2018,2015,Hortolândia,SP,4
+dc_6fba998120,Ascenty - Hortolandia HTL5,Hortolândia,-22.8958925,-47.1801919,2022,ascenty-hortolandia,0.098,True,2018,2015,Hortolândia,SP,4
+dc_1e8c6816f0,Ascenty - Jundiai JDI2,Jundiaí,-23.1924667,-46.9729886,2019,ascenty-jundiai,0.184,True,2019,2019,Jundiaí,SP,1
+dc_363da00599,Ascenty - Sao Paulo SP3,Osasco,-23.491232,-46.7759313,2020,ascenty-osasco,0.175,True,2020,2020,Osasco,SP,2
+dc_f7606e1e75,Ascenty - Sao Paulo SP4,Osasco,-23.4898885,-46.7752556,2023,ascenty-osasco,0.331,True,2020,2020,Osasco,SP,2
+dc_541dfaf17f,Ascenty - Paulinia PLN1,Paulínia,-22.7970795,-47.1352301,2019,ascenty-paulinia,0.079,True,2019,2019,Paulínia,SP,1
+dc_211c584638,Ascenty - Sumare SUM2,Sumaré,-22.8138615,-47.2133634,2019,ascenty-sumare,1.025,True,2017,2017,Sumaré,SP,1
+dc_dd22938cb6,Equinix SP5x,Santana de Parnaíba,-23.46393786425595,-46.8626817427955,2021,equinix-santana-parnaiba,0.486,True,2020,2021,Santana de Parnaíba,SP,1
+dc_c81b687e80,Scala Data Centers SGIGSM01,Sao Joao de Meriti,-22.796438,-43.356317,2023,scala-sgigsm01,0.458,True,2022,2023,São João de Meriti,RJ,1
+dc_708ead2d07,Scala Data Centers SPOAPA01,Porto Alegre,-30.0028052,-51.1979623,2023,scala-spoapa01,0.018,True,2023,2023,Porto Alegre,RS,1

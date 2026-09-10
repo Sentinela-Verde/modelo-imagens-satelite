@@ -1,0 +1,69 @@
+{
+  "site_id": "ascenty-osasco",
+  "ano": 2023,
+  "sensor": "landsat",
+  "modelo_versao": "rf_v1.0-tuned",
+  "modelo_path": "models\\rf_v1.0-tuned.joblib",
+  "modelo_sha256": "2d38d312706cc7b4dc3525709c06a439074825bd258f252b6b9bf817819d2d86",
+  "dataset_versao": "v1.0",
+  "lista_features": [
+    "blue",
+    "green",
+    "red",
+    "nir",
+    "swir1",
+    "swir2",
+    "ndvi",
+    "evi",
+    "ndwi",
+    "mndwi",
+    "ndbi",
+    "bsi",
+    "ndmi",
+    "sensor_landsat"
+  ],
+  "git_sha": "0f2fb36971c76a3f2b218db9032a8abe5ca6e7aa",
+  "gerado_em": "2026-09-05T21:58:07.777367+00:00",
+  "classes": {
+    "0": "nodata",
+    "1": "vegetacao_densa",
+    "2": "vegetacao_rala",
+    "3": "solo_exposto_obras",
+    "4": "construida_urbana",
+    "5": "agua"
+  },
+  "crs": "EPSG:31983",
+  "transform": [
+    30.0,
+    0.0,
+    313500.0,
+    0.0,
+    -30.0,
+    7405890.0
+  ],
+  "shape": {
+    "width": 334,
+    "height": 335
+  },
+  "n_pixels_total": 111890,
+  "n_pixels_validos": 111559,
+  "n_pixels_nodata": 331,
+  "pct_pixels_validos": 99.7042,
+  "distribuicao_classes": {
+    "vegetacao_densa": 24080,
+    "vegetacao_rala": 16311,
+    "solo_exposto_obras": 713,
+    "construida_urbana": 69259,
+    "agua": 1196
+  },
+  "confianca": {
+    "media": 86.85,
+    "minima": 26,
+    "maxima": 100
+  },
+  "sha256": "b1d98acfd05ffc3df7ca964b2dca0cbc8451ba9d3785f38948a24ca88d8fccca",
+  "sha256_nota": "hash dos bytes do array uint8 de classes preditas, NAO do arquivo .tif inteiro (ver docstring do módulo) — é o que garante o critério de determinismo.",
+  "sha256_confianca": "2442aac9b7d4eca8140bb84635c658f467d1fa460a92c742320303ad03e28258",
+  "tif": "data\\processed\\classificado\\landsat\\ascenty-osasco\\2023.tif",
+  "tif_confianca": "data\\processed\\classificado\\landsat\\ascenty-osasco\\2023_confianca.tif"
+}

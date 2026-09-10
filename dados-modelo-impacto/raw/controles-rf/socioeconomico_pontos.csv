@@ -1,0 +1,205 @@
+site_id,tipo,pareado_com,municipio,uf,codigo_ibge,ano,populacao,populacao_tipo_estimativa,emprego_formal_total,pessoal_ocupado_total,numero_empresas,pib_mil_reais,municipio_compartilhado_com_par,data_extracao
+ctrl-angonap-fortaleza-p01,controle,angonap-fortaleza,Caucaia,CE,2303709,2014,,,41442.0,45566.0,3417.0,5582491.0,False,2026-09-06
+ctrl-angonap-fortaleza-p01,controle,angonap-fortaleza,Caucaia,CE,2303709,2015,,,42197.0,46568.0,3593.0,5743008.0,False,2026-09-06
+ctrl-angonap-fortaleza-p01,controle,angonap-fortaleza,Caucaia,CE,2303709,2016,358164.0,estimativa_intercensitaria,32371.0,36890.0,3855.0,5443796.0,False,2026-09-06
+ctrl-angonap-fortaleza-p01,controle,angonap-fortaleza,Caucaia,CE,2303709,2017,362223.0,estimativa_intercensitaria,35519.0,40036.0,3720.0,5862516.0,False,2026-09-06
+ctrl-angonap-fortaleza-p01,controle,angonap-fortaleza,Caucaia,CE,2303709,2018,363982.0,estimativa_intercensitaria,36006.0,40278.0,3514.0,5069517.0,False,2026-09-06
+ctrl-angonap-fortaleza-p01,controle,angonap-fortaleza,Caucaia,CE,2303709,2019,361400.0,estimativa_intercensitaria,38933.0,43135.0,3545.0,6915884.0,False,2026-09-06
+ctrl-angonap-fortaleza-p01,controle,angonap-fortaleza,Caucaia,CE,2303709,2020,365212.0,estimativa_intercensitaria,38922.0,43328.0,3667.0,7171082.0,False,2026-09-06
+angonap-fortaleza,tratamento,angonap-fortaleza,Fortaleza,CE,2304400,2014,,,825189.0,910187.0,60799.0,56116644.0,False,2026-09-06
+angonap-fortaleza,tratamento,angonap-fortaleza,Fortaleza,CE,2304400,2015,,,796204.0,880791.0,60490.0,57211200.0,False,2026-09-06
+angonap-fortaleza,tratamento,angonap-fortaleza,Fortaleza,CE,2304400,2016,2609716.0,estimativa_intercensitaria,764914.0,847545.0,59046.0,60088001.0,False,2026-09-06
+angonap-fortaleza,tratamento,angonap-fortaleza,Fortaleza,CE,2304400,2017,2627482.0,estimativa_intercensitaria,757867.0,841351.0,58323.0,61592347.0,False,2026-09-06
+angonap-fortaleza,tratamento,angonap-fortaleza,Fortaleza,CE,2304400,2018,2643247.0,estimativa_intercensitaria,766815.0,849045.0,56922.0,66381302.0,False,2026-09-06
+angonap-fortaleza,tratamento,angonap-fortaleza,Fortaleza,CE,2304400,2019,2669342.0,estimativa_intercensitaria,763558.0,849116.0,60618.0,67401430.0,False,2026-09-06
+angonap-fortaleza,tratamento,angonap-fortaleza,Fortaleza,CE,2304400,2020,2686612.0,estimativa_intercensitaria,729661.0,818765.0,62532.0,64821582.0,False,2026-09-06
+ctrl-ascenty-hortolandia-p01,controle,ascenty-hortolandia,Campinas,SP,3509502,2015,,,414177.0,476759.0,47707.0,57154532.0,False,2026-09-06
+ctrl-ascenty-hortolandia-p01,controle,ascenty-hortolandia,Campinas,SP,3509502,2016,1173370.0,estimativa_intercensitaria,400781.0,462579.0,47742.0,57778152.0,False,2026-09-06
+ctrl-ascenty-hortolandia-p01,controle,ascenty-hortolandia,Campinas,SP,3509502,2017,1182429.0,estimativa_intercensitaria,401356.0,462058.0,46483.0,58469540.0,False,2026-09-06
+ctrl-ascenty-hortolandia-p01,controle,ascenty-hortolandia,Campinas,SP,3509502,2018,1194094.0,estimativa_intercensitaria,401348.0,461871.0,46943.0,61388555.0,False,2026-09-06
+ctrl-ascenty-hortolandia-p01,controle,ascenty-hortolandia,Campinas,SP,3509502,2019,1204073.0,estimativa_intercensitaria,400552.0,464714.0,51008.0,65837258.0,False,2026-09-06
+ctrl-ascenty-hortolandia-p01,controle,ascenty-hortolandia,Campinas,SP,3509502,2020,1213792.0,estimativa_intercensitaria,385683.0,452658.0,53005.0,65158382.0,False,2026-09-06
+ctrl-ascenty-hortolandia-p01,controle,ascenty-hortolandia,Campinas,SP,3509502,2021,1223237.0,estimativa_intercensitaria,404030.0,474810.0,56149.0,72946910.0,False,2026-09-06
+ctrl-ascenty-hortolandia-p01,controle,ascenty-hortolandia,Campinas,SP,3509502,2022,1139047.0,censo,420374.0,532090.0,82954.0,80646591.0,False,2026-09-06
+ascenty-hortolandia,tratamento,ascenty-hortolandia,Hortolândia,SP,3519071,2015,,,44481.0,50527.0,4660.0,11010484.0,False,2026-09-06
+ascenty-hortolandia,tratamento,ascenty-hortolandia,Hortolândia,SP,3519071,2016,219039.0,estimativa_intercensitaria,43916.0,49728.0,4551.0,11245733.0,False,2026-09-06
+ascenty-hortolandia,tratamento,ascenty-hortolandia,Hortolândia,SP,3519071,2017,222186.0,estimativa_intercensitaria,45683.0,51170.0,4340.0,12411319.0,False,2026-09-06
+ascenty-hortolandia,tratamento,ascenty-hortolandia,Hortolândia,SP,3519071,2018,227353.0,estimativa_intercensitaria,43989.0,49529.0,4437.0,13154947.0,False,2026-09-06
+ascenty-hortolandia,tratamento,ascenty-hortolandia,Hortolândia,SP,3519071,2019,230851.0,estimativa_intercensitaria,46222.0,51965.0,4759.0,14738378.0,False,2026-09-06
+ascenty-hortolandia,tratamento,ascenty-hortolandia,Hortolândia,SP,3519071,2020,234259.0,estimativa_intercensitaria,46849.0,53067.0,5044.0,16386639.0,False,2026-09-06
+ascenty-hortolandia,tratamento,ascenty-hortolandia,Hortolândia,SP,3519071,2021,237570.0,estimativa_intercensitaria,48701.0,55322.0,5502.0,18377822.0,False,2026-09-06
+ascenty-hortolandia,tratamento,ascenty-hortolandia,Hortolândia,SP,3519071,2022,236641.0,censo,52612.0,63078.0,8386.0,21420797.0,False,2026-09-06
+ctrl-ascenty-jundiai-p01,controle,ascenty-jundiai,Campo Limpo Paulista,SP,3509601,2016,81693.0,estimativa_intercensitaria,12236.0,14167.0,1269.0,1764249.0,False,2026-09-06
+ctrl-ascenty-jundiai-p01,controle,ascenty-jundiai,Campo Limpo Paulista,SP,3509601,2017,82520.0,estimativa_intercensitaria,12495.0,14462.0,1269.0,1850600.0,False,2026-09-06
+ctrl-ascenty-jundiai-p01,controle,ascenty-jundiai,Campo Limpo Paulista,SP,3509601,2018,83735.0,estimativa_intercensitaria,12560.0,14241.0,1238.0,2102640.0,False,2026-09-06
+ctrl-ascenty-jundiai-p01,controle,ascenty-jundiai,Campo Limpo Paulista,SP,3509601,2019,84650.0,estimativa_intercensitaria,11696.0,13652.0,1367.0,2145809.0,False,2026-09-06
+ctrl-ascenty-jundiai-p01,controle,ascenty-jundiai,Campo Limpo Paulista,SP,3509601,2020,85541.0,estimativa_intercensitaria,11728.0,13575.0,1413.0,2219744.0,False,2026-09-06
+ctrl-ascenty-jundiai-p01,controle,ascenty-jundiai,Campo Limpo Paulista,SP,3509601,2021,86407.0,estimativa_intercensitaria,12064.0,13816.0,1497.0,2530950.0,False,2026-09-06
+ctrl-ascenty-jundiai-p01,controle,ascenty-jundiai,Campo Limpo Paulista,SP,3509601,2022,77632.0,censo,12809.0,15788.0,2446.0,2976085.0,False,2026-09-06
+ascenty-jundiai,tratamento,ascenty-jundiai,Jundiaí,SP,3525904,2016,405740.0,estimativa_intercensitaria,165524.0,188904.0,17099.0,40317016.0,False,2026-09-06
+ascenty-jundiai,tratamento,ascenty-jundiai,Jundiaí,SP,3525904,2017,409497.0,estimativa_intercensitaria,161787.0,186225.0,17707.0,41084447.0,False,2026-09-06
+ascenty-jundiai,tratamento,ascenty-jundiai,Jundiaí,SP,3525904,2018,414810.0,estimativa_intercensitaria,164279.0,188446.0,17788.0,43630306.0,False,2026-09-06
+ascenty-jundiai,tratamento,ascenty-jundiai,Jundiaí,SP,3525904,2019,418962.0,estimativa_intercensitaria,167534.0,194183.0,20143.0,46959283.0,False,2026-09-06
+ascenty-jundiai,tratamento,ascenty-jundiai,Jundiaí,SP,3525904,2020,423006.0,estimativa_intercensitaria,162810.0,191073.0,20889.0,51740230.0,False,2026-09-06
+ascenty-jundiai,tratamento,ascenty-jundiai,Jundiaí,SP,3525904,2021,426935.0,estimativa_intercensitaria,177226.0,206743.0,21969.0,57670893.0,False,2026-09-06
+ascenty-jundiai,tratamento,ascenty-jundiai,Jundiaí,SP,3525904,2022,443221.0,censo,181896.0,225325.0,31733.0,63835907.0,False,2026-09-06
+ctrl-ascenty-maracanau-p03,controle,ascenty-maracanau,Caucaia,CE,2303709,2013,,,34004.0,38400.0,3837.0,4750602.0,False,2026-09-06
+ctrl-ascenty-maracanau-p03,controle,ascenty-maracanau,Caucaia,CE,2303709,2014,,,41442.0,45566.0,3417.0,5582491.0,False,2026-09-06
+ctrl-ascenty-maracanau-p03,controle,ascenty-maracanau,Caucaia,CE,2303709,2015,,,42197.0,46568.0,3593.0,5743008.0,False,2026-09-06
+ctrl-ascenty-maracanau-p03,controle,ascenty-maracanau,Caucaia,CE,2303709,2016,358164.0,estimativa_intercensitaria,32371.0,36890.0,3855.0,5443796.0,False,2026-09-06
+ctrl-ascenty-maracanau-p03,controle,ascenty-maracanau,Caucaia,CE,2303709,2017,362223.0,estimativa_intercensitaria,35519.0,40036.0,3720.0,5862516.0,False,2026-09-06
+ascenty-maracanau,tratamento,ascenty-maracanau,Maracanaú,CE,2307650,2013,,,56744.0,61544.0,3760.0,6291122.0,False,2026-09-06
+ascenty-maracanau,tratamento,ascenty-maracanau,Maracanaú,CE,2307650,2014,,,57586.0,62149.0,3524.0,7029386.0,False,2026-09-06
+ascenty-maracanau,tratamento,ascenty-maracanau,Maracanaú,CE,2307650,2015,,,60275.0,64818.0,3777.0,7896114.0,False,2026-09-06
+ascenty-maracanau,tratamento,ascenty-maracanau,Maracanaú,CE,2307650,2016,223188.0,estimativa_intercensitaria,53956.0,58251.0,3557.0,8100726.0,False,2026-09-06
+ascenty-maracanau,tratamento,ascenty-maracanau,Maracanaú,CE,2307650,2017,224804.0,estimativa_intercensitaria,54196.0,58347.0,3422.0,8540212.0,False,2026-09-06
+ctrl-ascenty-osasco-p01,controle,ascenty-osasco,Itapevi,SP,3522505,2017,229502.0,estimativa_intercensitaria,32878.0,35618.0,2501.0,11253728.0,False,2026-09-06
+ctrl-ascenty-osasco-p01,controle,ascenty-osasco,Itapevi,SP,3522505,2018,234352.0,estimativa_intercensitaria,33766.0,36534.0,2475.0,12156244.0,False,2026-09-06
+ctrl-ascenty-osasco-p01,controle,ascenty-osasco,Itapevi,SP,3522505,2019,237700.0,estimativa_intercensitaria,34543.0,37458.0,2659.0,12051610.0,False,2026-09-06
+ctrl-ascenty-osasco-p01,controle,ascenty-osasco,Itapevi,SP,3522505,2020,240961.0,estimativa_intercensitaria,33252.0,36275.0,2773.0,11873293.0,False,2026-09-06
+ctrl-ascenty-osasco-p01,controle,ascenty-osasco,Itapevi,SP,3522505,2021,244131.0,estimativa_intercensitaria,35282.0,38552.0,2997.0,12854995.0,False,2026-09-06
+ctrl-ascenty-osasco-p01,controle,ascenty-osasco,Itapevi,SP,3522505,2022,232297.0,censo,38338.0,44711.0,5550.0,15017261.0,False,2026-09-06
+ctrl-ascenty-osasco-p01,controle,ascenty-osasco,Itapevi,SP,3522505,2023,,,40994.0,47708.0,5904.0,15615097.0,False,2026-09-06
+ascenty-osasco,tratamento,ascenty-osasco,Osasco,SP,3534401,2017,697886.0,estimativa_intercensitaria,156613.0,176694.0,16133.0,77927043.0,False,2026-09-06
+ascenty-osasco,tratamento,ascenty-osasco,Osasco,SP,3534401,2018,696850.0,estimativa_intercensitaria,158207.0,177863.0,15878.0,76607992.0,False,2026-09-06
+ascenty-osasco,tratamento,ascenty-osasco,Osasco,SP,3534401,2019,698418.0,estimativa_intercensitaria,161102.0,181906.0,18330.0,81908401.0,False,2026-09-06
+ascenty-osasco,tratamento,ascenty-osasco,Osasco,SP,3534401,2020,699944.0,estimativa_intercensitaria,158995.0,180746.0,18952.0,76612072.0,False,2026-09-06
+ascenty-osasco,tratamento,ascenty-osasco,Osasco,SP,3534401,2021,701428.0,estimativa_intercensitaria,178496.0,201049.0,20631.0,86111260.0,False,2026-09-06
+ascenty-osasco,tratamento,ascenty-osasco,Osasco,SP,3534401,2022,728615.0,censo,191047.0,232878.0,38468.0,112145798.0,False,2026-09-06
+ascenty-osasco,tratamento,ascenty-osasco,Osasco,SP,3534401,2023,,,209469.0,253872.0,40717.0,119404053.0,False,2026-09-06
+ctrl-ascenty-paulinia-p02,controle,ascenty-paulinia,Americana,SP,3501608,2016,231621.0,estimativa_intercensitaria,71436.0,86451.0,11142.0,10435437.0,False,2026-09-06
+ctrl-ascenty-paulinia-p02,controle,ascenty-paulinia,Americana,SP,3501608,2017,233868.0,estimativa_intercensitaria,71413.0,86444.0,11106.0,10984203.0,False,2026-09-06
+ctrl-ascenty-paulinia-p02,controle,ascenty-paulinia,Americana,SP,3501608,2018,237112.0,estimativa_intercensitaria,70836.0,86384.0,11301.0,11340521.0,False,2026-09-06
+ctrl-ascenty-paulinia-p02,controle,ascenty-paulinia,Americana,SP,3501608,2019,239597.0,estimativa_intercensitaria,71482.0,87617.0,11983.0,11861436.0,False,2026-09-06
+ctrl-ascenty-paulinia-p02,controle,ascenty-paulinia,Americana,SP,3501608,2020,242018.0,estimativa_intercensitaria,69998.0,86888.0,12458.0,11956361.0,False,2026-09-06
+ctrl-ascenty-paulinia-p02,controle,ascenty-paulinia,Americana,SP,3501608,2021,244370.0,estimativa_intercensitaria,74248.0,92027.0,13170.0,15217280.0,False,2026-09-06
+ctrl-ascenty-paulinia-p02,controle,ascenty-paulinia,Americana,SP,3501608,2022,237240.0,censo,77171.0,102712.0,18384.0,16677591.0,False,2026-09-06
+ascenty-paulinia,tratamento,ascenty-paulinia,Paulínia,SP,3536505,2016,100128.0,estimativa_intercensitaria,43167.0,47447.0,3481.0,36499593.0,False,2026-09-06
+ascenty-paulinia,tratamento,ascenty-paulinia,Paulínia,SP,3536505,2017,102499.0,estimativa_intercensitaria,40120.0,44501.0,3585.0,35540436.0,False,2026-09-06
+ascenty-paulinia,tratamento,ascenty-paulinia,Paulínia,SP,3536505,2018,106776.0,estimativa_intercensitaria,41249.0,45683.0,3573.0,32658835.0,False,2026-09-06
+ascenty-paulinia,tratamento,ascenty-paulinia,Paulínia,SP,3536505,2019,109424.0,estimativa_intercensitaria,44576.0,49189.0,3932.0,37366101.0,False,2026-09-06
+ascenty-paulinia,tratamento,ascenty-paulinia,Paulínia,SP,3536505,2020,112003.0,estimativa_intercensitaria,43098.0,48122.0,4253.0,39807062.0,False,2026-09-06
+ascenty-paulinia,tratamento,ascenty-paulinia,Paulínia,SP,3536505,2021,114508.0,estimativa_intercensitaria,46086.0,51639.0,4758.0,52389437.0,False,2026-09-06
+ascenty-paulinia,tratamento,ascenty-paulinia,Paulínia,SP,3536505,2022,110537.0,censo,50393.0,59074.0,6975.0,70496584.0,False,2026-09-06
+ctrl-ascenty-sumare-p01,controle,ascenty-sumare,Indaiatuba,SP,3520509,2014,,,74383.0,86202.0,9330.0,11784749.0,False,2026-09-06
+ctrl-ascenty-sumare-p01,controle,ascenty-sumare,Indaiatuba,SP,3520509,2015,,,72188.0,84334.0,9490.0,11634861.0,False,2026-09-06
+ctrl-ascenty-sumare-p01,controle,ascenty-sumare,Indaiatuba,SP,3520509,2016,235367.0,estimativa_intercensitaria,71846.0,83571.0,9355.0,12282381.0,False,2026-09-06
+ctrl-ascenty-sumare-p01,controle,ascenty-sumare,Indaiatuba,SP,3520509,2017,239602.0,estimativa_intercensitaria,72326.0,84423.0,9447.0,14024836.0,False,2026-09-06
+ctrl-ascenty-sumare-p01,controle,ascenty-sumare,Indaiatuba,SP,3520509,2018,246908.0,estimativa_intercensitaria,74092.0,86388.0,9574.0,15595708.0,False,2026-09-06
+ctrl-ascenty-sumare-p01,controle,ascenty-sumare,Indaiatuba,SP,3520509,2019,251627.0,estimativa_intercensitaria,77260.0,90458.0,10719.0,16712153.0,False,2026-09-06
+ctrl-ascenty-sumare-p01,controle,ascenty-sumare,Indaiatuba,SP,3520509,2020,256223.0,estimativa_intercensitaria,74364.0,89082.0,11575.0,18361067.0,False,2026-09-06
+ascenty-sumare,tratamento,ascenty-sumare,Sumaré,SP,3552403,2014,,,54207.0,62056.0,6015.0,11646358.0,False,2026-09-06
+ascenty-sumare,tratamento,ascenty-sumare,Sumaré,SP,3552403,2015,,,54008.0,61831.0,5832.0,12258170.0,False,2026-09-06
+ascenty-sumare,tratamento,ascenty-sumare,Sumaré,SP,3552403,2016,269522.0,estimativa_intercensitaria,55230.0,62878.0,5800.0,12237213.0,False,2026-09-06
+ascenty-sumare,tratamento,ascenty-sumare,Sumaré,SP,3552403,2017,273007.0,estimativa_intercensitaria,52747.0,60279.0,5750.0,13615800.0,False,2026-09-06
+ascenty-sumare,tratamento,ascenty-sumare,Sumaré,SP,3552403,2018,278571.0,estimativa_intercensitaria,54288.0,61985.0,5947.0,14438510.0,False,2026-09-06
+ascenty-sumare,tratamento,ascenty-sumare,Sumaré,SP,3552403,2019,282441.0,estimativa_intercensitaria,54015.0,61649.0,6163.0,14913287.0,False,2026-09-06
+ascenty-sumare,tratamento,ascenty-sumare,Sumaré,SP,3552403,2020,286211.0,estimativa_intercensitaria,54139.0,62198.0,6449.0,13672590.0,False,2026-09-06
+ctrl-ascenty-vinhedo-p02,controle,ascenty-vinhedo,Campinas,SP,3509502,2016,1173370.0,estimativa_intercensitaria,400781.0,462579.0,47742.0,57778152.0,False,2026-09-06
+ctrl-ascenty-vinhedo-p02,controle,ascenty-vinhedo,Campinas,SP,3509502,2017,1182429.0,estimativa_intercensitaria,401356.0,462058.0,46483.0,58469540.0,False,2026-09-06
+ctrl-ascenty-vinhedo-p02,controle,ascenty-vinhedo,Campinas,SP,3509502,2018,1194094.0,estimativa_intercensitaria,401348.0,461871.0,46943.0,61388555.0,False,2026-09-06
+ctrl-ascenty-vinhedo-p02,controle,ascenty-vinhedo,Campinas,SP,3509502,2019,1204073.0,estimativa_intercensitaria,400552.0,464714.0,51008.0,65837258.0,False,2026-09-06
+ctrl-ascenty-vinhedo-p02,controle,ascenty-vinhedo,Campinas,SP,3509502,2020,1213792.0,estimativa_intercensitaria,385683.0,452658.0,53005.0,65158382.0,False,2026-09-06
+ctrl-ascenty-vinhedo-p02,controle,ascenty-vinhedo,Campinas,SP,3509502,2021,1223237.0,estimativa_intercensitaria,404030.0,474810.0,56149.0,72946910.0,False,2026-09-06
+ctrl-ascenty-vinhedo-p02,controle,ascenty-vinhedo,Campinas,SP,3509502,2022,1139047.0,censo,420374.0,532090.0,82954.0,80646591.0,False,2026-09-06
+ascenty-vinhedo,tratamento,ascenty-vinhedo,Vinhedo,SP,3556701,2016,73855.0,estimativa_intercensitaria,35123.0,39411.0,3397.0,8085038.0,False,2026-09-06
+ascenty-vinhedo,tratamento,ascenty-vinhedo,Vinhedo,SP,3556701,2017,75129.0,estimativa_intercensitaria,34638.0,38925.0,3426.0,8704161.0,False,2026-09-06
+ascenty-vinhedo,tratamento,ascenty-vinhedo,Vinhedo,SP,3556701,2018,77308.0,estimativa_intercensitaria,35386.0,39677.0,3403.0,9275194.0,False,2026-09-06
+ascenty-vinhedo,tratamento,ascenty-vinhedo,Vinhedo,SP,3556701,2019,78728.0,estimativa_intercensitaria,36987.0,41726.0,3960.0,9665022.0,False,2026-09-06
+ascenty-vinhedo,tratamento,ascenty-vinhedo,Vinhedo,SP,3556701,2020,80111.0,estimativa_intercensitaria,37756.0,43122.0,4239.0,10493525.0,False,2026-09-06
+ascenty-vinhedo,tratamento,ascenty-vinhedo,Vinhedo,SP,3556701,2021,81516.0,estimativa_intercensitaria,40639.0,46359.0,4545.0,12557909.0,False,2026-09-06
+ascenty-vinhedo,tratamento,ascenty-vinhedo,Vinhedo,SP,3556701,2022,76540.0,censo,42677.0,52342.0,6854.0,14061248.0,False,2026-09-06
+ctrl-clickip-manaus-p01,controle,clickip-manaus,Iranduba,AM,1301852,2020,49011.0,estimativa_intercensitaria,3739.0,4231.0,417.0,727697.0,False,2026-09-06
+ctrl-clickip-manaus-p01,controle,clickip-manaus,Iranduba,AM,1301852,2021,49718.0,estimativa_intercensitaria,4752.0,5283.0,411.0,1001862.0,False,2026-09-06
+ctrl-clickip-manaus-p01,controle,clickip-manaus,Iranduba,AM,1301852,2022,61163.0,censo,5551.0,6914.0,1215.0,1044312.0,False,2026-09-06
+ctrl-clickip-manaus-p01,controle,clickip-manaus,Iranduba,AM,1301852,2023,,,6457.0,7943.0,1314.0,1263496.0,False,2026-09-06
+ctrl-clickip-manaus-p01,controle,clickip-manaus,Iranduba,AM,1301852,2024,67114.0,estimativa_intercensitaria,6984.0,8640.0,1449.0,,False,2026-09-06
+ctrl-clickip-manaus-p01,controle,clickip-manaus,Iranduba,AM,1301852,2025,68862.0,estimativa_intercensitaria,,,,,False,2026-09-06
+clickip-manaus,tratamento,clickip-manaus,Manaus,AM,1302603,2020,2219580.0,estimativa_intercensitaria,492343.0,526003.0,27395.0,91773536.0,False,2026-09-06
+clickip-manaus,tratamento,clickip-manaus,Manaus,AM,1302603,2021,2255903.0,estimativa_intercensitaria,519130.0,554913.0,28737.0,103281400.0,False,2026-09-06
+clickip-manaus,tratamento,clickip-manaus,Manaus,AM,1302603,2022,2063689.0,censo,554669.0,636830.0,67347.0,113465435.0,False,2026-09-06
+clickip-manaus,tratamento,clickip-manaus,Manaus,AM,1302603,2023,,,570748.0,658099.0,72121.0,127649795.0,False,2026-09-06
+clickip-manaus,tratamento,clickip-manaus,Manaus,AM,1302603,2024,2279686.0,estimativa_intercensitaria,599717.0,692491.0,77108.0,,False,2026-09-06
+clickip-manaus,tratamento,clickip-manaus,Manaus,AM,1302603,2025,2303732.0,estimativa_intercensitaria,,,,,False,2026-09-06
+ctrl-equinix-santana-parnaiba-p01,controle,equinix-santana-parnaiba,Cajamar,SP,3509205,2017,73921.0,estimativa_intercensitaria,36691.0,39088.0,2091.0,14807216.0,False,2026-09-06
+ctrl-equinix-santana-parnaiba-p01,controle,equinix-santana-parnaiba,Cajamar,SP,3509205,2018,75638.0,estimativa_intercensitaria,39080.0,41501.0,2166.0,16971943.0,False,2026-09-06
+ctrl-equinix-santana-parnaiba-p01,controle,equinix-santana-parnaiba,Cajamar,SP,3509205,2019,76801.0,estimativa_intercensitaria,41598.0,44191.0,2366.0,19461581.0,False,2026-09-06
+ctrl-equinix-santana-parnaiba-p01,controle,equinix-santana-parnaiba,Cajamar,SP,3509205,2020,77934.0,estimativa_intercensitaria,49602.0,52361.0,2534.0,21270946.0,False,2026-09-06
+ctrl-equinix-santana-parnaiba-p01,controle,equinix-santana-parnaiba,Cajamar,SP,3509205,2021,79034.0,estimativa_intercensitaria,52368.0,55163.0,2726.0,22713160.0,False,2026-09-06
+ctrl-equinix-santana-parnaiba-p01,controle,equinix-santana-parnaiba,Cajamar,SP,3509205,2022,92689.0,censo,51756.0,57072.0,4695.0,24330164.0,False,2026-09-06
+ctrl-equinix-santana-parnaiba-p01,controle,equinix-santana-parnaiba,Cajamar,SP,3509205,2023,,,57687.0,63436.0,5328.0,28984602.0,False,2026-09-06
+equinix-santana-parnaiba,tratamento,equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2017,131887.0,estimativa_intercensitaria,54197.0,68205.0,9034.0,8784815.0,False,2026-09-06
+equinix-santana-parnaiba,tratamento,equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2018,136517.0,estimativa_intercensitaria,53866.0,66464.0,8260.0,9231821.0,False,2026-09-06
+equinix-santana-parnaiba,tratamento,equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2019,139447.0,estimativa_intercensitaria,55042.0,67582.0,9427.0,9475380.0,False,2026-09-06
+equinix-santana-parnaiba,tratamento,equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2020,142301.0,estimativa_intercensitaria,53933.0,66805.0,9496.0,9962481.0,False,2026-09-06
+equinix-santana-parnaiba,tratamento,equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2021,145073.0,estimativa_intercensitaria,55735.0,68748.0,9606.0,11544903.0,False,2026-09-06
+equinix-santana-parnaiba,tratamento,equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2022,154105.0,censo,60682.0,83151.0,15190.0,12774324.0,False,2026-09-06
+equinix-santana-parnaiba,tratamento,equinix-santana-parnaiba,Santana de Parnaíba,SP,3547304,2023,,,62749.0,85979.0,15675.0,14328397.0,False,2026-09-06
+ctrl-everest-goiania-p01,controle,everest-goiania,Goiânia,GO,5208707,2018,1495705.0,estimativa_intercensitaria,580767.0,658062.0,59951.0,49347603.0,True,2026-09-06
+ctrl-everest-goiania-p01,controle,everest-goiania,Goiânia,GO,5208707,2019,1516113.0,estimativa_intercensitaria,578917.0,661028.0,65866.0,52978067.0,True,2026-09-06
+ctrl-everest-goiania-p01,controle,everest-goiania,Goiânia,GO,5208707,2020,1536097.0,estimativa_intercensitaria,546141.0,633958.0,68827.0,51830626.0,True,2026-09-06
+ctrl-everest-goiania-p01,controle,everest-goiania,Goiânia,GO,5208707,2021,1555626.0,estimativa_intercensitaria,575699.0,670431.0,74298.0,59870499.0,True,2026-09-06
+ctrl-everest-goiania-p01,controle,everest-goiania,Goiânia,GO,5208707,2022,1437366.0,censo,618316.0,779881.0,118063.0,66273858.0,True,2026-09-06
+ctrl-everest-goiania-p01,controle,everest-goiania,Goiânia,GO,5208707,2023,,,652049.0,826232.0,128111.0,75780846.0,True,2026-09-06
+ctrl-everest-goiania-p01,controle,everest-goiania,Goiânia,GO,5208707,2024,1494599.0,estimativa_intercensitaria,674435.0,859452.0,137098.0,,True,2026-09-06
+everest-goiania,tratamento,everest-goiania,Goiânia,GO,5208707,2018,1495705.0,estimativa_intercensitaria,580767.0,658062.0,59951.0,49347603.0,True,2026-09-06
+everest-goiania,tratamento,everest-goiania,Goiânia,GO,5208707,2019,1516113.0,estimativa_intercensitaria,578917.0,661028.0,65866.0,52978067.0,True,2026-09-06
+everest-goiania,tratamento,everest-goiania,Goiânia,GO,5208707,2020,1536097.0,estimativa_intercensitaria,546141.0,633958.0,68827.0,51830626.0,True,2026-09-06
+everest-goiania,tratamento,everest-goiania,Goiânia,GO,5208707,2021,1555626.0,estimativa_intercensitaria,575699.0,670431.0,74298.0,59870499.0,True,2026-09-06
+everest-goiania,tratamento,everest-goiania,Goiânia,GO,5208707,2022,1437366.0,censo,618316.0,779881.0,118063.0,66273858.0,True,2026-09-06
+everest-goiania,tratamento,everest-goiania,Goiânia,GO,5208707,2023,,,652049.0,826232.0,128111.0,75780846.0,True,2026-09-06
+everest-goiania,tratamento,everest-goiania,Goiânia,GO,5208707,2024,1494599.0,estimativa_intercensitaria,674435.0,859452.0,137098.0,,True,2026-09-06
+ctrl-hostdime-joao-pessoa-p01,controle,hostdime-joao-pessoa,Conde,PB,2504603,2014,,,4315.0,4695.0,329.0,563976.0,False,2026-09-06
+ctrl-hostdime-joao-pessoa-p01,controle,hostdime-joao-pessoa,Conde,PB,2504603,2015,,,4285.0,4667.0,363.0,567721.0,False,2026-09-06
+ctrl-hostdime-joao-pessoa-p01,controle,hostdime-joao-pessoa,Conde,PB,2504603,2016,24380.0,estimativa_intercensitaria,3621.0,4060.0,380.0,592787.0,False,2026-09-06
+ctrl-hostdime-joao-pessoa-p01,controle,hostdime-joao-pessoa,Conde,PB,2504603,2017,24769.0,estimativa_intercensitaria,4191.0,4624.0,380.0,636152.0,False,2026-09-06
+ctrl-hostdime-joao-pessoa-p01,controle,hostdime-joao-pessoa,Conde,PB,2504603,2018,24323.0,estimativa_intercensitaria,4617.0,5060.0,383.0,712621.0,False,2026-09-06
+ctrl-hostdime-joao-pessoa-p01,controle,hostdime-joao-pessoa,Conde,PB,2504603,2019,24670.0,estimativa_intercensitaria,5527.0,5974.0,436.0,809844.0,False,2026-09-06
+ctrl-hostdime-joao-pessoa-p01,controle,hostdime-joao-pessoa,Conde,PB,2504603,2020,25010.0,estimativa_intercensitaria,5614.0,6115.0,480.0,890607.0,False,2026-09-06
+hostdime-joao-pessoa,tratamento,hostdime-joao-pessoa,João Pessoa,PB,2507507,2014,,,299490.0,326765.0,18024.0,17449530.0,False,2026-09-06
+hostdime-joao-pessoa,tratamento,hostdime-joao-pessoa,João Pessoa,PB,2507507,2015,,,287941.0,314982.0,18350.0,18272539.0,False,2026-09-06
+hostdime-joao-pessoa,tratamento,hostdime-joao-pessoa,João Pessoa,PB,2507507,2016,801718.0,estimativa_intercensitaria,273087.0,300491.0,18651.0,18740050.0,False,2026-09-06
+hostdime-joao-pessoa,tratamento,hostdime-joao-pessoa,João Pessoa,PB,2507507,2017,811598.0,estimativa_intercensitaria,265153.0,292793.0,18638.0,19740717.0,False,2026-09-06
+hostdime-joao-pessoa,tratamento,hostdime-joao-pessoa,João Pessoa,PB,2507507,2018,800323.0,estimativa_intercensitaria,260937.0,288866.0,18545.0,19810216.0,False,2026-09-06
+hostdime-joao-pessoa,tratamento,hostdime-joao-pessoa,João Pessoa,PB,2507507,2019,809015.0,estimativa_intercensitaria,267971.0,296943.0,20316.0,20846014.0,False,2026-09-06
+hostdime-joao-pessoa,tratamento,hostdime-joao-pessoa,João Pessoa,PB,2507507,2020,817511.0,estimativa_intercensitaria,262019.0,292533.0,21584.0,20728227.0,False,2026-09-06
+ctrl-scala-sgigsm01-p01,controle,scala-sgigsm01,Rio de Janeiro,RJ,3304557,2019,6718903.0,estimativa_intercensitaria,2189270.0,2491779.0,208534.0,354932611.0,False,2026-09-06
+ctrl-scala-sgigsm01-p01,controle,scala-sgigsm01,Rio de Janeiro,RJ,3304557,2020,6747815.0,estimativa_intercensitaria,2031212.0,2341926.0,212940.0,331471515.0,False,2026-09-06
+ctrl-scala-sgigsm01-p01,controle,scala-sgigsm01,Rio de Janeiro,RJ,3304557,2021,6775561.0,estimativa_intercensitaria,2077038.0,2396117.0,223433.0,359632648.0,False,2026-09-06
+ctrl-scala-sgigsm01-p01,controle,scala-sgigsm01,Rio de Janeiro,RJ,3304557,2022,6211223.0,censo,2237066.0,2746816.0,365486.0,380381515.0,False,2026-09-06
+ctrl-scala-sgigsm01-p01,controle,scala-sgigsm01,Rio de Janeiro,RJ,3304557,2023,,,2367980.0,2900940.0,385312.0,418462360.0,False,2026-09-06
+ctrl-scala-sgigsm01-p01,controle,scala-sgigsm01,Rio de Janeiro,RJ,3304557,2024,6729894.0,estimativa_intercensitaria,2451749.0,2997653.0,402837.0,,False,2026-09-06
+ctrl-scala-sgigsm01-p01,controle,scala-sgigsm01,Rio de Janeiro,RJ,3304557,2025,6730729.0,estimativa_intercensitaria,,,,,False,2026-09-06
+scala-sgigsm01,tratamento,scala-sgigsm01,São João de Meriti,RJ,3305109,2019,472406.0,estimativa_intercensitaria,54378.0,61437.0,5069.0,9746519.0,False,2026-09-06
+scala-sgigsm01,tratamento,scala-sgigsm01,São João de Meriti,RJ,3305109,2020,472906.0,estimativa_intercensitaria,50672.0,57378.0,4909.0,9112402.0,False,2026-09-06
+scala-sgigsm01,tratamento,scala-sgigsm01,São João de Meriti,RJ,3305109,2021,473385.0,estimativa_intercensitaria,51990.0,58691.0,5077.0,8963716.0,False,2026-09-06
+scala-sgigsm01,tratamento,scala-sgigsm01,São João de Meriti,RJ,3305109,2022,440962.0,censo,54023.0,65538.0,8888.0,10615039.0,False,2026-09-06
+scala-sgigsm01,tratamento,scala-sgigsm01,São João de Meriti,RJ,3305109,2023,,,62684.0,74324.0,9182.0,11534047.0,False,2026-09-06
+scala-sgigsm01,tratamento,scala-sgigsm01,São João de Meriti,RJ,3305109,2024,466536.0,estimativa_intercensitaria,60793.0,72323.0,9209.0,,False,2026-09-06
+scala-sgigsm01,tratamento,scala-sgigsm01,São João de Meriti,RJ,3305109,2025,466503.0,estimativa_intercensitaria,,,,,False,2026-09-06
+ctrl-scala-spoapa01-p01,controle,scala-spoapa01,Sapucaia do Sul,RS,4320008,2020,141808.0,estimativa_intercensitaria,20069.0,24009.0,2998.0,3492827.0,False,2026-09-06
+ctrl-scala-spoapa01-p01,controle,scala-spoapa01,Sapucaia do Sul,RS,4320008,2021,142508.0,estimativa_intercensitaria,21181.0,25180.0,3093.0,4204086.0,False,2026-09-06
+ctrl-scala-spoapa01-p01,controle,scala-spoapa01,Sapucaia do Sul,RS,4320008,2022,132107.0,censo,22193.0,28101.0,4854.0,4378885.0,False,2026-09-06
+ctrl-scala-spoapa01-p01,controle,scala-spoapa01,Sapucaia do Sul,RS,4320008,2023,,,21808.0,27862.0,4988.0,4729408.0,False,2026-09-06
+ctrl-scala-spoapa01-p01,controle,scala-spoapa01,Sapucaia do Sul,RS,4320008,2024,136542.0,estimativa_intercensitaria,22312.0,28481.0,5152.0,,False,2026-09-06
+ctrl-scala-spoapa01-p01,controle,scala-spoapa01,Sapucaia do Sul,RS,4320008,2025,136572.0,estimativa_intercensitaria,,,,,False,2026-09-06
+scala-spoapa01,tratamento,scala-spoapa01,Porto Alegre,RS,4314902,2020,1488252.0,estimativa_intercensitaria,637650.0,753720.0,87459.0,75976656.0,False,2026-09-06
+scala-spoapa01,tratamento,scala-spoapa01,Porto Alegre,RS,4314902,2021,1492530.0,estimativa_intercensitaria,644623.0,764557.0,90258.0,81563063.0,False,2026-09-06
+scala-spoapa01,tratamento,scala-spoapa01,Porto Alegre,RS,4314902,2022,1332845.0,censo,660355.0,843244.0,136102.0,90214952.0,False,2026-09-06
+scala-spoapa01,tratamento,scala-spoapa01,Porto Alegre,RS,4314902,2023,,,683450.0,874230.0,141750.0,104743272.0,False,2026-09-06
+scala-spoapa01,tratamento,scala-spoapa01,Porto Alegre,RS,4314902,2024,1389322.0,estimativa_intercensitaria,699207.0,892726.0,146301.0,,False,2026-09-06
+scala-spoapa01,tratamento,scala-spoapa01,Porto Alegre,RS,4314902,2025,1388794.0,estimativa_intercensitaria,,,,,False,2026-09-06
+ctrl-scala-tambore-p01,controle,scala-tambore,Pirapora do Bom Jesus,SP,3539103,2018,18604.0,estimativa_intercensitaria,2194.0,2700.0,379.0,448449.0,False,2026-09-06
+ctrl-scala-tambore-p01,controle,scala-tambore,Pirapora do Bom Jesus,SP,3539103,2019,18895.0,estimativa_intercensitaria,2483.0,3016.0,432.0,525826.0,False,2026-09-06
+ctrl-scala-tambore-p01,controle,scala-tambore,Pirapora do Bom Jesus,SP,3539103,2020,19178.0,estimativa_intercensitaria,2395.0,2901.0,419.0,516395.0,False,2026-09-06
+ctrl-scala-tambore-p01,controle,scala-tambore,Pirapora do Bom Jesus,SP,3539103,2021,19453.0,estimativa_intercensitaria,2507.0,3019.0,432.0,826672.0,False,2026-09-06
+ctrl-scala-tambore-p01,controle,scala-tambore,Pirapora do Bom Jesus,SP,3539103,2022,18370.0,censo,2965.0,3932.0,778.0,713385.0,False,2026-09-06
+ctrl-scala-tambore-p01,controle,scala-tambore,Pirapora do Bom Jesus,SP,3539103,2023,,,3227.0,4193.0,780.0,693314.0,False,2026-09-06
+ctrl-scala-tambore-p01,controle,scala-tambore,Pirapora do Bom Jesus,SP,3539103,2024,18836.0,estimativa_intercensitaria,3273.0,4218.0,804.0,,False,2026-09-06
+scala-tambore,tratamento,scala-tambore,Barueri,SP,3505708,2018,271306.0,estimativa_intercensitaria,263148.0,280439.0,13889.0,50562704.0,False,2026-09-06
+scala-tambore,tratamento,scala-tambore,Barueri,SP,3505708,2019,274182.0,estimativa_intercensitaria,278250.0,298498.0,16923.0,52744931.0,False,2026-09-06
+scala-tambore,tratamento,scala-tambore,Barueri,SP,3505708,2020,276982.0,estimativa_intercensitaria,286841.0,309916.0,18195.0,51600338.0,False,2026-09-06
+scala-tambore,tratamento,scala-tambore,Barueri,SP,3505708,2021,279704.0,estimativa_intercensitaria,312802.0,337990.0,19885.0,58027667.0,False,2026-09-06
+scala-tambore,tratamento,scala-tambore,Barueri,SP,3505708,2022,316473.0,censo,351261.0,397393.0,32866.0,69665769.0,False,2026-09-06
+scala-tambore,tratamento,scala-tambore,Barueri,SP,3505708,2023,,,372191.0,423055.0,36329.0,71646710.0,False,2026-09-06
+scala-tambore,tratamento,scala-tambore,Barueri,SP,3505708,2024,330339.0,estimativa_intercensitaria,382619.0,439018.0,41015.0,,False,2026-09-06

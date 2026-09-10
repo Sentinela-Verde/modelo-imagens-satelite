@@ -1,0 +1,13 @@
+raio_km,assinatura,n_pares,n_positivo,n_negativo,frac_positivo,p_unilateral,excesso_mediano_pp,excesso_medio_pp
+0.5,virou_construida,15,13,2,0.867,0.0037,1.9331,1.7208
+0.5,virou_construida_via_solo,15,9,6,0.6,0.3036,0.23,0.6959
+0.5,vegetacao_para_construida,15,11,4,0.733,0.0592,0.6638,1.0032
+1.0,virou_construida,15,13,2,0.867,0.0037,0.8879,1.5715
+1.0,virou_construida_via_solo,15,13,2,0.867,0.0037,0.3827,0.6072
+1.0,vegetacao_para_construida,15,11,4,0.733,0.0592,0.5857,1.0184
+2.0,virou_construida,15,9,6,0.6,0.3036,0.62,0.671
+2.0,virou_construida_via_solo,15,12,3,0.8,0.0176,0.1591,0.2049
+2.0,vegetacao_para_construida,15,9,6,0.6,0.3036,0.2013,0.4482
+5.0,virou_construida,15,11,4,0.733,0.0592,0.2763,0.3688
+5.0,virou_construida_via_solo,15,12,3,0.8,0.0176,0.217,0.0887
+5.0,vegetacao_para_construida,15,8,7,0.533,0.5,0.0445,0.2105

@@ -1,0 +1,16 @@
+site_id,n_feicoes_osm,metodo_footprint,osm_id,osm_name,osm_operator,osm_building,osm_landuse,area_footprint_ha,dist_ponto_ao_footprint_km,lat_centroide,lon_centroide,n_vertices
+angonap-fortaleza,1327,osm_data_center_explicito,way/808900331,AngoNap Fortaleza,Angola Cables,yes,,0.9046,0.1096,-3.735251,-38.461793,5.0
+ascenty-hortolandia,8,osm_landuse_industrial,way/713804589,Ascenty Datacenter,,,industrial,13.1197,0.1327,-22.895879,-47.18053,18.0
+ascenty-jundiai,29,osm_landuse_industrial,way/697891659,,,,industrial,1.0603,0.0299,-23.191779,-46.974314,8.0
+ascenty-maracanau,253,osm_data_center_explicito,way/1167125352,Ascenty Infraestrutura de Data Centers,,yes,,0.8215,0.0143,-3.830713,-38.611346,13.0
+ascenty-osasco,31,osm_data_center_explicito,way/673758677,Ascenty SP2,Digital Realty,yes,,0.8102,0.0128,-23.492331,-46.77733,5.0
+ascenty-paulinia,9,osm_landuse_industrial,way/713812352,,,,industrial,1.5176,0.0614,-22.797298,-47.135133,7.0
+ascenty-sumare,7,osm_landuse_industrial,way/1423556615,,,,industrial,5.8209,0.4977,-22.802898,-47.222063,20.0
+ascenty-vinhedo,15,osm_landuse_industrial,way/1492947695,,,,industrial,1.634,0.6152,-23.074952,-47.009164,7.0
+clickip-manaus,6,osm_data_center_explicito,way/1331645888,ClickIP DataCenter,Click IP,yes,,0.1459,0.0167,-3.055715,-59.98981,5.0
+equinix-santana-parnaiba,11,osm_data_center_explicito,way/1475003347,Equinix SP6,Equinix,yes,,9.8868,0.2996,-23.462566,-46.858201,12.0
+everest-goiania,4,sem_footprint,,,,,,,,,,
+hostdime-joao-pessoa,46,osm_edificacao_mais_proxima,way/1500626299,SEFAZ,,civic,,0.1909,0.1989,-7.11909,-34.857467,5.0
+scala-sgigsm01,26,osm_data_center_explicito,way/770978294,Scala SGIGSM01,Scala Datacenters,industrial,,3.6565,0.4383,-22.796628,-43.35627,21.0
+scala-spoapa01,2237,osm_landuse_industrial,way/356396366,Hotel de Conto,,,commercial,0.1073,0.1725,-30.002421,-51.199892,8.0
+scala-tambore,91,osm_data_center_explicito,way/1472333082,Equinix,Equinix,,,1.938,0.2569,-23.496499,-46.814827,5.0
