@@ -186,7 +186,7 @@ logradouro**) mas está bloqueado por acesso à base CNPJ da Receita — ver o R
 `dados-modelo-impacto/`.
 
 **Magnitude individual de um site novo.** 13 modelos testados, **todos** com R² LOOCV negativo,
-permutação p=0,53. A direção é predizível; a magnitude não.
+permutação p=0,64. A direção é predizível; a magnitude não.
 
 **Inferência causal formal.** É padrão consistente contra grupo de controle, com pré-tendências
 verificadas e placebo. Não é estimativa causal de magnitude.

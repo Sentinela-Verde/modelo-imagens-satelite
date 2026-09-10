@@ -415,7 +415,7 @@ A camada de modelo em cima destes resultados **não fica nesta pasta** — está
 `modelo-impacto-score/` (frente separada, criada em 2026-09-10): boletim por eixo com selo de
 evidência, teste de poder preditivo e projeção por classe de referência. O resultado central de lá,
 que vale registrar aqui: **a magnitude do impacto não é predizível** com as features disponíveis
-(R² LOOCV negativo em 13 modelos, permutação p=0,53) — o que se sustenta é o padrão, não o
+(R² LOOCV negativo em 13 modelos, permutação p=0,64) — o que se sustenta é o padrão, não o
 coeficiente, exatamente como o passo 15 já suspeitava.
 
 ## Status
