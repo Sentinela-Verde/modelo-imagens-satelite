@@ -58,13 +58,20 @@ EIXOS = {
         "fonte": "footprint_vs_anel.csv",
         "direcao_ruim": +1,
     },
-    "temperatura": {
-        "rotulo": "Aquecimento de superfície (LST), disco de 5 km",
+    "temperatura_0_500m": {
+        "rotulo": "Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",
         "unidade": "°C",
-        "fonte": "lst_did.csv",
+        "fonte": "lst_landsat_did.csv",
         "direcao_ruim": +1,
     },
 }
+
+# O eixo de temperatura foi medido DUAS vezes, e a segunda substitui a primeira:
+#   passo 16 — MODIS MOD11A2, 1 km, disco de 5 km  -> nulo por DILUIÇÃO de escala
+#   passo 23 — Landsat ST_B10, 30 m, anel de 500 m -> nulo por TAMANHO DE AMOSTRA
+# A versão do passo 23 é a que entra no boletim, porque mede na escala em que o efeito vive
+# (872 pixels no anel, contra uma fração de um pixel MODIS). A do passo 16 fica registrada no
+# relatório como medição superada — não apagada, porque foi ela que motivou a troca de sensor.
 
 ZONA_POR_EIXO = {
     "construcao_0_500m": ("0-0.5km", "pct_virou_construida"),
@@ -198,24 +205,37 @@ def selos_de_evidencia() -> pd.DataFrame:
             }
         )
 
-    rl, rp = lst.iloc[0], poder.iloc[0]
+    # Temperatura vem do passo 23 (Landsat 30 m no anel), não do passo 16 (MODIS 1 km no disco).
+    # Ver a nota em EIXOS: o passo 16 foi superado, e o motivo da troca está no relatório.
+    tl = pd.read_csv(DIR_RESULTADOS / "lst_landsat_resumo.csv")
+    r_lst = tl[tl.zona == "0-0.5km"].iloc[0]
+    rp = poder.iloc[0]  # o cálculo de poder do passo 16, usado só para o contraste
     linhas.append(
         {
-            "eixo": "temperatura",
-            "n_pares": int(rl.n_pares),
-            "n_positivo": int(rl.n_aqueceu_mais_que_controle),
-            "p": round(float(rl.p_bilateral), 4),
+            "eixo": "temperatura_0_500m",
+            "n_pares": int(r_lst.n_pares),
+            "n_positivo": int(r_lst.n_aqueceu_mais),
+            "p": round(float(r_lst.p_bilateral), 4),
             # O placebo do passo 19 validou a estatística de TRAJETÓRIA de pixel. A LST usa outra
-            # medida (diferença-em-diferenças sobre a média do disco), então herdar aquela
+            # medida (diferença-em-diferenças sobre a média do anel), então herdar aquela
             # validação aqui seria falso. O que este eixo tem no lugar é o cálculo de poder.
             "validado_por_placebo": "não se aplica — outra estatística; ver o cálculo de poder",
-            "excesso_mediano": round(float(rl.excesso_mediano_c), 3),
-            "selo": "nulo_sem_poder",
+            "excesso_mediano": round(float(r_lst.excesso_mediano_c), 3),
+            # NÃO é mais `nulo_sem_poder`: aquele selo dizia que o sensor não veria o efeito nem
+            # se existisse (MODIS diluía 427x). Na escala certa o problema mudou de natureza —
+            # a estimativa é positiva e tem gradiente de distância coerente, mas n=12 não basta.
+            "selo": "nulo_amostra_pequena",
             "razao_do_selo": (
-                f"efeito mínimo detectável {rp.efeito_minimo_detectavel_c} °C contra efeito "
-                f"esperado {rp.efeito_esperado_no_disco_c} °C "
-                f"({rp.razao_mde_sobre_esperado}x) — MODIS 1 km num disco de 5 km dilui o sinal; "
-                "o nulo não informa sobre a existência do efeito"
+                f"medido na escala certa ({int(r_lst.pixels_30m_no_anel)} pixels no anel, contra "
+                f"uma fração de um pixel MODIS no passo 16): estimativa "
+                f"{r_lst.excesso_mediano_c:+.2f} °C, positiva e com gradiente de distância "
+                f"coerente (o anel externo tem menos da metade). Não atinge significância: "
+                f"efeito mínimo detectável {r_lst.efeito_minimo_detectavel_c:.2f} °C com n="
+                f"{int(r_lst.n_pares)}, e seriam necessários "
+                f"n={int(r_lst.n_pares_necessario_para_detectar)} pares para confirmar o próprio "
+                f"efeito estimado. Substitui a medição do passo 16 (MODIS 1 km), cujo MDE era "
+                f"{rp.efeito_minimo_detectavel_c} °C contra efeito esperado "
+                f"{rp.efeito_esperado_no_disco_c} °C ({rp.razao_mde_sobre_esperado}x)"
             ),
         }
     )
@@ -268,7 +288,10 @@ def tabela_mestra() -> pd.DataFrame:
     # --- alvos
     for eixo, (zona, coluna) in ZONA_POR_EIXO.items():
         m[f"y_{eixo}"] = m.site_id.map(_excesso_por_zona(anel, zona, coluna))
-    m["y_temperatura"] = m.site_id.map(lst.set_index("pareado_com")["excesso_c"])
+    # Temperatura: passo 23 (Landsat 30 m, anel de 500 m), não o passo 16 (MODIS, disco de 5 km).
+    lst_anel = pd.read_csv(DIR_RESULTADOS / "lst_landsat_did.csv")
+    lst_anel = lst_anel[lst_anel.zona == "0-0.5km"].set_index("campus")["excesso_c"]
+    m["y_temperatura_0_500m"] = m.site_id.map(lst_anel)
 
     return m.sort_values("site_id").reset_index(drop=True)
 

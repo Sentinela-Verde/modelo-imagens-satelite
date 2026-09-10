@@ -77,6 +77,8 @@ from IPython.display import Image, display
 SCORE_DIR = REPO_ROOT / "modelo-impacto-score"
 OUT = SCORE_DIR / "outputs"
 FIG = SCORE_DIR / "reports" / "figuras"
+RES = REPO_ROOT / "dados-modelo-impacto" / "raw" / "controles-rf"
+RES_FIG = RES / "figuras"
 
 plt.rcParams["figure.dpi"] = 110
 pd.set_option("display.max_columns", 40)
@@ -100,8 +102,8 @@ print(f"{por_campus.site_id.nunique()} campi · {len(boletim)} linhas de boletim
 ### Por que não existe um score único
 
 Um número agregado do tipo *"impacto: 73/100"* exigiria pesos arbitrários e misturaria eixos com
-qualidade de evidência incompatível — conversão de solo (p=0,0065) somada a temperatura, que nesta
-escala **não é sequer detectável**. O agregado esconderia a parte forte do trabalho.
+qualidade de evidência incompatível — conversão de solo (p=0,0065) somada a temperatura, que com
+n=12 não atinge significância. O agregado esconderia a parte forte do trabalho.
 
 O que se publica é um boletim por eixo, cada um com seu **selo de evidência**:
 """),
@@ -109,9 +111,15 @@ O que se publica é um boletim por eixo, cada um com seu **selo de evidência**:
 selos[["eixo", "n_pares", "n_positivo", "p", "excesso_mediano", "selo"]]
 """),
     md("""
-O selo `nulo_sem_poder` é o que costuma ser reportado errado por aí. Ele significa: *não
-detectamos nada, **e o desenho não detectaria nem se existisse***. Não é evidência de ausência de
-efeito. A razão de cada selo está na coluna `razao_do_selo`:
+Os selos de nulo são os que costumam ser reportados errado por aí, e por isso são **dois**:
+
+- `nulo_sem_poder` — *não detectamos nada, e o desenho não detectaria nem se existisse.* Não é
+  evidência de ausência de efeito. Foi o caso da primeira medição de temperatura (MODIS 1 km).
+- `nulo_amostra_pequena` — *medimos na escala certa, o sinal aponta na direção esperada, mas o N
+  não basta para confirmar.* É o caso da segunda medição (Landsat 30 m).
+
+A diferença entre os dois é o que separa "não sabemos" de "não existe". A razão de cada selo está
+por extenso na coluna `razao_do_selo`:
 """),
     code("""
 for _, r in selos.iterrows():
@@ -121,14 +129,24 @@ for _, r in selos.iterrows():
 ### O achado central
 
 Em **12 dos 14** campi com par válido, o anel de 500 m ao redor converteu para área construída
-mais do que um terreno pareado sem data center. Excesso mediano **+2,06 p.p.**, p=0,0065.
+mais do que um terreno pareado sem data center. Excesso mediano **+1,50 p.p.**, p=0,0065.
+
+**Esse número exclui o prédio do data center.** A primeira versão desta análise media um *disco*
+de 500 m que continha o próprio empreendimento — o que tornava a leitura circular ("depois de
+construir um data center, detectamos um data center"). Descontando os pixels do footprint, o
+excesso cai de +2,06 para +1,50 p.p. e **os mesmos 12/14 e o mesmo p se mantêm**: ~73% do efeito
+está fora da cerca.
+
+Em hectares: o data center mediano tem **1,29 ha**; o excesso convertido fora dele, dentro de
+500 m, é **~1,2 ha**. Aproximadamente um hectare a mais se converte ao redor para cada hectare de
+data center.
 
 O efeito **decai com a distância e some depois de 1 km** — é localizado no terreno, não é a
 região urbanizando por inteiro:
 
 | zona | pares com excesso | p | excesso mediano |
 |---|---:|---:|---:|
-| 0–0,5 km | **12/14** | 0,0065 | +2,06 p.p. |
+| 0–0,5 km (sem o prédio) | **12/14** | 0,0065 | +1,50 p.p. |
 | 0,5–1 km | **12/14** | 0,0065 | +1,15 p.p. |
 | 1–2 km | 8/14 | 0,395 | +0,51 p.p. |
 """),
@@ -145,14 +163,14 @@ terreno convertível, e o excesso encolhe por motivo **mecânico**, não por aus
     code("""
 cols = ["site_id", "municipio", "uf", "x_tipo_sitio", "x_pct_ja_construida",
         "efeito_construcao_0_500m", "score_construcao_0_500m",
-        "efeito_vegetacao_0_500m", "efeito_temperatura"]
+        "efeito_vegetacao_0_500m", "efeito_temperatura_0_500m"]
 por_campus[cols].rename(columns={
     "x_tipo_sitio": "tipo_sitio",
     "x_pct_ja_construida": "pct_ja_construido",
     "efeito_construcao_0_500m": "constr_0-500m_pp",
     "score_construcao_0_500m": "score_0_100",
     "efeito_vegetacao_0_500m": "veget_0-500m_pp",
-    "efeito_temperatura": "lst_C",
+    "efeito_temperatura_0_500m": "lst_anel_C",
 })
 """),
     md("""
@@ -160,23 +178,72 @@ por_campus[cols].rename(columns={
 > absoluta de dano. Um campus com score 100 é o que mais converteu *nesta amostra*, não "impacto
 > máximo possível".
 
-### Por que a temperatura não entra como afirmação
+### Temperatura: medida duas vezes, e a segunda história é melhor
 
-Coletamos LST para os 30 pontos (204/204, equilibrado). O resultado é nulo: 6/15 aqueceram mais que
-o controle, p=0,61. **Mas o nulo não informa nada**, e a figura abaixo mostra por quê — o painel da
-direita prova que o dado está fisicamente sadio (r=0,49 entre LST e área construída), então a
-ausência de sinal é falta de escala, não dado ruim:
+**Primeira medição** (MODIS `MOD11A2`, 1 km, disco de 5 km): nulo, −0,07 °C, p=0,61. Mas um nulo
+que **não informava nada** — o efeito vive num anel de 500 m, menor que **um pixel** MODIS.
+
+**Segunda medição** (Landsat `ST_B10`, 30 m, anel de 500 m): 872 pixels no anel em vez de uma
+fração de um. A estimativa muda de sinal e ganha estrutura espacial coerente.
 """),
     code("""
-display(Image(filename=str(REPO_ROOT / "dados-modelo-impacto" / "raw" / "controles-rf" /
-                           "figuras" / "fig_10_lst_did.png")))
+RES = REPO_ROOT / "dados-modelo-impacto" / "raw" / "controles-rf"
 
-poder = pd.read_csv(REPO_ROOT / "dados-modelo-impacto" / "raw" / "controles-rf" / "lst_did_poder.csv")
-print(f"efeito esperado no disco de 5 km : {poder.efeito_esperado_no_disco_c.iloc[0]:.4f} °C")
-print(f"efeito mínimo detectável        : {poder.efeito_minimo_detectavel_c.iloc[0]:.3f} °C")
-print(f"razão                           : {poder.razao_mde_sobre_esperado.iloc[0]:.0f}x")
-print("\\nMODIS tem 1 km de resolução e o efeito vive num anel de 500 m — menor que um pixel.")
-print("Responder isso de verdade exige a banda termal do Landsat (30 m).")
+poder = pd.read_csv(RES / "lst_did_poder.csv")
+print("PASSO 16 — MODIS 1 km, disco de 5 km")
+print(f"  efeito esperado pela diluição : {poder.efeito_esperado_no_disco_c.iloc[0]:.4f} °C")
+print(f"  efeito mínimo detectável      : {poder.efeito_minimo_detectavel_c.iloc[0]:.3f} °C")
+print(f"  razão                         : {poder.razao_mde_sobre_esperado.iloc[0]:.0f}x"
+      "   -> o nulo não informa nada\\n")
+
+ls = pd.read_csv(RES / "lst_landsat_resumo.csv")
+print("PASSO 23 — Landsat 30 m, no anel")
+for _, r in ls.iterrows():
+    print(f"  {r.zona:9s} {int(r.n_aqueceu_mais)}/{int(r.n_pares)} aqueceram mais · "
+          f"mediana {r.excesso_mediano_c:+.3f} °C · p={r.p_bilateral:.3f} · "
+          f"{int(r.pixels_30m_no_anel)} pixels no anel")
+"""),
+    code("""
+display(Image(filename=str(RES_FIG / "fig_16_lst_landsat.png")))
+"""),
+    md("""
+> **O achado contraintuitivo:** a resolução melhorou **33×** e o poder estatístico **piorou** —
+> efeito mínimo detectável 0,822 °C contra 0,636 °C do MODIS.
+>
+> Porque `MDE = 2,80 × σ / √n`, e trocar de sensor não mexe em nenhum dos dois termos a favor:
+> n caiu de 15 para 12 (só os pares Landsat têm banda termal na janela) e o σ entre pares subiu.
+> **Resolução e poder estatístico são coisas diferentes**, e este é o contraexemplo limpo disso.
+
+O selo do eixo muda de natureza: sai de `nulo_sem_poder` — *o sensor não veria nem se existisse* —
+para `nulo_amostra_pequena`: medimos na escala certa, o sinal aponta para **+0,5 °C** com o
+gradiente esperado, e **seriam necessários n=31 pares** para confirmar. Temos 12.
+
+*Ressalva:* LST é temperatura **radiativa de superfície**, não do ar. Para "o entorno esquentou por
+causa da conversão de terreno" é a medida certa; para "está mais quente para quem mora ali" é um
+limite superior.
+"""),
+    md("""
+### O placebo — a validação que sustenta tudo
+
+A pergunta óbvia contra qualquer achado destes é: *e se o método simplesmente produzisse sinal do
+nada?* Aplicamos o método idêntico a **15 pares de lugares onde nenhum data center foi
+construído** — controle contra controle, mesma janela, mesmo ano de obra fictício.
+"""),
+    code("""
+placebo = pd.read_csv(RES / "placebo_resumo.csv")
+p = placebo[placebo.assinatura == "virou_construida"]
+print(f"{'raio':>7s}   {'PLACEBO (sem data center)':34s} REAL")
+for _, r in p.iterrows():
+    print(f"{r.raio_km:>5.1f}km   "
+          f"{int(r.placebo_n_positivo):2d}/{int(r.placebo_n_pares):2d}  p={r.placebo_p_unilateral:.3f}  "
+          f"mediana {r.placebo_excesso_mediano_pp:+6.3f} pp      "
+          f"{r.real_frac_positivo:.0%}  p={r.real_p_unilateral:.4f}  "
+          f"mediana {r.real_excesso_mediano_pp:+6.3f} pp")
+print("\\nO placebo cai exatamente no acaso, com sinal trocado em dois dos três raios.")
+print("Aplicado onde nada foi construído, o método não acha nada.")
+"""),
+    code("""
+display(Image(filename=str(RES_FIG / "fig_12_placebo.png")))
 """),
     md("""
 ---

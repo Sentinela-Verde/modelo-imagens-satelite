@@ -53,7 +53,7 @@ evidência incompatível.
 | Conversão para construída, anel **0–500 m** (sem o prédio) | 14 | **+1,50 p.p.** | **0,0065** | `forte` |
 | Conversão para construída, anel **500 m–1 km** | 14 | **+1,15 p.p.** | **0,0065** | `forte` |
 | Vegetação → construída, anel 0–500 m | 14 | **+0,52 p.p.** | **0,0287** | `forte` |
-| Aquecimento de superfície (LST, disco 5 km) | 15 | −0,07 °C | 0,607 | `nulo_sem_poder` |
+| Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m | 12 | +0,51 °C | 0,388 | `nulo_amostra_pequena` |
 
 O efeito **decai com a distância e desaparece**: 12/14 a 500 m e a 1 km, 8/14 e p=0,395 em 1–2 km.
 E é **localizado, não regional**: de 0,5 km para 5 km o disco cresce 100×, mas o excesso cresce só
@@ -141,18 +141,39 @@ mediu sua taxa de falso positivo.
 
 ## 5. O que este trabalho NÃO afirma
 
-**Temperatura.** Medida, reportada, selo `nulo_sem_poder`. A LST vem do MODIS `MOD11A2` (1 km) num
-disco de 5 km, e o efeito vive num anel de 500 m — menor que um pixel:
+**Temperatura.** Medida **duas vezes**, e a segunda história é mais interessante que a primeira.
 
-| | valor |
-|---|---:|
-| efeito esperado no disco, pela diluição | 0,0015 °C |
-| efeito mínimo detectável (n=15, α=0,05, poder 80%) | 0,636 °C |
-| razão | **427×** |
+*Primeira medição (passo 16, MODIS `MOD11A2`, 1 km, disco de 5 km):* nulo, −0,07 °C, p=0,61. Mas um
+nulo que não informava nada — o efeito vive num anel de 500 m, **menor que um pixel MODIS**. Efeito
+esperado pela diluição: 0,0015 °C. Efeito mínimo detectável: 0,636 °C. Razão: **427×**.
 
-O dado não é ruim: LST e área construída correlacionam a **r=0,49** nos 204 ponto-ano, com contraste
-implícito de 7,2 °C entre 0% e 100% construído. A física está lá; falta escala. Responder isso exige
-a banda termal do Landsat (30 m).
+*Segunda medição (passo 23, Landsat `ST_B10`, 30 m, anel de 500 m):* **872 pixels no anel** em vez
+de uma fração de um. A estimativa muda de sinal e ganha estrutura:
+
+| anel | aqueceram mais | mediana | p |
+|---|---|---:|---:|
+| 0–500 m | 8/12 | **+0,51 °C** | 0,388 |
+| 0,5–1 km | 7/12 | +0,20 °C | 0,774 |
+
+O gradiente de distância é **coerente com o eixo de conversão** — o anel externo tem menos da metade
+do efeito do interno. Mas não atinge significância.
+
+**E aqui está o achado contraintuitivo:** a resolução melhorou 33× e o **poder estatístico piorou**
+(MDE 0,822 °C contra 0,636 °C). Porque `MDE = 2,80 × σ / √n`, e trocar de sensor não mexe em nenhum
+dos dois termos a favor: n caiu de 15 para 12 (só os pares Landsat têm banda termal na janela) e o σ
+entre pares subiu. **Resolução e poder estatístico são coisas diferentes**, e este é o contraexemplo
+limpo disso.
+
+O selo muda de natureza: sai de `nulo_sem_poder` (o sensor não veria nem se existisse) para
+`nulo_amostra_pequena` (medimos na escala certa, o sinal aponta para +0,5 °C com o gradiente
+esperado, e **seriam necessários n=31 pares** para confirmar — temos 12).
+
+O dado é fisicamente sadio nas duas medições: LST e área construída correlacionam a **r=0,49** nos
+204 ponto-ano, com contraste implícito de 7,2 °C entre 0% e 100% construído.
+
+**Ressalva que acompanha o número:** LST é temperatura **radiativa de superfície**, não do ar. Para
+"o entorno esquentou por causa da conversão de terreno" é a medida certa; para "está mais quente
+para quem mora ali" é um limite superior.
 
 **Água.** Nulo limpo: −0,000 p.p. no anel interno. O que um data center consome é água encanada,
 invisível em imagem, e um espelho de resfriamento ficaria abaixo do que um pixel de 30 m distingue
@@ -194,7 +215,8 @@ verificadas e placebo. Não é estimativa causal de magnitude.
 > **não encontra nada** (8/15, p=0,50).
 >
 > O que **não** sabemos: se o efeito persiste além de 3 anos (n=9, inconclusivo), se houve
-> aquecimento (o sensor não enxerga nessa escala), e qual a magnitude esperada num site novo (13
+> aquecimento (a estimativa na escala certa é +0,5 °C com gradiente coerente, mas precisaria de
+> n=31 pares para confirmar e temos 12), e qual a magnitude esperada num site novo (13
 > modelos, todos sem poder preditivo).
 
 A segunda metade dessa conclusão é tão importante quanto a primeira.

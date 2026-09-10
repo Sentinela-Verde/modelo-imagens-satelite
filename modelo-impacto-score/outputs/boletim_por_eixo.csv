@@ -44,18 +44,18 @@ hostdime-joao-pessoa,João Pessoa,PB,vegetacao_0_500m,"Vegetação convertida em
 scala-sgigsm01,São João de Meriti,RJ,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",0.222,p.p.,35.7,forte,brownfield,ruim,2022,s2
 scala-spoapa01,Porto Alegre,RS,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",0.0,p.p.,28.6,forte,greenfield,ruim,2023,s2
 scala-tambore,Barueri,SP,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",2.298,p.p.,85.7,forte,brownfield,ruim,2021,landsat
-angonap-fortaleza,Fortaleza,CE,temperatura,"Aquecimento de superfície (LST), disco de 5 km",0.421,°C,86.7,nulo_sem_poder,greenfield,aceitavel,2017,landsat
-ascenty-hortolandia,Hortolândia,SP,temperatura,"Aquecimento de superfície (LST), disco de 5 km",0.352,°C,80.0,nulo_sem_poder,greenfield,bom,2018,landsat
-ascenty-jundiai,Jundiaí,SP,temperatura,"Aquecimento de superfície (LST), disco de 5 km",0.105,°C,73.3,nulo_sem_poder,brownfield,bom,2019,landsat
-ascenty-maracanau,Maracanaú,CE,temperatura,"Aquecimento de superfície (LST), disco de 5 km",0.562,°C,93.3,nulo_sem_poder,,ruim,2014,landsat
-ascenty-osasco,Osasco,SP,temperatura,"Aquecimento de superfície (LST), disco de 5 km",-0.071,°C,53.3,nulo_sem_poder,brownfield,ruim,2020,landsat
-ascenty-paulinia,Paulínia,SP,temperatura,"Aquecimento de superfície (LST), disco de 5 km",-0.009,°C,60.0,nulo_sem_poder,brownfield,bom,2019,landsat
-ascenty-sumare,Sumaré,SP,temperatura,"Aquecimento de superfície (LST), disco de 5 km",0.012,°C,66.7,nulo_sem_poder,brownfield,ruim,2017,landsat
-ascenty-vinhedo,Vinhedo,SP,temperatura,"Aquecimento de superfície (LST), disco de 5 km",-0.408,°C,40.0,nulo_sem_poder,greenfield,aceitavel,2019,landsat
-clickip-manaus,Manaus,AM,temperatura,"Aquecimento de superfície (LST), disco de 5 km",-2.719,°C,6.7,nulo_sem_poder,greenfield,ruim,2023,s2
-equinix-santana-parnaiba,Santana de Parnaíba,SP,temperatura,"Aquecimento de superfície (LST), disco de 5 km",-0.321,°C,46.7,nulo_sem_poder,greenfield,ruim,2020,landsat
-everest-goiania,Goiânia,GO,temperatura,"Aquecimento de superfície (LST), disco de 5 km",-0.871,°C,13.3,nulo_sem_poder,,ruim,2021,landsat
-hostdime-joao-pessoa,João Pessoa,PB,temperatura,"Aquecimento de superfície (LST), disco de 5 km",-0.47,°C,33.3,nulo_sem_poder,brownfield,ruim,2017,landsat
-scala-sgigsm01,São João de Meriti,RJ,temperatura,"Aquecimento de superfície (LST), disco de 5 km",-0.823,°C,20.0,nulo_sem_poder,brownfield,ruim,2022,s2
-scala-spoapa01,Porto Alegre,RS,temperatura,"Aquecimento de superfície (LST), disco de 5 km",1.183,°C,100.0,nulo_sem_poder,greenfield,ruim,2023,s2
-scala-tambore,Barueri,SP,temperatura,"Aquecimento de superfície (LST), disco de 5 km",-0.607,°C,26.7,nulo_sem_poder,brownfield,ruim,2021,landsat
+angonap-fortaleza,Fortaleza,CE,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",-1.427,°C,8.3,nulo_amostra_pequena,greenfield,aceitavel,2017,landsat
+ascenty-hortolandia,Hortolândia,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",0.42,°C,50.0,nulo_amostra_pequena,greenfield,bom,2018,landsat
+ascenty-jundiai,Jundiaí,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",-1.097,°C,16.7,nulo_amostra_pequena,brownfield,bom,2019,landsat
+ascenty-maracanau,Maracanaú,CE,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",1.298,°C,91.7,nulo_amostra_pequena,,ruim,2014,landsat
+ascenty-osasco,Osasco,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",0.606,°C,58.3,nulo_amostra_pequena,brownfield,ruim,2020,landsat
+ascenty-paulinia,Paulínia,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",1.125,°C,83.3,nulo_amostra_pequena,brownfield,bom,2019,landsat
+ascenty-sumare,Sumaré,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",0.302,°C,41.7,nulo_amostra_pequena,brownfield,ruim,2017,landsat
+ascenty-vinhedo,Vinhedo,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",-0.804,°C,25.0,nulo_amostra_pequena,greenfield,aceitavel,2019,landsat
+clickip-manaus,Manaus,AM,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",,°C,,nulo_amostra_pequena,greenfield,ruim,2023,s2
+equinix-santana-parnaiba,Santana de Parnaíba,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",1.825,°C,100.0,nulo_amostra_pequena,greenfield,ruim,2020,landsat
+everest-goiania,Goiânia,GO,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",-0.732,°C,33.3,nulo_amostra_pequena,,ruim,2021,landsat
+hostdime-joao-pessoa,João Pessoa,PB,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",1.081,°C,75.0,nulo_amostra_pequena,brownfield,ruim,2017,landsat
+scala-sgigsm01,São João de Meriti,RJ,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",,°C,,nulo_amostra_pequena,brownfield,ruim,2022,s2
+scala-spoapa01,Porto Alegre,RS,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",,°C,,nulo_amostra_pequena,greenfield,ruim,2023,s2
+scala-tambore,Barueri,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",0.981,°C,66.7,nulo_amostra_pequena,brownfield,ruim,2021,landsat
