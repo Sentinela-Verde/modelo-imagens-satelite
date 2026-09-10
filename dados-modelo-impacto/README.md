@@ -305,6 +305,41 @@ receber só o painel e modelar naquelas colunas repete um beco sem saída já me
 
 Script: `scripts/impacto_dc_17_planilha_resultados.py`.
 
+### Eixo econômico (CNPJ): viável em princípio, BLOQUEADO na prática (2026-09-10)
+
+O eixo econômico — *quantas empresas abriram dentro de 1 km do data center, por ano e por setor,
+contra o controle* — é a única forma de responder "teve impacto econômico?" na granularidade certa.
+A fonte é a base **Dados Públicos CNPJ da Receita Federal**, que tem endereço, CEP, CNAE e **data de
+início de atividade** por estabelecimento.
+
+**O teste de granularidade passou.** Antes de qualquer download, medimos se o CEP resolve a escala
+do anel de 500 m, consultando o ViaCEP para os CEPs dos 16 sites:
+
+| nível de resolução | sites |
+|---|---|
+| **Logradouro** (rua específica) | **12** |
+| CEP truncado no scraping do datacentermap (5 dígitos) | 3 |
+| CEP inexistente (`13140-000`, Paulínia) | 1 |
+
+Onde há CEP completo, **12 de 12 resolvem a logradouro** — uma empresa geocodificada por CEP cai
+numa rua, bem dentro do anel. Não é o caso de "CEP cobre o município inteiro", que era o risco.
+
+**O que bloqueia são duas coisas independentes, ambas de infraestrutura, nenhuma de método:**
+
+1. **A fonte mudou de endereço e não é mais enumerável por HTTP.**
+   `arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/` devolve 404 servido por uma
+   instância **Nextcloud** — o portal migrou para compartilhamentos com token, sem listagem de
+   diretório. `dadosabertos.rfb.gov.br/CNPJ/` não responde. A API CKAN de `dados.gov.br`, que
+   traria a URL canônica, hoje exige chave (**HTTP 401**).
+2. **Espaço em disco.** A máquina tem **13 GB livres de 465 GB (98% em uso)**. A tabela de
+   Estabelecimentos tem ~3,5 GB compactada e ~15 GB descompactada. Dá para contornar com
+   processamento em fluxo (baixa um ZIP por vez, filtra pelos 27 códigos de município do painel,
+   descarta), com pico de ~1 GB — mas isso não ajuda enquanto (1) não estiver resolvido.
+
+**Para destravar** basta uma das duas: a URL atual de um compartilhamento da RFB, ou uma chave da
+API do `dados.gov.br`. O desenho da análise já está definido e o teste de viabilidade já foi feito
+— o que falta é acesso ao arquivo, não decisão de método.
+
 ### Para onde isso foi
 
 A camada de modelo em cima destes resultados **não fica nesta pasta** — está em
