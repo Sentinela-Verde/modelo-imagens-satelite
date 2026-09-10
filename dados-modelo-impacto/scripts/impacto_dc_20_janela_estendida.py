@@ -194,12 +194,19 @@ def fase_analise() -> None:
             "p_unilateral": round(p_uni, 4),
             "mediana_curto_prazo_t1_a_t3_pp": round(float(np.median(curto_h)), 4) if len(curto_h) else None,
             "mediana_longo_prazo_t4_mais_pp": round(float(np.median(por_campus)), 4),
+            # Um veredito só sai com significância. Declarar (B) porque a mediana ficou
+            # negativa com p=0,75 seria trocar ausência de evidência por evidência de
+            # ausência — o erro exato que este projeto acusa em outros lugares (ver o selo
+            # `nulo_sem_poder` do eixo de temperatura). Com n~9 o teste de sinal só separa
+            # as hipóteses em casos extremos, e o resultado honesto costuma ser nenhum dos dois.
             "leitura": (
-                "(A) o efeito PERSISTE no horizonte longo — consistente com efeito real"
+                "(A) o efeito PERSISTE no horizonte longo"
                 if p_uni < 0.10 and np.median(por_campus) > 0
-                else "(B) o controle ALCANCA — consistente com antecipacao, nao criacao"
-                if np.median(por_campus) <= 0
-                else "INCONCLUSIVO com este N — direcao positiva sem significancia"
+                else "(B) o controle ALCANCA — antecipacao, nao criacao"
+                if (1 - p_uni) < 0.10 and np.median(por_campus) < 0
+                else f"INCONCLUSIVO — com n={n} nenhuma das duas leituras atinge significancia "
+                     f"(p={p_uni:.2f}); a mediana aponta "
+                     f"{'para (B)' if np.median(por_campus) < 0 else 'para (A)'}, sem sustentacao"
             ),
         })
     veredito = pd.DataFrame(vered)
