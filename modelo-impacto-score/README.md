@@ -41,10 +41,22 @@ evidência** que diz o que pode ser afirmado a partir dele:
 
 | eixo | n | efeito mediano | p | selo |
 |---|---:|---:|---:|---|
-| Conversão para construída, anel 0–500 m | 14 | **+2,06 p.p.** | **0,0065** | `forte` |
+| Conversão para construída, anel 0–500 m (**sem o prédio**) | 14 | **+1,50 p.p.** | **0,0065** | `forte` |
 | Conversão para construída, anel 500 m–1 km | 14 | **+1,15 p.p.** | **0,0065** | `forte` |
-| Vegetação → construída, anel 0–500 m | 14 | +0,79 p.p. | 0,090 | `sugestivo` |
-| Aquecimento de superfície (LST, disco 5 km) | 15 | −0,07 °C | 0,607 | `nulo_sem_poder` |
+| Vegetação → construída, anel 0–500 m | 14 | **+0,52 p.p.** | **0,0287** | `forte` |
+| Aquecimento (LST Landsat 30 m), anel 0–500 m | 12 | +0,51 °C | 0,388 | `nulo_amostra_pequena` |
+
+**Todo eixo `forte` foi validado por placebo.** A mesma estatística, aplicada a 15 pares de lugares
+**sem** data center, dá 8/15 (p=0,50) — não produz falso positivo. Cada linha de
+`outputs/selos_de_evidencia.csv` carrega essa validação escrita na coluna `validado_por_placebo`.
+
+Há **dois** selos de nulo, e a distinção entre eles é o que separa *"não sabemos"* de *"não
+existe"*:
+
+- `nulo_sem_poder` — o desenho não veria o efeito nem se existisse (foi o caso da primeira medição
+  de temperatura, com MODIS de 1 km diluindo o sinal 427×)
+- `nulo_amostra_pequena` — medimos na escala certa, o sinal aponta na direção esperada com gradiente
+  coerente, mas o N não basta (temperatura com Landsat 30 m: +0,51 °C, precisaria de n=31, temos 12)
 
 O score 0–100 de cada campus é **posto percentual dentro dos casos medidos** — posição relativa
 entre os 14, não medida absoluta de dano. Está rotulado assim na saída.
@@ -115,8 +127,30 @@ modelo-impacto-score/
 └── reports/figuras/       # fig_01_boletim · fig_02_explicacao · fig_03_projecao
 ```
 
-Rode na ordem: `01` → `02` → `03`. Nenhum reclassifica nem retreina nada; todos leem artefatos
-prontos. Seed fixo (42) em tudo que sorteia.
+Rode na ordem: `01` → `02` → `03` → `04`. Nenhum reclassifica nem retreina nada; todos leem
+artefatos prontos. Seed fixo (42) em tudo que sorteia.
+
+## Reprodução
+
+Um comando, da estaca zero ao notebook:
+
+```bash
+python scripts/reproduzir_impacto.py --listar                # o plano, sem executar
+python scripts/reproduzir_impacto.py                         # 21 passos offline, minutos
+python scripts/reproduzir_impacto.py --etapa completo        # + 10 passos de rede (GEE/Overpass)
+```
+
+O runner declara ordem, custo e dependência externa de cada um dos 31 passos das duas frentes. O
+padrão é a etapa `analise` — só o que roda offline, que é o caso de uso de quem está **conferindo**
+os números de um relatório. Os passos de rede são idempotentes: pulam o que já está em disco.
+
+## Documentos
+
+| arquivo | para quem |
+|---|---|
+| `reports/sumario-executivo.md` | banca e leitor não técnico — 1 página, sem um p-valor no corpo |
+| `reports/relatorio-impacto.md` | detalhamento técnico com todos os números, testes e limitações |
+| `../notebooks/02_impacto_score.ipynb` | demo executada, abre já renderizada |
 
 ## Insumos consumidos
 

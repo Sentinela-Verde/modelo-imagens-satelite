@@ -340,6 +340,75 @@ numa rua, bem dentro do anel. Não é o caso de "CEP cobre o município inteiro"
 API do `dados.gov.br`. O desenho da análise já está definido e o teste de viabilidade já foi feito
 — o que falta é acesso ao arquivo, não decisão de método.
 
+### Rodada 3 (2026-09-10) — robustez: o que sobrevive a teste
+
+Seis passos novos, e o saldo é **quatro verificações passando e uma inconclusiva declarada como
+tal**. A ordem aqui não é cronológica por acaso: os testes que podiam **derrubar** o achado vieram
+antes dos que o **estendem**.
+
+| passo | o que testa | resultado |
+|---|---|---|
+| **19 · Placebo** | o método acha efeito onde nada foi construído? | **PASSOU** |
+| **18 · Estudo de evento** | quando a conversão acontece? | timing certo, não sustentado |
+| **20 · Janela até t+6** | o efeito persiste ou o controle alcança? | **INCONCLUSIVO** (n=9) |
+| **22 · Delta das 5 classes** | água, vegetação densa, solo mudaram? | nada por estoque |
+| **21 · Tipo de edificação (OSM)** | residencial, comercial ou industrial? | **inviável**, viés de cobertura |
+| **23 · LST Landsat 30 m** | o entorno esquentou? | +0,51 °C, sem significância |
+
+**O placebo (passo 19) é a validação que mais faltava.** 15 pares controle-contra-controle — dois
+lugares sem data center cada, mesma janela, mesmo ano de obra fictício, método idêntico:
+
+| raio | placebo | real |
+|---|---|---|
+| 0,5 km | 8/15 · p=0,50 · +0,22 p.p. | 13/15 · **p=0,0037** · +1,93 p.p. |
+| 1,0 km | 7/15 · p=0,70 · −0,26 p.p. | 13/15 · **p=0,0037** · +0,89 p.p. |
+| 2,0 km | 7/15 · p=0,70 · −0,37 p.p. | 9/15 · p=0,30 · +0,62 p.p. |
+
+Cai exatamente no acaso, com sinal trocado em dois dos três raios. O parceiro placebo **não** é o
+vice do ranking original — aquele mede distância ao *tratamento*; aqui recalculamos a distância ao
+*controle*, que é a outra ponta do par placebo.
+
+**A correção de circularidade.** A zona "0-0.5km" do passo 14 era um **disco**, não um anel: continha
+o próprio data center. Com footprint mediano de 1,29 ha num disco de 78,5 ha e excesso medido de
+~1,6 ha, reportar aquele número como "impacto no entorno" misturava o empreendimento com o efeito
+dele. Descontando os pixels do footprint (subtração exata, sem reprocessar raster):
+
+- conversão: **+2,06 → +1,50 p.p.**, mesmos 12/14, mesmo p — **~73% do efeito está fora da cerca**
+- vegetação: 10/14 p=0,090 → **11/14 p=0,0287** — passou de sugestivo a **forte**
+
+A vegetação melhorou porque o footprint costuma estar sobre terreno já construído e diluía o sinal
+do anel. A correção tornou a análise mais **estrita**, e um eixo ficou mais forte.
+
+**Por que três resultados ficaram fracos, e é um só motivo.** O passo 22 isola a causa: a classe
+`construida_urbana`, que a trajetória detecta com 13/15 e p=0,0037, fica **invisível** medida como
+**estoque** (8/15, p=1,00). Mesmos pares, mesmos anos, mesma classe — só muda a estatística. Os
+passos 18, 20 e 22 são todos estoque, e ficam mudos pelo mesmo motivo: com N=15, estoque não tem
+sensibilidade para um efeito de ~1,5 p.p. **A contrapartida honesta é que o resultado central
+depende de uma estatística — e a defesa dela é o passo 19.**
+
+**Temperatura, medida duas vezes.** O passo 16 (MODIS 1 km, disco de 5 km) deu nulo e provou que o
+nulo não valia (MDE 427× o efeito esperado). O passo 23 refez com Landsat `ST_B10` a 30 m no anel —
+872 pixels em vez de uma fração de um. A estimativa vai de −0,07 °C para **+0,51 °C**, com gradiente
+de distância coerente com o eixo de conversão. Não atinge significância.
+
+E o achado contraintuitivo: **a resolução melhorou 33× e o poder estatístico piorou** (MDE 0,822 °C
+contra 0,636 °C). Porque `MDE = 2,80·σ/√n`, e trocar de sensor não mexe em nenhum dos dois termos a
+favor — n caiu de 15 para 12 e o σ entre pares subiu. Resolução e poder são coisas diferentes.
+
+**Por que o OSM não serviu (passo 21).** Só 7 dos 15 pares são usáveis, e as falhas são
+sistemáticas: são os **controles** que não têm mapeamento (0, 0, 1, 3, 3, 3, 4, 4 feições) contra
+tratamentos com 15 a 5.447. A densidade de mapeamento do OSM correlaciona com urbanização, então o
+confundidor corre na **mesma direção da hipótese**. Além disso, 60,8% das feições nos anéis usáveis
+não têm tag de tipo. Reforça a necessidade do CNPJ, que tem cobertura uniforme por obrigação legal.
+
+### Reprodução
+
+```bash
+python scripts/reproduzir_impacto.py --listar            # os 31 passos, com custo e dependência
+python scripts/reproduzir_impacto.py                     # 21 passos offline
+python scripts/reproduzir_impacto.py --etapa completo    # + 10 passos de rede (idempotentes)
+```
+
 ### Para onde isso foi
 
 A camada de modelo em cima destes resultados **não fica nesta pasta** — está em

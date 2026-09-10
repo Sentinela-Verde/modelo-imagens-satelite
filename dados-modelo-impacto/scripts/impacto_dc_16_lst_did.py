@@ -67,7 +67,11 @@ import impacto_dc_comum as C  # noqa: E402
 
 N_ANOS_PONTA = 2          # pré = 2 primeiros anos da janela; pós = 2 últimos (convenção do passo 12)
 RAIO_ANEL_KM = 0.5        # anel onde o efeito de construção foi medido (passos 14/15)
-EXCESSO_ANEL_PP = 2.0589  # excesso mediano de `virou_construida` em 0-0,5 km (footprint_vs_anel_resumo)
+# Excesso mediano de `virou_construida` em 0-0,5 km, do resumo do passo 14. É o valor do DISCO,
+# que inclui o prédio; a versão corrigida (footprint descontado) é +1,50 p.p. Manter o valor maior
+# aqui é CONSERVADOR de propósito: ele superestima o efeito esperado, e mesmo assim o efeito
+# mínimo detectável sai centenas de vezes maior. Usar 1,50 só tornaria a conclusão mais extrema.
+EXCESSO_ANEL_PP = 2.0589
 
 
 def p_bin_bilateral(k: int, n: int) -> float:

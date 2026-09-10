@@ -51,7 +51,9 @@ ABAS = {
     "anel_resumo": (
         "footprint_vs_anel_resumo.csv",
         "Teste de sinal por zona. 0-0,5 km: 12/14, p=0,0065, excesso mediano +2,06 p.p. "
-        "Some em 1-2 km (8/14, p=0,395).",
+        "ATENCAO: essa zona e um DISCO e inclui o predio do data center. Descontando o "
+        "footprint o excesso cai para +1,50 p.p., com os mesmos 12/14 e o mesmo p — e e esse "
+        "o numero que deve ser citado. Some em 1-2 km (8/14, p=0,395).",
     ),
     "greenfield_brownfield": (
         "greenfield_brownfield.csv",

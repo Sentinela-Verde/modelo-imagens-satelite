@@ -385,14 +385,24 @@ display(Image(filename=str(FIG / "fig_03_projecao.png")))
 ---
 ## 5. A conclusão em uma frase
 
-> Em **12 dos 14** data centers com par válido, o anel de 500 m ao redor converteu para área
-> construída mais do que um terreno pareado sem data center — excesso mediano de **2,06 p.p.**,
-> **p=0,0065**. O efeito decai com a distância e desaparece depois de 1 km, é localizado e não
-> regional, e as tendências pré-obra eram paralelas. A **magnitude**, porém, **não é predizível**
-> a partir das features disponíveis: nenhum dos 13 modelos testados supera o baseline sob validação
-> cruzada. O que se sustenta é o padrão, não o coeficiente.
+> Em **12 dos 14** data centers com par válido, o anel de 500 m ao redor — **excluído o prédio** —
+> converteu para área construída mais do que um terreno pareado sem data center: excesso mediano de
+> **1,50 p.p.**, **p=0,0065**. O efeito decai com a distância e desaparece depois de 1 km, é
+> localizado e não regional, é concentrado onde havia terreno livre (**6 de 6** greenfield), as
+> tendências pré-obra eram paralelas, e o método aplicado a 15 pares onde nada foi construído
+> **não encontra nada** (8/15, p=0,50).
+>
+> O que **não** sabemos: se o efeito persiste além de 3 anos (n=9, inconclusivo), se houve
+> aquecimento (a estimativa na escala certa é +0,5 °C com gradiente coerente, mas precisaria de
+> n=31 pares e temos 12), e qual a magnitude esperada num site novo — nenhum dos 13 modelos
+> testados supera o baseline sob validação cruzada.
+>
+> O que se sustenta é o padrão, não o coeficiente. E a segunda metade desta conclusão é tão
+> importante quanto a primeira.
 
+Sumário executivo (1 página, sem p-valores): `modelo-impacto-score/reports/sumario-executivo.md`
 Relatório completo: `modelo-impacto-score/reports/relatorio-impacto.md`
+Reprodução: `python scripts/reproduzir_impacto.py --etapa completo`
 """),
 ]
 
