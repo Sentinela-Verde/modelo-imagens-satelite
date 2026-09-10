@@ -215,6 +215,17 @@ def fase_controles() -> None:
         }
         print(f"[{i}/{len(novos)}] {r.site_id} ({r.municipio}/{r.uf}, obra ~{r.ano_inicio_obra})")
         try:
+            # O pareamento compara a distribuição de classes do candidato contra a do TRATAMENTO
+            # no ano de referência (`avaliar_finalistas_com_rf`), então o tratamento precisa estar
+            # classificado antes. Para os 16 sites oficiais isso já existe — eles passam pelo
+            # pipeline do classificador principal. Para um campus de expansão, não: ninguém o
+            # classificou ainda, e sem esta linha o passo 3 morre com FileNotFoundError.
+            ano_ref = C.ano_referencia_pareamento(campus["ano_inicio_obra"])
+            sensor = C.sensor_da_janela(C.janela_anos(campus["ano_inicio_obra"]))
+            if not Path(C.caminho_classificado(sensor, campus["site_id"], ano_ref)).exists():
+                print(f"  classificando o tratamento em {ano_ref} (pré-requisito do pareamento)")
+                C.rodar_ponto(campus, ano_ref, sensor, pacote, descartar_apos=True)
+
             res = P3.processar_campus(campus, pontos_contaminacao, buffers_ocupados,
                                       cache, cfg_labels, pacote)
         except Exception as exc:  # noqa: BLE001 — falha de rede num site não mata o lote

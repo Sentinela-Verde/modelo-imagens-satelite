@@ -213,12 +213,23 @@ def normalizar(texto: str) -> str:
 
 
 PREFIXO_CONTROLE = "ctrl-"
+PREFIXO_EXPANSAO = "exp-"
+# Pontos que NÃO estão em `config/sites.geojson` e por isso não podem viver nos diretórios do
+# classificador principal — ver `caminho_classificado`. São duas famílias hoje: os controles
+# pareados (`ctrl-`) e os campi da expansão de amostra do passo 25 (`exp-`), que são data centers
+# reais mas vindos do `datacentermap`, sem a validação de coordenada em 5 camadas dos 16 oficiais.
+PREFIXOS_FORA_DO_OFICIAL = (PREFIXO_CONTROLE, PREFIXO_EXPANSAO)
 DIR_CLASSIFICADO_CONTROLES = DIR_SAIDA / "classificado"
 DIR_MANIFESTS_CONTROLES = DIR_SAIDA / "manifests"
 
 
 def eh_controle(site_id: str) -> bool:
-    return site_id.startswith(PREFIXO_CONTROLE)
+    """Ponto que deve ser isolado dos diretórios do classificador principal.
+
+    O nome ficou histórico: hoje cobre controles E campi de expansão. O critério real é "não está
+    em `config/sites.geojson`", e é isso que `caminho_classificado` precisa saber.
+    """
+    return site_id.startswith(PREFIXOS_FORA_DO_OFICIAL)
 
 
 def caminho_classificado(sensor_token: str, site_id: str, ano: int) -> Path:
