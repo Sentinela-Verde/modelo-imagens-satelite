@@ -1,0 +1,4 @@
+classe_referencia,n,n_positivo,frac_positivo,mediana_pp,p15_pp,p85_pp,min_pp,max_pp
+greenfield,6,6,1.0,2.399,0.933,3.661,0.288,5.339
+brownfield,7,5,0.714,0.775,-3.314,3.802,-5.374,6.363
+amostra_completa,13,11,0.846,1.933,-0.387,3.881,-5.374,6.363

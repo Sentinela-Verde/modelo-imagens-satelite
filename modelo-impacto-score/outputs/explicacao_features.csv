@@ -1,0 +1,10 @@
+feature,n,spearman_rho,spearman_p,pearson_r,pearson_p,kruskal_h,kruskal_p
+x_pct_ja_construida,13,-0.314,0.296,-0.49,0.0893,,
+x_pre_prop_construida_urbana,13,0.286,0.344,0.346,0.2463,,
+x_pre_prop_vegetacao_densa,13,-0.324,0.2799,-0.379,0.2014,,
+x_pre_prop_vegetacao_rala,13,0.066,0.8305,-0.114,0.7118,,
+x_area_footprint_ha,13,0.17,0.578,0.013,0.9673,,
+x_n_predios,13,-0.179,0.5587,-0.047,0.8796,,
+x_pre_lst_media_celsius,13,0.533,0.0607,0.471,0.1041,,
+x_tipo_sitio,13,,,,,0.51,0.4751
+x_regiao,13,,,,,0.222,0.6374

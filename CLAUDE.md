@@ -52,6 +52,14 @@ riscos) vive no Notion: página **"🧭 Plano de Modelos de ML — Product Flow"
   facilities do estudo. Não segue o cronograma/prazo deste repositório. Ver
   `dados-modelo-impacto/README.md` para escopo, ressalvas já conhecidas (granularidade de
   população/emprego, reaproveito do desenho de grupo de controle de SV-29) e status.
+- **`modelo-impacto-score/`** (a partir de 2026-09-10): terceira frente, também fora do escopo do
+  classificador e com prazo próprio. Consome os artefatos de `dados-modelo-impacto/` e responde
+  *qual foi o impacto territorial de cada data center, e ele é predizível?* — em três camadas
+  (medição / explicação / projeção). **Não produz um score único agregado, por decisão de desenho:**
+  publica um boletim por eixo, cada um com selo de evidência (`forte` / `sugestivo` /
+  `nulo_informativo` / `nulo_sem_poder`). Resultado central: o padrão se sustenta (conversão no anel
+  de 0-500 m, 12/14 pares, p=0,0065), a **magnitude não é predizível** (R² LOOCV negativo em 13
+  modelos, permutação p=0,53). Ver `modelo-impacto-score/README.md`.
 
 ## Regras do repositório
 - Nunca commitar dado bruto pesado (raster/GeoTIFF), credenciais ou artefato de modelo grande — usar

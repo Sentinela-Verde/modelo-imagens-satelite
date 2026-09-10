@@ -1,0 +1,5 @@
+eixo,n_pares,n_positivo,p,excesso_mediano,selo,razao_do_selo
+construcao_0_500m,14,12,0.0065,2.059,forte,teste de sinal unilateral sobre os pares; direção e magnitude consistentes
+construcao_500m_1km,14,12,0.0065,1.155,forte,teste de sinal unilateral sobre os pares; direção e magnitude consistentes
+vegetacao_0_500m,14,10,0.0898,0.785,sugestivo,"direção consistente, mas não atinge significância com este N"
+temperatura,15,6,0.6072,-0.071,nulo_sem_poder,efeito mínimo detectável 0.636 °C contra efeito esperado 0.00149 °C (426.8x) — MODIS 1 km num disco de 5 km dilui o sinal; o nulo não informa sobre a existência do efeito
