@@ -225,6 +225,24 @@ O checkpoint preservou o progresso — é retomável com `--fase controles`.
 coisas de uma vez: conserta a classe 3 no Brasil **e** remove a dependência do MapBiomas, que só
 existe aqui. É o que torna o item 4 possível com o mesmo código.
 
+### O desenho do retreino já está escrito: `docs/decisoes/ADR-006`
+
+Responde as três perguntas de arquitetura, e é o documento a ler antes de aprovar o item 2:
+
+- **um modelo, não dois.** Se cada país tiver o seu, os resultados das duas metades não são
+  comparáveis. O risco (aprender *região* em vez de *cobertura*) é controlado tirando
+  país/bioma/ecorregião das features e testando **entre países**: treina BR → testa EUA.
+- **o teto de amostragem precisa virar por ÁREA**, não por contagem de pixel. É o bug que hoje faz
+  a classe 3 ser 2,9% das linhas Landsat contra 17,3% das S2 — e como `sensor` é feature, o modelo
+  aprendeu esse prior e o reproduz na saída.
+- **o critério de sucesso não é acurácia**, é estabilidade temporal nos controles. O ADR fixa a
+  barra em **7,3%** (a do Dynamic World). Se o modelo retreinado não ficar abaixo disso, usar o DW
+  direto é a decisão certa — é um critério que pode reprovar a própria proposta.
+
+E um **portão antes do retreino**: medir quantos campi americanos têm data e janela utilizável. O
+gargalo dos EUA é provavelmente o mesmo do Brasil (só 53 de 118 campi daqui têm ano). Se forem
+menos de ~30 novos, o retreino não se paga.
+
 **O bloqueio do eixo econômico**, para quem puder destravar: a base CNPJ da Receita migrou para um
 portal Nextcloud sem listagem HTTP (404), `dadosabertos.rfb.gov.br` não responde, e a API do
 `dados.gov.br` passou a exigir chave (401). Resolve com **uma** das duas: a URL atual de um
@@ -247,8 +265,14 @@ Rodado duas vezes, saídas idênticas até a quarta casa decimal.
 |---|---|
 | `modelo-impacto-score/reports/sumario-executivo.md` | banca — 1 página, sem p-valores |
 | `modelo-impacto-score/reports/relatorio-impacto.md` | técnico, com todos os números e limitações |
+| **`notebooks/04_demo_visual_classificador.ipynb`** | **o modelo funcionando, com imagem de satélite** |
 | `notebooks/02_impacto_score.ipynb` | demo executada do modelo de impacto |
 | `notebooks/01_modelo_impacto.ipynb` | o desenho de pareamento, passo a passo |
+| `docs/decisoes/ADR-006-*.md` | o desenho do classificador global BR+EUA |
+
+**Para começar por algo visual**, o `04` é o caminho: mostra a imagem crua, a mesma cena em
+falsa-cor e a classificação lado a lado, a série ano a ano, o mapa de confiança do modelo e os
+anéis onde o impacto é medido. Tem uma célula interativa que renderiza qualquer site e ano na hora.
 """),
 ]
 
