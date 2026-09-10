@@ -1,158 +1,148 @@
-# Impacto territorial de data centers no Brasil — o que medimos, o que explica e o que não sabemos
+# Impacto territorial de data centers no Brasil
 
-- **Gerado por:** `modelo-impacto-score/scripts/01_boletim.py` → `02_explicacao.py` → `03_projecao.py`
-- **Data:** 2026-09-10
-- **Amostra:** 15 campi de data center pareados com 15 controles sem data center; painel 2013–2025
-- **Classificador:** `rf_v1.0-tuned` · **Desenho de pareamento:** `dados-modelo-impacto/raw/controles-rf/METODOLOGIA.md`
+**O que medimos, o que sobrevive a teste, e o que não sabemos.**
+
+- **Gerado por:** `dados-modelo-impacto/scripts/impacto_dc_*.py` (passos 1–22) e
+  `modelo-impacto-score/scripts/0{1,2,3}_*.py`
+- **Atualizado:** 2026-09-10
+- **Amostra:** 15 campi de data center, cada um com um controle pareado sem data center; painel 2013–2025
+- **Classificador:** `rf_v1.0-tuned` · **Pareamento:** `dados-modelo-impacto/raw/controles-rf/METODOLOGIA.md`
 
 ---
 
-## 1. A pergunta
-
-Data centers estão sendo construídos rápido no Brasil, e a conversa pública sobre eles é feita de
-afirmações sem medida — "consomem muita energia", "esquentam a região", "impulsionam a economia
-local". A pergunta desta frente é estreita de propósito:
+## 1. A pergunta e o que ela não é
 
 > **Depois que um data center é construído, o terreno ao redor muda mais do que mudaria um terreno
 > parecido sem data center?**
 
-Estreita porque é a única versão da pergunta que os dados disponíveis conseguem responder com um
-grupo de controle, e porque um efeito medido contra controle vale mais que seis efeitos afirmados
-sem ele.
+Não é "apareceu um prédio" — isso seria circular, e é a primeira coisa que se deve descartar. Toda
+medida aqui é **contra um controle pareado**, e o anel de análise **exclui o footprint do próprio
+data center**. O que se mede é conversão de terreno **fora da cerca**, que podia perfeitamente ser
+zero.
+
+Em hectares, para dar escala: o data center mediano tem **1,29 ha** de footprint, e o excesso
+convertido fora dele, dentro de 500 m, é **~1,2 ha**. Aproximadamente um hectare a mais se converte
+ao redor para cada hectare de data center.
 
 ## 2. O desenho
 
-Cada campus de tratamento tem um **controle pareado**: um ponto sem data center, no mesmo estado e
-bioma, a 15–40 km de distância (perto o bastante para compartilhar clima e dinâmica regional, longe
-o bastante para não estar dentro do raio de influência do empreendimento), escolhido por
-similaridade de **cobertura do solo no ano anterior à obra**.
+Cada campus tem um controle pareado: ponto sem data center, mesmo estado e bioma, 15–40 km de
+distância — perto o bastante para compartilhar clima e dinâmica regional, longe o bastante para não
+estar dentro do raio de influência do empreendimento —, escolhido por similaridade de cobertura do
+solo no ano anterior à obra.
 
-Três regras que sustentam a leitura:
+Três regras sustentam a leitura:
 
-1. **Sensor único por par.** A janela de cada campus (`obra−3 .. obra+3`) cabe inteira em Landsat ou
-   inteira em Sentinel-2, nunca cruza a fronteira 2018/2019. SV-20 mediu que o degrau entre sensores
-   naquela fronteira é indistinguível de artefato de instrumento em 48 de 48 pares — comparar
-   "antes" e "depois" em sensores diferentes seria medir o satélite, não a obra.
-2. **A estatística é trajetória de pixel, não área agregada.** Somar área por classe no disco foi
-   testado em 6 raios (0,5 a 5 km) e **não detecta a obra** — a fração de pares com excesso fica em
-   ~0,5, cara ou coroa. A classe `solo_exposto_obras` é a pior do classificador (F1 0,579), e numa
-   soma de área cada falso positivo pesa igual a um pixel verdadeiro. Um pixel só conta aqui se
-   cumprir uma sequência ordenada e persistente: não ser construída nos 2 primeiros anos da janela,
-   ser construída nos 2 últimos, e permanecer.
-3. **Pré-tendências paralelas verificadas.** Antes da obra, o tratamento crescia em área construída
-   mais rápido que o controle em apenas 6 de 14 pares (p=0,79). Não há evidência de que os data
-   centers tenham sido erguidos justamente onde a região já urbanizava mais rápido — que é a
-   hipótese identificadora do desenho, e a primeira coisa que deveria derrubá-lo.
+1. **Sensor único por par.** A janela de cada campus cabe inteira em Landsat ou inteira em
+   Sentinel-2, nunca cruza a fronteira 2018/2019. SV-20 mediu que o degrau ali é indistinguível de
+   artefato de instrumento em 48 de 48 pares — comparar antes e depois em sensores diferentes seria
+   medir o satélite, não a obra.
+2. **A estatística é trajetória de pixel, não área agregada.** Um pixel só conta se **não** for
+   construída nos 2 primeiros anos da janela, **for** construída nos 2 últimos, **e permanecer**.
+3. **Tendências pré-obra verificadas.** Antes da obra, o tratamento crescia mais rápido que o
+   controle em 6 de 14 pares (p=0,79). Não há evidência de que os data centers tenham sido erguidos
+   onde a região já adensava — a hipótese identificadora se sustenta.
 
 ## 3. O boletim — quatro eixos, quatro selos
 
-**Não há um score único.** Um agregado exigiria pesos arbitrários e misturaria eixos com qualidade
-de evidência incompatível. Cada eixo carrega o que ele próprio sustenta:
+**Não há score único.** Um agregado exigiria pesos arbitrários e misturaria eixos com qualidade de
+evidência incompatível.
 
 | eixo | n | efeito mediano | p | selo |
 |---|---:|---:|---:|---|
-| Conversão para construída, anel **0–500 m** | 14 | **+2,06 p.p.** | **0,0065** | `forte` |
+| Conversão para construída, anel **0–500 m** (sem o prédio) | 14 | **+1,50 p.p.** | **0,0065** | `forte` |
 | Conversão para construída, anel **500 m–1 km** | 14 | **+1,15 p.p.** | **0,0065** | `forte` |
-| Vegetação → construída, anel 0–500 m | 14 | +0,79 p.p. | 0,090 | `sugestivo` |
+| Vegetação → construída, anel 0–500 m | 14 | **+0,52 p.p.** | **0,0287** | `forte` |
 | Aquecimento de superfície (LST, disco 5 km) | 15 | −0,07 °C | 0,607 | `nulo_sem_poder` |
 
-`nulo_sem_poder` é a categoria que costuma ser reportada errado, e é por isso que ela existe aqui:
-não se detectou aquecimento, **e o desenho não o detectaria nem se existisse** — não é evidência de
-ausência de efeito. Detalhe na seção 6.
-
-### O efeito é do entorno, não do prédio
-
-Puxamos o footprint real de cada campus no OpenStreetMap (14 de 15, 7 com `building=data_center`
-explícito, área mediana 1,29 ha). Dentro do footprint, só **4,8%** dos pixels viraram construída —
-porque **50% (mediana) já eram construída antes da obra**, e em quatro casos 85–90%. Estes data
-centers foram erguidos dentro de parques industriais que já existiam.
-
-O contra-exemplo fecha o argumento: `clickip-manaus` é o único com 0% de terreno já construído, e
-ali 75% dos pixels do footprint viraram construída.
-
-Então o excesso medido **não é o prédio — é conversão no entorno dele**, e decai com a distância:
-
-| zona | pares com excesso | p | excesso mediano |
-|---|---:|---:|---:|
-| 0–0,5 km | **12/14** | 0,0065 | +2,06 p.p. |
-| 0,5–1 km | **12/14** | 0,0065 | +1,15 p.p. |
-| 1–2 km | 8/14 | 0,395 | +0,51 p.p. |
-
+O efeito **decai com a distância e desaparece**: 12/14 a 500 m e a 1 km, 8/14 e p=0,395 em 1–2 km.
 E é **localizado, não regional**: de 0,5 km para 5 km o disco cresce 100×, mas o excesso cresce só
-11,6× (1,53 → 17,75 ha). A densidade cai 7×. É assinatura de mudança concentrada no terreno, não de
-uma região urbanizando por inteiro.
+11,6× — a densidade cai 7×.
 
 ![boletim](figuras/fig_01_boletim.png)
 
-## 4. O que explica o tamanho — nada, e isso está medido
+### O efeito é do entorno, não do prédio
 
-O passo 15 de `dados-modelo-impacto` achou uma regra de uma variável que funciona: sítios
-**greenfield** (< 50% do footprint já construído) dão 6/6 pares positivos (p=0,016, mediana
-+2,40 p.p.), contra 5/7 e p=0,227 em brownfield. Isso explica os dois únicos pares negativos do
-estudo — `ascenty-jundiai` (−5,37 p.p.) e `ascenty-sumare` (−3,08 p.p.), com 86% e 88% do footprint
-já construído: num sítio saturado sobra pouco terreno convertível, e o excesso encolhe por motivo
-**mecânico**, não por ausência de efeito.
+Footprints reais do OpenStreetMap em 14 de 15 campi (7 com `building=data_center` explícito, área
+mediana 1,29 ha). Dentro do footprint, só **4,8%** dos pixels viraram construída — porque **50%
+(mediana) já eram construída antes da obra**, e em quatro casos 85–90%. Estes data centers foram
+erguidos dentro de parques industriais que já existiam.
 
-A pergunta desta camada era: **alguma coisa bate `pct_ja_construida` sozinho?**
+O contra-exemplo fecha: `clickip-manaus` é o único com 0% de terreno já construído, e ali **75%** dos
+pixels do footprint viraram construída.
 
-Testamos 13 modelos contra o baseline "prever a mediana", todos por validação cruzada
-leave-one-out, N=13:
+### Onde havia terreno, o efeito é maior
 
-| | resultado |
-|---|---|
-| melhor modelo | R² fora-da-amostra **−0,03** |
-| todos os 13 modelos | R² **negativo** — piores que prever a média |
-| melhor feature (`pct_ja_construida`) | Spearman ρ=−0,31, **p=0,30** |
-| teste de permutação (999 embaralhamentos) | **p=0,53** |
+Sítios **greenfield** (< 50% do footprint já construído): **6 de 6** pares positivos, p=0,016,
+mediana +2,40 p.p. **Brownfield**: 5 de 7, p=0,227, +0,77 p.p. Isso explica os dois únicos pares
+negativos do estudo — `ascenty-jundiai` (−5,37 p.p.) e `ascenty-sumare` (−3,08 p.p.), com 86% e 88%
+do footprint já construído: num sítio saturado sobra pouco terreno convertível, e o excesso encolhe
+por motivo **mecânico**, não por ausência de efeito.
 
-**Nenhum modelo tem poder preditivo demonstrado.** O melhor ajuste encontrado é indistinguível do
-que ruído puro produz na mesma busca.
+## 4. O que sobreviveu a teste — e o que não
 
-Isto **não** contradiz o achado greenfield/brownfield. São duas perguntas, e as duas respostas estão
-certas:
+Esta é a seção que decide se o trabalho vale. Cinco verificações independentes:
 
-- *"a **direção** é consistente?"* → **sim**: 6/6 greenfield positivos, p=0,016 (teste de sinal)
-- *"a **magnitude** é predizível?"* → **não**: R² LOOCV negativo em todos os modelos
+| verificação | o que testa | resultado |
+|---|---|---|
+| **Placebo** (passo 19) | o método acha efeito onde nada foi construído? | **PASSOU** ✓ |
+| **Tendências pré-obra** (passo 12) | o DC foi construído onde já adensava? | **PASSOU** ✓ |
+| **Gradiente de distância** (passo 14) | o efeito é local ou regional? | **PASSOU** ✓ |
+| **Circularidade** (passo 22 / correção) | o "efeito" é o próprio prédio? | **PASSOU** ✓ |
+| **Estudo de evento + janela longa** (passos 18, 20) | quando acontece, e persiste? | **INCONCLUSIVO** ⚠ |
 
-Um teste de sinal pergunta se o efeito aponta para o mesmo lado; uma regressão pergunta se dá para
-prever o quanto. Com 13 casos muito heterogêneos — um campus de 400 MW e um prédio de 3 MW, Manaus e
-Porto Alegre — a primeira resposta se sustenta e a segunda não.
+### O placebo — a validação mais importante
 
-![explicação](figuras/fig_02_explicacao.png)
+15 pares **controle contra controle** (dois lugares sem data center cada), mesma janela, mesmo ano
+de obra fictício, método idêntico:
 
-## 5. A projeção — classe de referência, não previsão
+| raio | **placebo** | **real** |
+|---|---|---|
+| 0,5 km | 8/15 · p=0,50 · +0,22 p.p. | 13/15 · **p=0,0037** · +1,93 p.p. |
+| 1,0 km | 7/15 · p=0,70 · −0,26 p.p. | 13/15 · **p=0,0037** · +0,89 p.p. |
+| 2,0 km | 7/15 · p=0,70 · −0,37 p.p. | 9/15 · p=0,30 · +0,62 p.p. |
 
-Como a regressão de magnitude falhou, projetar um site novo não pode devolver um número. Devolve o
-que sítios comparáveis de fato produziram — uma previsão de **classe de referência**, que continua
-válida quando a regressão individual falha porque não afirma nada sobre o caso, e sim sobre a
-taxa-base do grupo.
+O placebo cai **exatamente no acaso**, com sinal trocado em dois dos três raios. Aplicado onde nada
+foi construído, o método não acha nada. Isso transforma o selo `forte` de um p-valor solto numa
+taxa de falso positivo **medida**.
 
-Intervalo não se valida por R². Valida-se por **cobertura**:
+### O que ficou inconclusivo, e por quê
 
-| estratégia | cobertura da faixa 15–85% | largura mediana | veredito |
+O estudo de evento (passo 18) mostrou o **timing certo** — pré-período plano, salto em t+1 (+2,6
+p.p.) — mas o efeito não se sustentava até t+3. Estendemos a janela para t+6 (passo 20, 38
+ponto-ano novos) e o resultado foi **inconclusivo**, com os dois anéis apontando para lados opostos:
+
+| | curto prazo (t1–t3) | longo prazo (t≥4) | |
 |---|---:|---:|---|
-| classe única (amostra completa) | **69%** (nominal 70%) | 5,05 p.p. | **calibrada — é esta que se usa** |
-| condicionada em greenfield/brownfield | 46% | 4,75 p.p. | estreita só 0,3 p.p. e perde cobertura |
+| anel 0–500 m | +1,16 p.p. | **−1,14 p.p.** | 4/9, p=0,75 |
+| anel 0,5–1 km | +1,23 p.p. | **+3,28 p.p.** | 5/9, p=0,50 |
 
-Condicionar no tipo de sítio **piora** o intervalo: com subgrupos de n=6 e n=7 os percentis ficam
-instáveis. O achado direcional continua valendo; o intervalo condicionado, não. É um caso limpo de
-duas conclusões que parecem contraditórias e não são — e que só aparecem se você validar as duas
-coisas separadamente.
+Com n=9 no horizonte longo, 4/9 e 5/9 são cara-ou-coroa. **Nem "o efeito persiste" nem "o controle
+alcança" tem sustentação.** Fica como pergunta aberta, não como achado.
 
-```
-$ python modelo-impacto-score/scripts/03_projecao.py --pct-ja-construida 15
+### A reconciliação — por que os resultados parecem discordar
 
---- projeção para um site com 15% já construído (greenfield) ---
-direção   — 6/6 dos análogos greenfield converteram MAIS que seu controle (100%)
-magnitude — faixa 15–85%: -0.39 a +3.88 p.p., mediana +1.93 p.p.
-```
+Três resultados fracos (estudo de evento ruidoso, janela longa inconclusiva, deltas por classe
+nulos) **não são três problemas: são um só**, e o passo 22 o isola de forma limpa.
 
-![projeção](figuras/fig_03_projecao.png)
+O passo 22 mediu o delta de todas as 5 classes nos dois anéis — 10 combinações, **nenhuma
+detectável**. Inclusive a própria classe `construida_urbana`, que a trajetória detecta com 13/15 e
+p=0,0037, fica invisível quando medida como **estoque**: 8/15, p=1,00. Mesmos pares, mesmos anos,
+mesma classe — só muda a estatística.
 
-## 6. O que este trabalho NÃO afirma
+> **A leitura honesta:** com N=15, medidas de estoque não têm sensibilidade para um efeito de ~1,5
+> p.p. Só a estatística de trajetória, que exige persistência e por isso filtra ruído de
+> classificação, enxerga. Os passos 18, 20 e 22 são todos estoque, e todos ficam mudos pelo mesmo
+> motivo.
 
-**Temperatura.** Medida, reportada e marcada `nulo_sem_poder`. A LST vem do MODIS `MOD11A2`
-(1 km de resolução) num disco de 5 km, e o efeito vive num anel de 500 m — menor que um pixel:
+**A contrapartida, que precisa ir para a apresentação:** o resultado central depende de **uma**
+estatística. A defesa dela não é retórica — é o passo 19, que testou exatamente essa estatística e
+mediu sua taxa de falso positivo.
+
+## 5. O que este trabalho NÃO afirma
+
+**Temperatura.** Medida, reportada, selo `nulo_sem_poder`. A LST vem do MODIS `MOD11A2` (1 km) num
+disco de 5 km, e o efeito vive num anel de 500 m — menor que um pixel:
 
 | | valor |
 |---|---:|
@@ -160,42 +150,51 @@ magnitude — faixa 15–85%: -0.39 a +3.88 p.p., mediana +1.93 p.p.
 | efeito mínimo detectável (n=15, α=0,05, poder 80%) | 0,636 °C |
 | razão | **427×** |
 
-O dado não é ruim — ao longo dos 204 ponto-ano, LST e proporção de área construída correlacionam a
-**r=0,49**, com contraste implícito de 7,2 °C entre 0% e 100% construído. A física está lá. O que
-falta é escala, e responder isso de verdade exige a banda termal do Landsat (30 m).
+O dado não é ruim: LST e área construída correlacionam a **r=0,49** nos 204 ponto-ano, com contraste
+implícito de 7,2 °C entre 0% e 100% construído. A física está lá; falta escala. Responder isso exige
+a banda termal do Landsat (30 m).
 
-**Emprego, PIB e população.** Todos de nível municipal. Um empreendimento de dezenas de hectares é
-fração ínfima de um município, e os pares têm portes municipais de razão 0,03 a 15,0 — em
-`everest-goiania` as duas pontas caem no mesmo município e o contraste é literalmente zero. Servem
-como contexto e estratificação; não entram em nenhum eixo do boletim.
+**Água.** Nulo limpo: −0,000 p.p. no anel interno. O que um data center consome é água encanada,
+invisível em imagem, e um espelho de resfriamento ficaria abaixo do que um pixel de 30 m distingue
+num anel de 78 ha.
 
-**Magnitude individual de um site novo.** Seção 4, resultado negativo, medido.
+**Emprego, PIB, população.** Não afirmamos. São municipais, e os pares têm portes municipais de
+razão 0,03 a 15,0 — em `everest-goiania` as duas pontas caem no mesmo município e o contraste é
+literalmente zero. O eixo econômico na granularidade certa é viável (**12 de 12 CEPs resolvem a
+logradouro**) mas está bloqueado por acesso à base CNPJ da Receita — ver o README de
+`dados-modelo-impacto/`.
 
-**Inferência causal formal.** N=15, com pré-tendências paralelas verificadas. É padrão consistente
-contra grupo de controle — não estimativa causal de magnitude.
+**Magnitude individual de um site novo.** 13 modelos testados, **todos** com R² LOOCV negativo,
+permutação p=0,53. A direção é predizível; a magnitude não.
 
-## 7. Limitações honestas
+**Inferência causal formal.** É padrão consistente contra grupo de controle, com pré-tendências
+verificadas e placebo. Não é estimativa causal de magnitude.
 
-- **N=15**, e 2 dos pares vão na direção contrária (ambos explicados pela saturação do sítio).
+## 6. Limitações
+
+- **N=15**, e 2 pares na direção contrária (ambos explicados por saturação do sítio).
 - **`pct_ja_construida` só existe para 13 campi** — 2 sem footprint no OSM.
 - **O corte de 50% greenfield/brownfield foi escolhido depois de ver os dados.** O script varre 7
-  limiares e publica todos; greenfield fica 100% positivo em toda a faixa de 40% a 80%. O teste
-  contínuo equivalente (Spearman −0,31) tem direção consistente e magnitude fraca.
-- **Janela pós-obra curta:** pela coluna `fase`, só 7 dos 15 campi têm ≥2 anos pré *e* ≥2 pós. Por
-  isso toda análise aqui usa a convenção "2 primeiros × 2 últimos anos da janela", não os rótulos de
-  fase — o que preserva 14–15 pares.
-- **Sem série de precipitação.** Qualquer afirmação sobre vegetação carrega o confundidor climático
-  não controlado. É a primeira pergunta que uma banca faz, e não temos a resposta.
-- **Anomalias registradas, não corrigidas:** `ascenty-maracanau` sem pixel válido no footprint
-  (0,82 ha ≈ 9 pixels Landsat); `equinix-santana-parnaiba` com footprint de 9,89 ha e só 1,4%
-  classificado como construída (o polígono do OSM provavelmente cobre o lote, não a edificação);
+  limiares e publica todos; greenfield fica 100% positivo de 40% a 80%. O teste contínuo (Spearman
+  −0,31) tem direção consistente e magnitude fraca.
+- **Horizonte longo com n=9.** Cinco campi de obra recente não alcançam t+4.
+- **Sem série de precipitação.** Afirmações sobre vegetação carregam confundidor climático não
+  controlado.
+- **Anomalias registradas, não corrigidas:** `ascenty-maracanau` sem pixel válido no footprint;
+  `equinix-santana-parnaiba` com polígono OSM que provavelmente cobre o lote, não a edificação;
   `scala-sgigsm01` com instabilidade de classificação em tecido urbano muito denso.
 
-## 8. A conclusão em uma frase
+## 7. A conclusão
 
-> Em 12 dos 14 data centers com par válido, o anel de 500 m ao redor converteu para área construída
-> mais do que um terreno pareado sem data center — excesso mediano de 2,06 p.p., p=0,0065. O efeito
-> decai com a distância e desaparece depois de 1 km, é localizado e não regional, e as tendências
-> pré-obra eram paralelas. A magnitude, porém, não é predizível a partir das features disponíveis:
-> nenhum dos 13 modelos testados supera o baseline sob validação cruzada. O que se sustenta é o
-> padrão, não o coeficiente.
+> Em **12 dos 14** data centers com par válido, o anel de 500 m ao redor — **excluído o prédio** —
+> converteu para área construída mais do que um terreno pareado sem data center: excesso mediano de
+> **1,50 p.p.**, **p=0,0065**. O efeito decai com a distância e desaparece depois de 1 km, é
+> localizado e não regional, e é concentrado onde havia terreno livre (**6 de 6** greenfield). As
+> tendências pré-obra eram paralelas, e o método, aplicado a 15 pares onde nada foi construído,
+> **não encontra nada** (8/15, p=0,50).
+>
+> O que **não** sabemos: se o efeito persiste além de 3 anos (n=9, inconclusivo), se houve
+> aquecimento (o sensor não enxerga nessa escala), e qual a magnitude esperada num site novo (13
+> modelos, todos sem poder preditivo).
+
+A segunda metade dessa conclusão é tão importante quanto a primeira.
