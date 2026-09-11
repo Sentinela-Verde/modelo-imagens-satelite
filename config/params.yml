@@ -44,8 +44,21 @@ seed: 42
 # verificação cruzada só em 2021 (peso maior nos pixels onde as duas concordam). Ver SV-07
 # (docs/tarefas/SV-07-labels-worldcover.md). Trocar de fonte é editar esta seção, não o código.
 labels:
+  # Fonte trocada de MapBiomas para Dynamic World em 2026-09-11 (ADR-006 §2).
+  #
+  # O motivo NÃO foi a expansão americana — o portão do §6 reprovou aquilo. Foi um
+  # diagnóstico próprio: o achado de impacto não replica sob o DW (9/14, p=0,21 contra
+  # 14/14, p=0,0001 do nosso RF), e o experimento de degradar o DW de 10 m para 30 m
+  # mostrou que a discordância NÃO é de resolução (mediana +0,326 -> +0,325 pp). Sobra
+  # rótulo — e o nosso tem defeito conhecido: o MapBiomas não tem classe de canteiro de
+  # obras, e a classe 3 é a pior do modelo (F1 0,579).
+  #
+  # Para voltar ao MapBiomas: troque `fonte_principal` de volta para "mapbiomas". As
+  # chaves da forma (b) do ADR-004 seguem abaixo, intactas.
   forma_adr004: "b"
-  fonte_principal: "mapbiomas"
+  fonte_principal: "dynamic_world"
+  colecao_dynamic_world: "GOOGLE/DYNAMICWORLD/V1"
+  ano_dw_min: 2016          # a coleção começa em jun/2015; 2016 é o 1o ano cheio
   colecao_mapbiomas: "projects/mapbiomas-public/assets/brazil/lulc/collection9/mapbiomas_collection90_integration_v1"
   ano_mapbiomas_min: 2013
   ano_mapbiomas_max: 2023   # último ano coberto pela Coleção 9 — anos além disso replicam este

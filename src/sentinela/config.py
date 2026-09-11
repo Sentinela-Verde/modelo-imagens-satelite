@@ -77,6 +77,20 @@ class Settings:
     def params(self) -> dict:
         return _load_yaml("params.yml")
 
+    def token_labels(self) -> str:
+        """Token que separa os labels por fonte, no disco e nos manifests.
+
+        Os rótulos do MapBiomas e os do Dynamic World descrevem os MESMOS pixels com
+        definições diferentes de classe. Guardar os dois no mesmo caminho faria a troca de
+        fonte (ADR-006 §2) sobrescrever silenciosamente os 288 tifs do MapBiomas — e com
+        eles a capacidade de reproduzir o `rf_v1.0-tuned`, que continua sendo o modelo de
+        produção enquanto o retreino não passar no critério do §4.
+
+        MapBiomas mantém `labels` (legado intacto); o DW usa `labels-dw`.
+        """
+        fonte = (self.params().get("labels") or {}).get("fonte_principal", "mapbiomas")
+        return "labels-dw" if fonte == "dynamic_world" else "labels"
+
     def classes(self) -> dict:
         return _load_yaml("classes.yml")
 

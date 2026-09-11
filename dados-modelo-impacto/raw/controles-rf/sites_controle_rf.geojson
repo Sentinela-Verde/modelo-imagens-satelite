@@ -1,0 +1,350 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -38.601757,
+          -3.697276
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-angonap-fortaleza-p01",
+        "lat": -3.697276,
+        "lon": -38.601757,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "angonap-fortaleza",
+        "ano_inicio_obra_do_tratamento": 2017,
+        "municipio": "Caucaia",
+        "uf": "CE",
+        "l1_rf": 0.157896,
+        "qualidade": "aceitavel"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.044123,
+          -22.968204
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-ascenty-hortolandia-p01",
+        "lat": -22.968204,
+        "lon": -47.044123,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "ascenty-hortolandia",
+        "ano_inicio_obra_do_tratamento": 2018,
+        "municipio": "Campinas",
+        "uf": "SP",
+        "l1_rf": 0.036282,
+        "qualidade": "bom"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.74807,
+          -23.24767
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-ascenty-jundiai-p01",
+        "lat": -23.24767,
+        "lon": -46.74807,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "ascenty-jundiai",
+        "ano_inicio_obra_do_tratamento": 2019,
+        "municipio": "Campo Limpo Paulista",
+        "uf": "SP",
+        "l1_rf": 0.088258,
+        "qualidade": "bom"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -38.840375,
+          -3.600568
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-ascenty-maracanau-p03",
+        "lat": -3.600568,
+        "lon": -38.840375,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "ascenty-maracanau",
+        "ano_inicio_obra_do_tratamento": 2014,
+        "municipio": "Caucaia",
+        "uf": "CE",
+        "l1_rf": 0.854877,
+        "qualidade": "ruim"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.928574,
+          -23.529577
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-ascenty-osasco-p01",
+        "lat": -23.529577,
+        "lon": -46.928574,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "ascenty-osasco",
+        "ano_inicio_obra_do_tratamento": 2020,
+        "municipio": "Itapevi",
+        "uf": "SP",
+        "l1_rf": 0.265934,
+        "qualidade": "ruim"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.303129,
+          -22.707019
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-ascenty-paulinia-p02",
+        "lat": -22.707019,
+        "lon": -47.303129,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "ascenty-paulinia",
+        "ano_inicio_obra_do_tratamento": 2019,
+        "municipio": "Americana",
+        "uf": "SP",
+        "l1_rf": 0.072125,
+        "qualidade": "bom"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.220048,
+          -23.059824
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-ascenty-sumare-p01",
+        "lat": -23.059824,
+        "lon": -47.220048,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "ascenty-sumare",
+        "ano_inicio_obra_do_tratamento": 2017,
+        "municipio": "Indaiatuba",
+        "uf": "SP",
+        "l1_rf": 0.411088,
+        "qualidade": "ruim"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -47.011893,
+          -22.817167
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-ascenty-vinhedo-p02",
+        "lat": -22.817167,
+        "lon": -47.011893,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "ascenty-vinhedo",
+        "ano_inicio_obra_do_tratamento": 2019,
+        "municipio": "Campinas",
+        "uf": "SP",
+        "l1_rf": 0.131596,
+        "qualidade": "aceitavel"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -60.239135,
+          -3.200229
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-clickip-manaus-p01",
+        "lat": -3.200229,
+        "lon": -60.239135,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "clickip-manaus",
+        "ano_inicio_obra_do_tratamento": 2023,
+        "municipio": "Iranduba",
+        "uf": "AM",
+        "l1_rf": 1.369247,
+        "qualidade": "ruim"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.859912,
+          -23.315899
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-equinix-santana-parnaiba-p01",
+        "lat": -23.315899,
+        "lon": -46.859912,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "equinix-santana-parnaiba",
+        "ano_inicio_obra_do_tratamento": 2020,
+        "municipio": "Cajamar",
+        "uf": "SP",
+        "l1_rf": 0.541542,
+        "qualidade": "ruim"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -49.399659,
+          -16.781817
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-everest-goiania-p01",
+        "lat": -16.781817,
+        "lon": -49.399659,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "everest-goiania",
+        "ano_inicio_obra_do_tratamento": 2021,
+        "municipio": "Goiânia",
+        "uf": "GO",
+        "l1_rf": 0.8661,
+        "qualidade": "ruim"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -34.819403,
+          -7.257127
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-hostdime-joao-pessoa-p01",
+        "lat": -7.257127,
+        "lon": -34.819403,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "hostdime-joao-pessoa",
+        "ano_inicio_obra_do_tratamento": 2017,
+        "municipio": "Conde",
+        "uf": "PB",
+        "l1_rf": 0.655163,
+        "qualidade": "ruim"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -43.48887,
+          -22.872066
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-scala-sgigsm01-p01",
+        "lat": -22.872066,
+        "lon": -43.48887,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "scala-sgigsm01",
+        "ano_inicio_obra_do_tratamento": 2022,
+        "municipio": "Rio de Janeiro",
+        "uf": "RJ",
+        "l1_rf": 0.862406,
+        "qualidade": "ruim"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.144592,
+          -29.828483
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-scala-spoapa01-p01",
+        "lat": -29.828483,
+        "lon": -51.144592,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "scala-spoapa01",
+        "ano_inicio_obra_do_tratamento": 2023,
+        "municipio": "Sapucaia do Sul",
+        "uf": "RS",
+        "l1_rf": 0.489003,
+        "qualidade": "ruim"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -46.982529,
+          -23.404447
+        ]
+      },
+      "properties": {
+        "site_id": "ctrl-scala-tambore-p01",
+        "lat": -23.404447,
+        "lon": -46.982529,
+        "buffer_km": 5.0,
+        "tipo": "controle",
+        "pareado_com": "scala-tambore",
+        "ano_inicio_obra_do_tratamento": 2021,
+        "municipio": "Pirapora do Bom Jesus",
+        "uf": "SP",
+        "l1_rf": 1.06251,
+        "qualidade": "ruim"
+      }
+    }
+  ]
+}

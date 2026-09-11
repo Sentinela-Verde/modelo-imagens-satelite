@@ -1,0 +1,10 @@
+zona,assinatura,n_pares,n_positivo,frac_positivo,p_unilateral,excesso_mediano_pp
+0-0.5km,virou_construida,14,12,0.857,0.0065,2.0589
+0-0.5km,virou_construida_via_solo,14,9,0.643,0.212,0.3431
+0-0.5km,vegetacao_para_construida,14,10,0.714,0.0898,0.7852
+0.5-1km,virou_construida,14,12,0.857,0.0065,1.1548
+0.5-1km,virou_construida_via_solo,14,12,0.857,0.0065,0.4816
+0.5-1km,vegetacao_para_construida,14,9,0.643,0.212,0.4108
+1-2km,virou_construida,14,8,0.571,0.3953,0.5114
+1-2km,virou_construida_via_solo,14,8,0.571,0.3953,0.0699
+1-2km,vegetacao_para_construida,14,8,0.571,0.3953,0.1937

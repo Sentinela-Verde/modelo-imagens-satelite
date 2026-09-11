@@ -1,0 +1,11 @@
+zona,classe_id,classe,n_pares,n_positivo,delta_liquido_mediano_pp,p_bilateral,robustez,leitura
+0-0.5km,1,vegetacao_densa,15,7,-0.0885,1.0,estoque,sem diferenca detectavel
+0-0.5km,2,vegetacao_rala,15,9,0.247,0.6072,estoque,sem diferenca detectavel
+0-0.5km,3,solo_exposto_obras,15,7,-0.0977,1.0,estoque,sem diferenca detectavel
+0-0.5km,4,construida_urbana,15,8,0.6117,1.0,estoque,sem diferenca detectavel
+0-0.5km,5,agua,15,7,-0.0001,1.0,estoque,sem diferenca detectavel
+0.5-1km,1,vegetacao_densa,15,6,-0.1101,0.6072,estoque,sem diferenca detectavel
+0.5-1km,2,vegetacao_rala,15,6,-0.1903,0.6072,estoque,sem diferenca detectavel
+0.5-1km,3,solo_exposto_obras,15,10,0.1136,0.3018,estoque,sem diferenca detectavel
+0.5-1km,4,construida_urbana,15,10,0.5493,0.3018,estoque,sem diferenca detectavel
+0.5-1km,5,agua,15,4,-0.0386,0.1185,estoque,sem diferenca detectavel

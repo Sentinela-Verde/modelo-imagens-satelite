@@ -1,0 +1,54 @@
+site_id,nome,municipio,uf,lat,lon,n_predios_no_campus,ano_operacional,ano_inicio_obra,sensor_da_janela,dist_ao_site_validado_mais_proximo_km,procedencia,elegivel,motivo_exclusao
+exp-elea-rjo1,Elea RJO1,Rio de Janeiro,Rio de Janeiro,-22.9683248,-43.3805263,5,2016,2015,landsat,18.93,datacentermap,True,
+exp-latitude-sh-sao,Latitude.sh SAO,Sao Paulo,SP,-23.5799648,-46.6410651,1,2016,2015,landsat,16.96,datacentermap,True,
+exp-sitelbra-data-center,Sitelbra Data Center,Brasília,DF,-15.7470383,-47.9233792,1,2016,2015,landsat,175.23,datacentermap,True,
+exp-sky-brasil---jaguariuna,SKY Brasil - Jaguariúna,Jaguariúna,,-22.69018744044072,-47.01333787517029,1,2016,2015,landsat,17.22,datacentermap,True,
+exp-odata-sp01,ODATA SP01,"Votuparim, Santana de Parnaíba",,-23.4550357423391,-46.91510647119536,2,2017,2016,landsat,5.66,datacentermap,True,
+exp-quantico-data-center,Quântico Data Center,Canoas,Rio Grande do Sul (RS),-29.9040072,-51.1283808,1,2021,2020,landsat,12.88,datacentermap,True,
+exp-asap-sp1,ASAP SP1,São Paulo,SP,-23.6761714,-46.6992381,2,2022,2021,landsat,21.94,datacentermap,True,
+exp-idx-data-centers---it-services,IDX Data Centers & IT Services,Palmas,Tocantins,-10.1875328,-48.340776,1,2022,2021,landsat,729.67,datacentermap,True,
+exp-to-host-data-centers,TO HOST Data Centers,Palmas,Tocantins,-10.2048941,-48.3529666,1,2023,2022,landsat,727.58,datacentermap,True,
+exp-netwise-empresas,NETWISE EMPRESAS,Lagoa da Prata,Minas Gerais,-20.0346344,-45.5247215,1,2024,2023,s2,349.48,datacentermap,True,
+exp-ada-sao-paulo,ADA Sao Paulo,Sao Paulo,,-23.5902486,-46.6818551,3,1990,1989,,14.6,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-getti-data-center,GetTI Data Center,Maringa,Parana,-23.4179188,-51.9354338,2,1995,1994,,486.98,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-equinix-sp1,Equinix SP1,São Paulo,SP,-23.54601881056474,-46.63581758737564,2,1998,1997,,15.61,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-odata-sp03,ODATA SP03,"Tamboré, Barueri",,-23.502083727189984,-46.82507025582267,17,2000,1999,,1.46,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-cirion-rio2,Cirion RIO2,Rio de Janeiro,,-22.9049036,-43.2159206,6,2001,2000,,18.33,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-locaweb-data-center-itapaiuna,Locaweb Data Center Itapaiuna,Sao Paulo,São Paulo,-23.6416742,-46.7288851,5,2001,2000,,17.33,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-elea-spo3,Elea SPO3,Barueri,,-23.5013594,-46.8473233,1,2001,2000,,3.57,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-ferenz-networks-servicos-de-internet-ltd,FERENZ NETWORKS SERVIÇOS DE INTERNET LTDA,Xaxim,SC,-26.968319,-52.5254562,2,2004,2003,,361.48,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-b3-data-center,B3 Data Center,Santana de Parnaiba,,-23.4662448,-46.863993,8,2006,2005,,0.77,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-scala-data-centers-campinas-campus,Scala Data Centers Campinas Campus,Campinas,,-22.8201867012489,-47.10015515397768,4,2009,2008,,4.34,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-sonda-ativas,Sonda Ativas,Belo Horizonte,MG,-19.942833,-44.011552,1,2011,2010,,324.91,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-cwb-hn-01,CWB-HN 01,Curitiba,Paraná,-25.44583383579607,-49.26575676773692,2,2011,2010,,328.68,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-vivo-sao-paulo---guarulhos-data-center,Vivo São Paulo - Guarulhos Data Center,Guarulhos,São Paulo,-23.456573,-46.537871,1,2011,2010,,24.73,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-avato-joinville,Avato Joinville,Joinville,,-26.26412048317817,-48.85177190343191,1,2012,2011,,370.27,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-claro-data-center-lapa,Claro Data Center LAPA,São Paulo,,-23.54195739494818,-46.70931247916715,1,2012,2011,,8.86,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-equinix-rj2,Equinix RJ2,Rio de Janeiro,Rio de Janeiro,-22.87137100666576,-43.2732367515564,1,2013,2012,,11.46,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-hostdime-brazil--sao-paulo,HostDime Brazil (São Paulo),Cotia,,-23.5979056,-46.8488169,2,2013,2012,,12.03,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-ascenty---jundiai-jdi1,Ascenty - Jundiai JDI1,Jundiaí,Jundiaí,-23.1919541,-46.9742117,2,2014,2013,,0.05,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-data-center-marechal-rondon,Data Center Marechal Rondon,Sao Paulo,,-23.5701367,-46.6167762,2,2015,2014,,18.51,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-odata-sp02-campus,ODATA SP02 Campus,"Chácaras Assay, Hortolândia",,-22.9008002,-47.1935167,12,2015,2014,,0.23,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-brdrive-data-center,BRDrive Data Center,Videira,,-27.0019197,-51.16753689999999,2,2015,2014,,333.69,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-ipxon-fortaleza,IPXON Fortaleza,Fortaleza,,-3.8308368,-38.6112238,2,2015,2014,,0.0,datacentermap,False,obra antes de 2016 (sem janela pré no Landsat 8)
+exp-odata-rj01,ODATA RJ01,São João de Meriti,,-22.7966834,-43.3572998,9,2017,2016,landsat,0.5,datacentermap,False,já é um dos 16 sites validados
+exp-ascenty-sao-paulo-capital-campus,Ascenty Sao Paulo Capital Campus,Osasco,,-23.490669788951806,-46.77612948633123,11,2017,2016,landsat,0.21,datacentermap,False,já é um dos 16 sites validados
+exp-ascenty---sumare-sum3,Ascenty - Sumare SUM3,Sumaré,,-22.8139696,-47.2115227,6,2017,2016,landsat,1.17,datacentermap,False,já é um dos 16 sites validados
+exp-hostdime-brazil--joao-pessoa,HostDime Brazil (João Pessoa),João Pessoa,Paraiba,-7.115262,-34.880473,1,2017,2016,landsat,2.61,datacentermap,False,já é um dos 16 sites validados
+exp-ascenty---paulinia-pln1,Ascenty - Paulinia PLN1,Paulínia,,-22.7970795,-47.1352301,1,2019,2018,landsat,0.08,datacentermap,False,já é um dos 16 sites validados
+exp-adentro-dc-porto-alegre,Adentro DC Porto Alegre,Porto Alegre,Rio Grande do Sul,-30.0134047,-51.2010249,7,2023,2022,landsat,1.21,datacentermap,False,já é um dos 16 sites validados
+exp-cirion-cur1,Cirion CUR1,Curitiba,Paraná,-25.4703512,-49.3502146,2,2025,2024,,336.85,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-local-dc-campinas,Local DC Campinas,Campinas,,-22.9050824,-47.0613327,2,2025,2024,,12.12,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-nicnet---cravinhos---data-center,NICNET - Cravinhos - Data Center,Cravinhos,São Paulo,-21.3374876,-47.7344121,1,2025,2024,,171.78,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-tecto-mega-lobster,Tecto Mega Lobster,Fortaleza,,-3.754739812813852,-38.44731951896043,1,2025,2024,,2.8,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-angonap-fortaleza,AngoNAP Fortaleza,Fortaleza,,-3.735294671531065,-38.46167526644695,7,2026,2025,,0.12,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-parks-data-center-cachoeirinha,Parks Data Center Cachoeirinha,Cachoeirinha,,-29.93029341315945,-51.10729266012558,1,2026,2025,,11.9,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-serpro-brasilia,Serpro Brasilia,Brasília,,-15.7111079,-47.9107354,1,2026,2025,,178.73,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-tecto-tpoa1,Tecto TPOA1,Porto Alegre,,-29.9956142,-51.119042,1,2026,2025,,7.66,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-tsdata-eugenio-de-melo,TSData Eugênio de Melo,São José dos Campos,,-23.1510828,-45.7828613,1,2026,2025,,108.39,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-pecem-data-center,Pecém Data Center,São Gonçalo do Amarante,,-3.653321,-38.8251428,1,2027,2026,,30.87,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-edge-connection---cps01,Edge Connection - CPS01,Campinas,Sao Paulo,-22.8148445,-47.0287932,3,2027,2026,,11.01,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-elea-bel1,Elea BEL1,Belém,,-1.41264568658525,-48.48808399344105,1,2027,2026,,1129.49,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-scala-data-centers-svcpjd01,Scala Data Centers SVCPJD01,Jundiaí,,-23.1735048799678,-46.97770403686705,2,2027,2026,,2.05,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-takoda-sumare-campus,TAKODA Sumaré Campus,Sumaré,,-22.86322251584453,-47.28033038868878,4,2027,2026,,8.79,datacentermap,False,obra recente demais — ainda não há período pós-obra
+exp-riverhook-village-18-campus,RiverHook Village 18 Campus,Pindamonhangaba,,-22.912227,-45.413716,3,2029,2028,,153.55,datacentermap,False,obra recente demais — ainda não há período pós-obra

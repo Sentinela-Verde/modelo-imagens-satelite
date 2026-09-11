@@ -121,11 +121,21 @@ def _config_labels() -> dict[str, Any]:
             "config/params.yml não tem a seção 'labels' (fonte de label, ADR-004). "
             "SV-07 depende dela — ver docs/decisoes/ADR-004-fonte-de-labels.md."
         )
+    fonte = cfg.get("fonte_principal")
+    if fonte == "dynamic_world":
+        faltando = [c for c in ("colecao_dynamic_world", "ano_dw_min") if c not in cfg]
+        if faltando:
+            raise ConfigError(
+                f"labels.fonte_principal = 'dynamic_world' (ADR-006 §2) exige {faltando} "
+                "em config/params.yml."
+            )
+        return cfg
     if cfg.get("forma_adr004") != "b":
         raise ConfigError(
             f"config/params.yml -> labels.forma_adr004 = '{cfg.get('forma_adr004')}', mas este "
             "módulo só implementa a forma (b) confirmada em ADR-004 (MapBiomas principal + "
-            "WorldCover como verificação cruzada em 2021). Formas (a)/(c) não estão implementadas."
+            "WorldCover como verificação cruzada em 2021) e a fonte 'dynamic_world' do ADR-006. "
+            "Formas (a)/(c) não estão implementadas."
         )
     return cfg
 
@@ -186,15 +196,20 @@ def _grade_geometry(transform: list[float], width: int, height: int, crs: str) -
 
 
 def _baixar_raster_categorico(
-    imagem: ee.Image, transform: list[float], width: int, height: int, crs: str, aoi: ee.Geometry
+    imagem: ee.Image, transform: list[float], width: int, height: int, crs: str, aoi: ee.Geometry,
+    *, valor_nodata: int = 0,
 ) -> np.ndarray:
     """Reprojeta `imagem` (1 banda, código categórico) para a grade exata e baixa como uint8.
 
     `reproject` com `crs`/`crsTransform` explícitos usa o resampling default da imagem, que é
     nearest neighbor a menos que `.resample()` tenha sido chamado antes — nunca é aqui. Dado
     categórico não pode passar por bilinear (inventaria códigos de classe que não existem).
+
+    `valor_nodata` é o código gravado onde a imagem não tem dado. O default 0 serve para
+    MapBiomas e WorldCover, onde 0 não é classe. **No Dynamic World 0 é `water`**, então ali
+    é obrigatório passar 255 — senão toda borda sem dado vira água.
     """
-    imagem_grade = imagem.reproject(crs=crs, crsTransform=transform).unmask(0).toUint8()
+    imagem_grade = imagem.reproject(crs=crs, crsTransform=transform).unmask(valor_nodata).toUint8()
 
     def _url() -> str:
         return imagem_grade.getDownloadURL(
@@ -227,6 +242,27 @@ def _imagem_mapbiomas(colecao: str, ano_efetivo: int) -> ee.Image:
 
 def _imagem_worldcover(colecao: str, aoi: ee.Geometry) -> ee.Image:
     return ee.ImageCollection(colecao).filterBounds(aoi).mosaic().select("Map").rename("codigo")
+
+
+def _imagem_dynamic_world(
+    colecao: str, aoi: ee.Geometry, ano: int, mes_inicio: int, mes_fim: int
+) -> ee.Image:
+    """Moda da estação seca da banda `label` do Dynamic World (ADR-006 §2).
+
+    Para dado categórico, **moda** é o equivalente do composto mediano que a pipeline usa
+    para reflectância: média ou mediana de códigos de classe inventaria classes que não
+    existem (a "média" entre `water`=0 e `grass`=2 seria `trees`=1).
+
+    Diferente do MapBiomas, aqui não existe `distancia_safra`: o DW é anual de verdade e a
+    composição usa a janela de meses do próprio ano pedido.
+    """
+    col = (
+        ee.ImageCollection(colecao)
+        .filterBounds(aoi)
+        .filterDate(f"{ano}-{mes_inicio:02d}-01", f"{ano}-{mes_fim:02d}-30")
+        .select("label")
+    )
+    return col.mode().rename("codigo")
 
 
 # --------------------------------------------------------------------------------------------
@@ -339,18 +375,20 @@ def gerar_label_site_ano(
         )
         return None
 
-    tif_path = SETTINGS.raw_dir / "labels" / sensor / site_id / f"{ano}.tif"
-    manifest_path = SETTINGS.manifests_dir / f"labels_{sensor}_{site_id}_{ano}.json"
+    tok = SETTINGS.token_labels()
+    tif_path = SETTINGS.raw_dir / tok / sensor / site_id / f"{ano}.tif"
+    manifest_path = SETTINGS.manifests_dir / f"{tok}_{sensor}_{site_id}_{ano}.json"
 
     if not force and tif_path.exists() and manifest_path.exists():
         print(f"[{site_id}/{sensor}/{ano}] label já existe ({tif_path}) — pulando (use --force para regerar).")
         return json.loads(manifest_path.read_text(encoding="utf-8"))
 
     cfg = _config_labels()
-    colecao_mb = cfg["colecao_mapbiomas"]
-    ano_max = cfg["ano_mapbiomas_max"]
-    ano_crosscheck = cfg["ano_crosscheck"]
-    colecao_wc = cfg["colecao_worldcover"]
+    fonte_principal = cfg.get("fonte_principal", "mapbiomas")
+    colecao_mb = cfg.get("colecao_mapbiomas")
+    ano_max = cfg.get("ano_mapbiomas_max")
+    ano_crosscheck = cfg.get("ano_crosscheck")
+    colecao_wc = cfg.get("colecao_worldcover")
 
     crs = manifest_imagem["crs"]
     transform = manifest_imagem["transform"]
@@ -360,16 +398,36 @@ def gerar_label_site_ano(
 
     aoi = _grade_geometry(transform, width, height, crs)
 
-    ano_efetivo, distancia_safra = ano_mapbiomas_efetivo(ano, ano_max)
-
-    mb_img = _imagem_mapbiomas(colecao_mb, ano_efetivo)
-    mb_raw = _baixar_raster_categorico(mb_img, transform, width, height, crs, aoi)
-    mb_label = classes.remap(mb_raw, "mapbiomas").astype(np.uint8)
+    if fonte_principal == "dynamic_world":
+        ano_dw_min = int(cfg["ano_dw_min"])
+        if ano < ano_dw_min:
+            print(
+                f"AVISO: {site_id}/{sensor}/{ano}: Dynamic World começa em jun/2015 e o primeiro "
+                f"ano cheio configurado é {ano_dw_min} — pulando (ADR-006 §2).",
+                file=sys.stderr,
+            )
+            return None
+        params = SETTINGS.params()
+        dw_img = _imagem_dynamic_world(
+            cfg["colecao_dynamic_world"], aoi, ano, params["mes_inicio"], params["mes_fim"]
+        )
+        # 255 e nao 0: no DW o codigo 0 e `water`, entao unmask(0) transformaria
+        # toda borda sem dado em agua.
+        dw_raw = _baixar_raster_categorico(
+            dw_img, transform, width, height, crs, aoi, valor_nodata=255
+        )
+        mb_label = classes.remap(dw_raw, "dynamic_world").astype(np.uint8)
+        ano_efetivo, distancia_safra = ano, 0
+    else:
+        ano_efetivo, distancia_safra = ano_mapbiomas_efetivo(ano, ano_max)
+        mb_img = _imagem_mapbiomas(colecao_mb, ano_efetivo)
+        mb_raw = _baixar_raster_categorico(mb_img, transform, width, height, crs, aoi)
+        mb_label = classes.remap(mb_raw, "mapbiomas").astype(np.uint8)
 
     crosscheck_info: dict[str, Any] | None = None
     concordancia_tif_path: Path | None = None
 
-    if ano == ano_crosscheck:
+    if fonte_principal != "dynamic_world" and ano == ano_crosscheck:
         wc_img = _imagem_worldcover(colecao_wc, aoi)
         wc_raw = _baixar_raster_categorico(wc_img, transform, width, height, crs, aoi)
         wc_label = classes.remap(wc_raw, "worldcover").astype(np.uint8)
@@ -378,7 +436,7 @@ def gerar_label_site_ano(
         concordancia = np.zeros_like(mb_label, dtype=np.uint8)
         concordancia[valido & (mb_label == wc_label)] = 1
 
-        concordancia_tif_path = SETTINGS.raw_dir / "labels" / sensor / site_id / f"concordancia_{ano}.tif"
+        concordancia_tif_path = SETTINGS.raw_dir / tok / sensor / site_id / f"concordancia_{ano}.tif"
         _escrever_tif_uint8(concordancia_tif_path, concordancia, transform, crs, nodata=None)
 
         n_validos_ambas = int(valido.sum())
@@ -401,12 +459,22 @@ def gerar_label_site_ano(
         "site_id": site_id,
         "ano": ano,
         "sensor": sensor,
-        "fonte": "mapbiomas_principal" + ("+worldcover_crosscheck" if crosscheck_info else ""),
-        "colecao": {"mapbiomas": colecao_mb, "worldcover": colecao_wc if crosscheck_info else None},
+        "fonte": (
+            "dynamic_world_principal" if fonte_principal == "dynamic_world"
+            else "mapbiomas_principal" + ("+worldcover_crosscheck" if crosscheck_info else "")
+        ),
+        "colecao": (
+            {"dynamic_world": cfg.get("colecao_dynamic_world")}
+            if fonte_principal == "dynamic_world"
+            else {"mapbiomas": colecao_mb, "worldcover": colecao_wc if crosscheck_info else None}
+        ),
         "anual": True,
         "ano_mapbiomas_efetivo": ano_efetivo,
         "distancia_safra": distancia_safra,
-        "remap_usado": ["mapbiomas"] + (["worldcover"] if crosscheck_info else []),
+        "remap_usado": (
+            ["dynamic_world"] if fonte_principal == "dynamic_world"
+            else ["mapbiomas"] + (["worldcover"] if crosscheck_info else [])
+        ),
         "crs": crs,
         "transform": transform,
         "shape": {"width": width, "height": height},

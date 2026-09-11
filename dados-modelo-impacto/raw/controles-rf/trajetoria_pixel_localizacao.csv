@@ -1,0 +1,13 @@
+assinatura,raio_km,area_disco_ha,excesso_mediano_pp,excesso_mediano_ha,crescimento_vs_menor_raio,crescimento_do_disco
+virou_construida,0.5,78.5,1.9331,1.53,1.0,1.0
+virou_construida,1.0,314.2,0.8879,2.71,1.77,4.0
+virou_construida,2.0,1256.6,0.62,7.83,5.1,16.0
+virou_construida,5.0,7854.0,0.2763,17.75,11.57,100.0
+virou_construida_via_solo,0.5,78.5,0.23,0.18,1.0,1.0
+virou_construida_via_solo,1.0,314.2,0.3827,1.17,6.49,4.0
+virou_construida_via_solo,2.0,1256.6,0.1591,2.02,11.18,16.0
+virou_construida_via_solo,5.0,7854.0,0.217,16.96,94.08,100.0
+vegetacao_para_construida,0.5,78.5,0.6638,0.54,1.0,1.0
+vegetacao_para_construida,1.0,314.2,0.5857,1.83,3.4,4.0
+vegetacao_para_construida,2.0,1256.6,0.2013,2.53,4.69,16.0
+vegetacao_para_construida,5.0,7854.0,0.0445,3.44,6.39,100.0

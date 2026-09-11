@@ -1,0 +1,15 @@
+modelo,n_parametros_livres,loocv_mae_pp,loocv_r2,loocv_rmse_pp,bate_baseline
+regra_grupo::x_bioma,3,2.573,-0.087,3.268,True
+ols_1f::x_pre_lst_media_celsius,2,2.58,-0.099,3.285,True
+ols_1f::x_n_predios,2,2.493,-0.117,3.312,True
+ols_1f::x_pre_prop_construida_urbana,2,2.592,-0.13,3.332,True
+baseline_mediana,0,2.721,-0.173,3.394,False
+ols_1f::x_pct_ja_construida,2,2.898,-0.175,3.397,False
+ols_1f::x_area_footprint_ha,2,2.734,-0.22,3.461,False
+regra_grupo::x_tipo_sitio,2,2.778,-0.226,3.47,False
+arvore_d1::terreno,2,3.125,-0.249,3.502,False
+regra_grupo::x_regiao,4,2.873,-0.256,3.512,False
+ridge_2f::terreno+vegetacao,3,3.052,-0.327,3.61,False
+ridge_3f::+footprint,4,3.367,-0.43,3.747,False
+ols_1f::x_pre_prop_vegetacao_densa,2,2.992,-0.442,3.763,False
+ols_1f::x_pre_prop_vegetacao_rala,2,2.748,-0.563,3.918,False

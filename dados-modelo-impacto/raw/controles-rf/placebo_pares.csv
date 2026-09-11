@@ -1,0 +1,16 @@
+campus_de_origem,placebo_a,placebo_b,sensor,ano_obra_ficticio,ano_referencia,l1_entre_os_dois,qualidade_par_placebo,lat_b,lon_b,dist_b_ao_tratamento_km
+angonap-fortaleza,ctrl-angonap-fortaleza-p01,ctrl-angonap-fortaleza-p02,landsat,2017,2016,0.192,aceitavel,-3.687907,-38.636535,20.0
+ascenty-hortolandia,ctrl-ascenty-hortolandia-p01,ctrl-ascenty-hortolandia-p02,landsat,2018,2017,0.1619,aceitavel,-23.105342,-47.239881,24.0
+ascenty-jundiai,ctrl-ascenty-jundiai-p01,ctrl-ascenty-jundiai-p03,landsat,2019,2018,0.0725,bom,-23.238371,-46.785839,20.0
+ascenty-maracanau,ctrl-ascenty-maracanau-p03,ctrl-ascenty-maracanau-p01,landsat,2014,2013,0.5755,ruim,-3.886951,-38.402527,24.0
+ascenty-osasco,ctrl-ascenty-osasco-p01,ctrl-ascenty-osasco-p02,landsat,2020,2019,0.4069,ruim,-23.538883,-46.966423,20.0
+ascenty-paulinia,ctrl-ascenty-paulinia-p02,ctrl-ascenty-paulinia-p01,landsat,2019,2018,0.1406,aceitavel,-22.725111,-47.269431,16.0
+ascenty-sumare,ctrl-ascenty-sumare-p01,ctrl-ascenty-sumare-p05,landsat,2017,2016,0.0483,bom,-23.16818,-47.220048,40.0
+ascenty-vinhedo,ctrl-ascenty-vinhedo-p02,ctrl-ascenty-vinhedo-p04,landsat,2019,2018,0.1318,aceitavel,-22.708806,-47.011893,40.0
+clickip-manaus,ctrl-clickip-manaus-p01,ctrl-clickip-manaus-p02,s2,2023,2022,0.1412,aceitavel,-2.838521,-59.989801,24.0
+equinix-santana-parnaiba,ctrl-equinix-santana-parnaiba-p01,ctrl-equinix-santana-parnaiba-p02,landsat,2020,2019,0.1814,aceitavel,-23.422904,-47.011133,16.0
+everest-goiania,ctrl-everest-goiania-p01,ctrl-everest-goiania-p02,landsat,2021,2020,0.0999,bom,-16.538107,-49.396175,24.0
+hostdime-joao-pessoa,ctrl-hostdime-joao-pessoa-p01,ctrl-hostdime-joao-pessoa-p03,landsat,2017,2016,0.1503,aceitavel,-7.292063,-34.810025,20.0
+scala-sgigsm01,ctrl-scala-sgigsm01-p01,ctrl-scala-sgigsm01-p03,s2,2022,2021,0.1474,aceitavel,-22.944134,-43.62404,32.0
+scala-spoapa01,ctrl-scala-spoapa01-p01,ctrl-scala-spoapa01-p02,s2,2023,2022,0.2104,ruim,-29.912435,-51.018794,20.0
+scala-tambore,ctrl-scala-tambore-p01,ctrl-scala-tambore-p02,landsat,2021,2020,0.1853,aceitavel,-23.386348,-47.016392,24.0

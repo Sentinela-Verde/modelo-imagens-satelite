@@ -1,0 +1,489 @@
+campus_id,lat,lon,n_predios,nome,operadora,start_date_osm,procedencia
+us-0001,32.8327103,-97.0410284,1,Cyxtera Dallas-Fort Worth Data Center,Cyxtera,,osm_overpass
+us-0002,32.8009535,-96.8195234,1,Equinix Infomart,Equinix,,osm_overpass
+us-0003,42.3767059,-71.0797577,1,CoreSite BO1,,,osm_overpass
+us-0004,34.0581039,-118.2353939,1,USPO Terminal Annex,United States Postal Service,1938,osm_overpass
+us-0005,32.7810298,-96.79653605,2,DataBank,,,osm_overpass
+us-0006,39.3038941,-84.3116127,1,CyrusOne Cincinnati-Mason CIN3,CyrusOne,,osm_overpass
+us-0007,32.8278941,-117.1299275,1,LightEdge SAN1,,,osm_overpass
+us-0008,32.8423554,-117.1694226,1,EdgeConneX San Diego,EdgeConneX,,osm_overpass
+us-0009,38.647861925,-121.49154105,4,RagingWire CA2,NTT,,osm_overpass
+us-0010,37.241878299999996,-121.78347202500001,4,Equinix SV1,Equinix,,osm_overpass
+us-0011,39.2940482,-84.4121132,1,,,,osm_overpass
+us-0012,34.0810196125,-84.256810675,8,Hewlett-Packard,Flexential,,osm_overpass
+us-0013,44.6681065,-74.980582,1,Old Main,Clarkson University,,osm_overpass
+us-0014,38.6295109,-90.19679785,2,Netrality Data Centers,,,osm_overpass
+us-0015,44.99010425,-93.278475,2,Lumen Minneapolis 3,Verizon,,osm_overpass
+us-0016,38.80340635,-77.51056395,2,Equinix DC14,Equinix,,osm_overpass
+us-0017,39.1026943,-84.5178996,1,CyrusOne CIN2,CyrusOne,,osm_overpass
+us-0018,44.8516116,-93.5988964,1,Flexential Minneapolis - Chaska,Flexential,,osm_overpass
+us-0019,39.745401150000006,-104.98751155,2,Pearl Plaza Office Building,,,osm_overpass
+us-0020,37.37630155740741,-121.96411151851852,54,Lumen Sunnyvale 1,Lumen Technologies,,osm_overpass
+us-0021,44.9712882,-93.2546974,1,Minnesota Gateway Data Center,,,osm_overpass
+us-0022,38.9813135,-84.6187219,1,,CyrusOne,,osm_overpass
+us-0023,42.32623275,-83.07337275,2,,Verizon Wireless,,osm_overpass
+us-0024,43.1436204,-70.9524471,1,,University of New Hampshire,,osm_overpass
+us-0025,38.948653,-77.32836075,2,VA3,Digital Realty,,osm_overpass
+us-0026,38.952992025,-77.36959905,4,CoreSite Reston Campus VA1,CoreSite,,osm_overpass
+us-0027,43.0761287,-70.8080395,1,,FirstLight,,osm_overpass
+us-0028,39.0586081,-76.964467,1,Lincoln Rackhouse Maryland,Lincoln Rackhouse,,osm_overpass
+us-0029,39.38803605,-84.22160249999999,2,,CyrusOne,,osm_overpass
+us-0030,40.7968626,-74.0311403,1,Equinix NY7 Data Center,Equinix,,osm_overpass
+us-0031,37.407068699999996,-122.01455734999999,2,Equinix SV4,Equinix,,osm_overpass
+us-0032,44.8072109,-93.375385,1,Verizon - Bloomington Network,Verizon,,osm_overpass
+us-0033,29.4293706,-98.4869057,1,H5 Data Centers San Antonio,H5 Data Centers,,osm_overpass
+us-0034,41.5879926,-93.6310139,1,Aureon,,,osm_overpass
+us-0035,35.58851816666667,-81.26247623333333,3,,,,osm_overpass
+us-0036,39.0944683,-94.5794418,1,,"Patmos Hosting, Inc.",,osm_overpass
+us-0037,41.2407307,-73.1472668,1,Digital Realty New York HVN10,Digital Realty,,osm_overpass
+us-0038,41.7721034,-88.2170821,1,Lincoln Rackhouse,,,osm_overpass
+us-0039,44.972195,-93.1474731,1,H5 Minneapolis,H5,,osm_overpass
+us-0040,33.421036400000006,-112.0378144,2,Iron Mountain Records Storage,Iron Mountain,,osm_overpass
+us-0041,37.4458951,-122.160786,1,Equinix SV8,Equinix,,osm_overpass
+us-0042,40.0952591,-88.2420314,1,NCSA Petascale Computing Facility,,,osm_overpass
+us-0043,39.912797,-83.7236638,1,LexisNexus Springfield,,,osm_overpass
+us-0044,33.4938298,-112.07067090000001,2,Lumen,Lumen Technologies,,osm_overpass
+us-0045,33.30580835,-111.67170605000001,2,L3Harris Technologies Inc,,,osm_overpass
+us-0046,33.6590546,-112.1111595,1,Aligned Energy Data Center,,2017,osm_overpass
+us-0047,38.91422692,-77.21826777999999,5,Lumen McLean,Lumen Technologies,,osm_overpass
+us-0048,41.8536916,-87.6182716,1,Lakeside Technology Center,,,osm_overpass
+us-0049,33.6846775,-112.0983398,1,Flexential Phoenix - Deer Valley,Flexential,,osm_overpass
+us-0050,36.1585898,-95.9886293,1,TierPoint,,,osm_overpass
+us-0051,41.3179864,-96.0503485,1,"Union Pacific Jack Koraleski Technology, Research & Development Center",Union Pacific Railroad,,osm_overpass
+us-0052,40.4513704,-80.1901663,1,DataBank Pittsburgh PIT2,,,osm_overpass
+us-0053,34.9954515,-106.6180334,1,Molina Healthcare,Molina Healthcare,,osm_overpass
+us-0054,36.0593025,-115.21617425,10,Switch12,Switch,,osm_overpass
+us-0055,39.3777781,-77.4115448,1,,,,osm_overpass
+us-0056,35.89550135,-81.5471095,2,,,,osm_overpass
+us-0057,41.216796450000004,-95.87085834999999,2,,CyrusOne,,osm_overpass
+us-0058,37.7888613,-122.39030285,2,360 Spear Street Data Center,Digital Realty,,osm_overpass
+us-0059,40.78150614545455,-74.06885602727272,11,Equinix New York Secaucus NY5,Equinix,,osm_overpass
+us-0060,39.29484306,-94.67945396,5,Black Rock Financial Management,,,osm_overpass
+us-0061,36.2625496,-95.9100413,1,Cherokee Data Center,,,osm_overpass
+us-0062,41.79972586,-88.24445878,5,CyrusOne CHI3,CyrusOne,,osm_overpass
+us-0063,39.5929894,-104.85415471666666,6,Xfinity/Comcast Data Center,Verizon,,osm_overpass
+us-0064,39.1744228,-86.5006878,1,IU Data Center,Indiana University,,osm_overpass
+us-0065,40.5208169,-74.3472226,1,IO Datacenter,,,osm_overpass
+us-0066,40.55120376,-74.45818792,5,DataBank Piscataway EWR2,Barclays,,osm_overpass
+us-0067,40.54823415,-74.491943775,4,Optimum,Equinix,,osm_overpass
+us-0068,47.4935175375,-122.2911466125,8,Intergate Seattle East Building 2,Sabey Data Centers,,osm_overpass
+us-0069,41.8421621,-87.6689315,1,QTS Chicago,Quality Technology Services,,osm_overpass
+us-0070,41.8641874,-87.63921015,4,Digital Realty ORD11,Digital Realty,,osm_overpass
+us-0071,42.6857078,-71.2086024,1,,TierPoint,,osm_overpass
+us-0072,42.6302832,-71.3045615,1,Markley Data Center,Markley Group,,osm_overpass
+us-0073,35.1354147,-80.9368313,1,Flexential Charlotte - South,Flexential,,osm_overpass
+us-0074,33.3949912,-111.96130245,2,EdgeConneX,EdgeConneX,,osm_overpass
+us-0075,33.3446197,-111.8992189,1,Digital Realty Data Center,Digital Realty,,osm_overpass
+us-0076,47.6933236,-122.3173172,1,,Comcast,,osm_overpass
+us-0077,38.815632416666666,-77.65218508333334,6,Amazon IAD-55,Amazon Web Services,,osm_overpass
+us-0078,47.6172853,-122.34477416666668,6,CTI Biopharma,Digital Realty,1984,osm_overpass
+us-0079,37.418381,-121.9431173,1,Dell 350 Holger Way,,,osm_overpass
+us-0080,38.7474201,-77.6744649,1,OVH US East Vint Hill,,,osm_overpass
+us-0081,41.125017638461536,-104.90204656923076,13,NCAR-Wyoming Supercomputing Center,University Corporation for Atmospheric Research,,osm_overpass
+us-0082,45.6296184,-121.2045892,4,Google Data Center The Dalles Oregon,Google,,osm_overpass
+us-0083,35.7249921,-78.6623632,1,Segra Data Center,,,osm_overpass
+us-0084,43.603442349999995,-96.80197609999999,2,TierPoint Sioux Falls West Data Center,,,osm_overpass
+us-0085,40.56385725,-112.04921995000001,2,eBay,,,osm_overpass
+us-0086,41.8125627,-87.9728504,1,Equinix Chicago Data CH7,Equinix,,osm_overpass
+us-0087,33.416077,-112.0094718,1,PhoenixNAP,,,osm_overpass
+us-0088,40.6072081,-74.17403585,2,Merrill Lynch Data Center,Merrill Lynch,,osm_overpass
+us-0089,40.71825735,-74.005235,2,32 Avenue of the Americas,,1932,osm_overpass
+us-0090,38.91079035,-77.475531735,20,Digital Realty,Digital Realty,,osm_overpass
+us-0091,42.6793587,-76.9485811,1,Greenidge Power Plant and Data Center,Greenidge Generation Holdings Inc.,,osm_overpass
+us-0092,36.143715575,-115.07869725,4,Verizon,Lumen Technologies,,osm_overpass
+us-0093,29.445482575,-98.64378896250001,24,Texas Cryptologic Center,National Security Agency,,osm_overpass
+us-0094,33.0955505,-96.68266489999999,2,Evoque Allen DA1,Centersquare,,osm_overpass
+us-0095,41.255603625,-95.93153997499999,4,First National Technical Center,First National of Nebraska,,osm_overpass
+us-0096,37.6468902,-77.4386952,1,Flexential - Richmond,Flexential,,osm_overpass
+us-0097,38.74639855,-77.1912224,2,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0098,38.928276,-77.4258708375,8,Menlo Digital MD-DC1,Amazon Web Services,,osm_overpass
+us-0099,34.0362568,-84.3195121,1,Cox Data Center,,,osm_overpass
+us-0100,33.777645500000006,-84.42030035,2,QTS Atlanta Data Center 1,Quality Technology Services,,osm_overpass
+us-0101,33.6570094,-84.4152195,1,Digital Realty Data Center,Digital Realty,,osm_overpass
+us-0102,40.761298800000006,-74.0253849,2,Cyxtera (Digital Realty Trust) Citibank Data Center,Cyxtera,,osm_overpass
+us-0103,47.247666275,-119.82088465625,16,Vantage WA11,,,osm_overpass
+us-0104,33.9255145,-84.4816338,1,CoreSite AT2 - Marietta Data Center,CoreSite,,osm_overpass
+us-0105,37.7236272,-122.3979543,1,Digital Realty San Francisco SFO10,Digital Realty,,osm_overpass
+us-0106,43.8252286,-111.7820703,1,VentureData,,,osm_overpass
+us-0107,33.4002195,-112.0478786,1,Cogent Data Center,"Cogent Communications, Inc.",,osm_overpass
+us-0108,40.6356953,-75.4575733,1,Flexential Allentown Data Center,Flexential,,osm_overpass
+us-0109,37.4056857,-121.9162604,1,CoreSite SV2,"CoreSite Real Estate 1656 McCarthy, L.P.",,osm_overpass
+us-0110,33.27053866,-111.88312281,10,Digital Realty Phoenix PHX15,Digital Realty,,osm_overpass
+us-0111,44.8080471,-93.6363192,3,UHG Data Center,,,osm_overpass
+us-0112,42.2167763,-87.9529303,1,VISA,VISA,,osm_overpass
+us-0113,35.6724585,-105.9565798,1,John F. Simms Building,SONM,,osm_overpass
+us-0114,29.4382791,-98.5065217,1,Lumen San Antonio 2,Lumen Technologies,,osm_overpass
+us-0115,44.29429310909091,-120.88152197272728,11,Meta,Meta,,osm_overpass
+us-0116,45.55518632580645,-122.92276546129033,31,NTT RagingWire DC - Hillsboro,NTT,,osm_overpass
+us-0117,38.2771906,-85.5072402,1,Flexential Louisville - East,Flexential,,osm_overpass
+us-0118,38.242501,-85.733336,1,Flexential Louisville - Downtown,Flexential,,osm_overpass
+us-0119,39.9598116,-75.1608332,1,Terminal Commerce Building,,,osm_overpass
+us-0120,47.6719149,-117.0959323,1,TierPoint,,,osm_overpass
+us-0121,39.275367,-76.62551,1,Baltimore Technology Park,,,osm_overpass
+us-0122,47.23895344117647,-119.87546742941176,17,NTT Data Quincy,NTT,,osm_overpass
+us-0123,41.5502695,-90.4824093,1,Geneseo Communications Inc,,,osm_overpass
+us-0124,41.9053402,-88.2195062,1,,,,osm_overpass
+us-0125,39.7171971,-85.941411,1,,Verizon Wireless,,osm_overpass
+us-0126,40.6203519,-111.986047,1,Flexential Salt Lake City - South Valley,Flexential,,osm_overpass
+us-0127,37.6994753,-121.9037995,1,QES Computers,,,osm_overpass
+us-0128,39.0528404,-76.9259248,1,AiNET,,,osm_overpass
+us-0129,29.473599126666667,-98.68619841333333,15,Microsoft,Microsoft,,osm_overpass
+us-0130,18.446827,-66.0516873,1,,Claro,,osm_overpass
+us-0131,40.1244741,-75.4147681,2,Lumen Norristown,Lumen Technologies,,osm_overpass
+us-0132,45.5215436,-122.6807041,1,Pittock Block,,,osm_overpass
+us-0133,45.5266839,-122.8755048,1,Data Center,Oregon Health & Science University,,osm_overpass
+us-0134,39.6124703,-74.32747335,2,AT&T Tuckerton Cable Landing Station (TAT-14),AT&T,,osm_overpass
+us-0135,33.13817252,-96.65874792,5,Cisco Allen,CyrusOne,,osm_overpass
+us-0136,48.75726,-122.4805485,1,CSSNW Bellingham,CSS Communications,,osm_overpass
+us-0137,41.99868046470588,-87.9619320882353,17,Digital Realty CH1,Digital Realty,2026,osm_overpass
+us-0138,37.7990205,-122.2825386,1,Digital Realty,Digital Realty,,osm_overpass
+us-0139,39.5590312,-104.83554475,2,Flexential Denver - Englewood,Flexential,,osm_overpass
+us-0140,42.4476693,-83.2626336,1,EdgeConneX Detroit DET01,EdgeConneX,,osm_overpass
+us-0141,30.26122425,-97.72285975,2,Lumen Austin 3,Lumen Technologies,,osm_overpass
+us-0142,30.205616544444442,-97.7055263,9,Digital Realty Austin AUS11,CyrusOne,,osm_overpass
+us-0143,39.00806804156626,-77.45056935542169,166,Amazon IAD10,Amazon Web Services,,osm_overpass
+us-0144,37.47901463333333,-121.92447379999999,3,Hurricane Electric Fremont 1,Hurricane Electric,,osm_overpass
+us-0145,41.4321977,-82.7189574,1,,Aligned Data Centers,,osm_overpass
+us-0146,30.3428035,-97.6961735,1,Element Critical,,,osm_overpass
+us-0147,40.7367304,-74.1738875,1,165 Halsey / Equinix NY1 / Databank EWR1,Tishman,,osm_overpass
+us-0148,34.0362041,-84.05938276666667,3,QTS Suwanee Data Center 1,Quality Technology Services,,osm_overpass
+us-0149,34.7562396,-92.4447234,1,TierPoint Little Rock,,,osm_overpass
+us-0150,33.9547396,-84.1985246,1,Flexential Atlanta - Norcross,Flexential,,osm_overpass
+us-0151,47.841809,-122.3016653,1,Centersquare Lynnwood SE1,Centersquare,,osm_overpass
+us-0152,38.9873242,-104.78679604999999,2,Walmart Colorado Data Center,Walmart,,osm_overpass
+us-0153,41.3383937,-96.02821035,2,Verizon,,,osm_overpass
+us-0154,34.7409855,-86.68249235,2,George C. Wallace Alabama Supercomputer Center,Alabama Supercomputer Authority,,osm_overpass
+us-0155,33.8507525,-118.3040815,1,Equinix,Equinix,,osm_overpass
+us-0156,41.9283557,-87.8592545,1,Digital Realty Chicago ORD12,Digital Realty,,osm_overpass
+us-0157,41.2428892,-96.0164591,1,Scott Data Center,,,osm_overpass
+us-0158,41.1730115,-96.08413635,2,Fidelity,Fidelity,,osm_overpass
+us-0159,33.91837613333333,-118.38576693333334,3,Serverfarm - LAX1,Centurylink,1976,osm_overpass
+us-0160,39.922465,-104.9834252,1,Google - Thornton,Google,,osm_overpass
+us-0161,34.04771096666667,-118.2562066,3,DRT LAX10,,,osm_overpass
+us-0162,37.48328571176471,-77.24395865882354,17,Meta Henrico Data Center,Bank of America,,osm_overpass
+us-0163,29.6725909,-82.2999288,1,UF Research Computing Center,University of Florida,,osm_overpass
+us-0164,25.7823886,-80.1930798,1,NAP of the Americas,,,osm_overpass
+us-0165,25.7975445,-80.2300338,1,,,,osm_overpass
+us-0166,41.540186075,-93.82692495,4,Microsoft,Microsoft,,osm_overpass
+us-0167,41.66961811428571,-93.5112001,7,Facebook Altoona Data Center 1,Meta,,osm_overpass
+us-0168,37.36044986666666,-77.32817713333333,3,Virginia Information Technologies Agency,Digital Fortress,,osm_overpass
+us-0169,33.705550349999996,-117.84712329999999,2,Xo Communications Colocation Data Center,TPx Communications,,osm_overpass
+us-0170,33.7167763,-117.8057759,1,Lumen Technologies,,,osm_overpass
+us-0171,47.6542257,-117.4200007,1,Lumen,Lumen Technologies,,osm_overpass
+us-0172,43.0672971,-89.436704,1,,,,osm_overpass
+us-0173,38.4548439,-77.9781318,1,Equinix CU2,Equinix,,osm_overpass
+us-0174,37.3336326,-121.8879639,1,,,,osm_overpass
+us-0175,40.828854475,-74.13141734999999,4,BT Radianz: 492 River Road,bt,,osm_overpass
+us-0176,40.1570435,-74.101582,1,Manasquan Cable Landing Station (Apollo),Vodafone,,osm_overpass
+us-0177,40.8436519,-72.8833757,1,Cable & Wireless Cable Landing Station,,,osm_overpass
+us-0178,40.05889307142858,-83.13331965714285,7,Amazon AWS: Hilliard Data Center,Amazon Web Services us-east-2 datacenter,,osm_overpass
+us-0179,45.915842318181824,-119.26748548181818,11,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0180,37.399251825,-121.890863725,4,Equinix San Jose SV3,Equinix,,osm_overpass
+us-0181,35.31597745,-81.82389515,4,Meta,Meta,,osm_overpass
+us-0182,47.40526311538462,-120.20670865384615,13,Intergate Columbia B,Sabey Data Centers,,osm_overpass
+us-0183,40.538026075,-74.5447977625,8,BNY Mellon Somerset,CyrusOne,,osm_overpass
+us-0184,34.1998691,-118.3437888,1,,Centurylink,1990,osm_overpass
+us-0185,39.56805569090909,-119.54233516363637,11,,,,osm_overpass
+us-0186,38.254065,-122.2730918,1,Kaiser Data Center,,,osm_overpass
+us-0187,32.82257257142857,-96.87360384285715,7,CoreSpace Dallas,CoreSpace,,osm_overpass
+us-0188,33.4118402,-112.3640381,6,Stream Data Centers PHX-1,Microsoft,,osm_overpass
+us-0189,41.0783165,-74.152912,1,NYSE Data Center,nyse,,osm_overpass
+us-0190,34.5799784,-118.1140073,1,AT&T,,1974,osm_overpass
+us-0191,38.8026713,-104.5219809,1,,,,osm_overpass
+us-0192,45.3187166,-122.7658797,1,Siemens EDA - HDC / Data Center,Siemens Digital Industries Software,,osm_overpass
+us-0193,30.0187,-95.8637474,1,,DXC Technology,,osm_overpass
+us-0194,41.5063555,-81.683589,1,H5 Data Center,,,osm_overpass
+us-0195,30.3314298,-81.6624257,1,Cologix Jacksonville JAX1,,,osm_overpass
+us-0196,32.99280433333333,-97.25336605,6,Facebook Fort Worth Datacenter,Meta,,osm_overpass
+us-0197,35.1428083,-80.9162228,1,Spectrum Charlotte National Data Center,,,osm_overpass
+us-0198,29.415891626666667,-98.79574709333333,15,Microsoft Texas Research Park Campus,Microsoft,,osm_overpass
+us-0199,27.9455353,-82.351102,1,Cyxtera Tampa TP1,Cyxtera,,osm_overpass
+us-0200,35.0315499,-85.2972523,1,DC Blox Chattanooga,,,osm_overpass
+us-0201,32.89600435,-96.9822926,2,QTS Irving - Dallas Data Center Campus,Quality Technology Services,,osm_overpass
+us-0202,41.8023406,-88.0948856,1,Centersquare Lisle ORD4 Data Center,Centersquare,,osm_overpass
+us-0203,33.3619309,-111.8392899,1,GoDaddy - Gilbert,,,osm_overpass
+us-0204,32.7476543,-117.1589538,1,AT&T Center,American Telephone & Telegraph,,osm_overpass
+us-0205,36.1405001,-86.7641364,1,,,,osm_overpass
+us-0206,33.7651394,-84.3837393,1,CenturyLink,,,osm_overpass
+us-0207,40.427371,-80.0425212,1,Expedient Pittsburgh South,Expedient,,osm_overpass
+us-0208,33.4212542,-111.8590191,1,Centersquare: Phoenix - (PHX1 - Mesa),Centersquare,,osm_overpass
+us-0209,29.996266249999998,-95.56368665,2,,DXC Technology,,osm_overpass
+us-0210,42.6879527,-84.6430423,1,Liquid Web,,,osm_overpass
+us-0211,42.7053904,-84.6660891,1,"Liquid Web, Inc",,,osm_overpass
+us-0212,34.0707004,-84.6759032,1,,,,osm_overpass
+us-0213,40.104625375,-82.80629795,4,TJX Corporate Techno,,,osm_overpass
+us-0214,32.9948122,-96.7524974,1,Flexential Dallas - Richardson,Flexential,,osm_overpass
+us-0215,33.1717958,-96.725505,1,Experian McKinney Data Center,,,osm_overpass
+us-0216,40.11578365,-83.00203355,2,,,,osm_overpass
+us-0217,38.9235166,-92.2886061,1,Carfax,,,osm_overpass
+us-0218,32.8504831,-97.0702974,1,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0219,40.09629159375,-82.74205964375,16,Amazon Web Services  CMH50,Amazon Web Services,2024-10-01,osm_overpass
+us-0220,30.4211412,-97.591603,1,Thin-nology,,,osm_overpass
+us-0221,41.1130924,-73.3886495,1,,CyrusOne,,osm_overpass
+us-0222,33.74906435,-84.583474625,4,Google Datacenter - Douglas County,Google,2003,osm_overpass
+us-0223,41.9166409,-87.9177897,3,Microsoft - Azure Datacenter,Microsoft,,osm_overpass
+us-0224,38.8721322,-99.3001874,1,Cloud Storage Corp,,,osm_overpass
+us-0225,29.8215755,-95.5708004,1,,,,osm_overpass
+us-0226,42.9820886,-70.9505947,1,Information Technology Data Center,Phillips Exeter Academy,,osm_overpass
+us-0227,47.8224039,-122.2896138,1,Digital Fortress Lynnwood,,,osm_overpass
+us-0228,40.48052804,-111.90520182,5,DataBank SLC3,DataBank,,osm_overpass
+us-0229,32.9660268625,-96.7128255,8,Rackspace Richardson DFW3,Rackspace,,osm_overpass
+us-0230,38.9373924,-94.8623449,2,U.S. Bank National Data Process Center,,,osm_overpass
+us-0231,39.8309301,-75.1953233,1,,,,osm_overpass
+us-0232,41.2204018,-96.1476408,1,,Verizon Wireless,,osm_overpass
+us-0233,28.6174494,-81.3934606,1,,,,osm_overpass
+us-0234,33.063586150000006,-80.04145172999999,10,Google,Google,,osm_overpass
+us-0235,39.213455,-76.682834,1,TierPoint Baltimore BWI,,,osm_overpass
+us-0236,40.4565951,-109.5290169,1,Strata Networks,,,osm_overpass
+us-0237,40.5703722,-74.6703296,1,Goldman Sachs,,,osm_overpass
+us-0238,38.6365522,-90.2554356,1,Genome Data Center,Washington University in St. Louis,,osm_overpass
+us-0239,35.93475975,-78.88081869999999,2,,CyrusOne,,osm_overpass
+us-0240,40.581484,-74.5738875,1,365 Bridgewater NJ,,,osm_overpass
+us-0241,31.2318987,-85.455834,1,AngelTrax Data Center,AngelTrax Mobile Video Surveillance Solutions,,osm_overpass
+us-0242,34.82850208,-106.7803576,5,Meta,Meta,,osm_overpass
+us-0243,47.15961223333333,-122.27955793333332,3,Centeris SH2 Build-to-Suit,,,osm_overpass
+us-0244,40.1944836,-92.5812336,1,,AT&T,,osm_overpass
+us-0245,32.9648939,-80.1012147,1,DartPoints Charleston,DartPoints,,osm_overpass
+us-0246,44.0861049,-121.2830411,1,US Signal - OR01 Bend,US Signal,,osm_overpass
+us-0247,42.8631424,-87.9778759,1,Expedient Milwaukee,,,osm_overpass
+us-0248,43.8951573,-69.9234342,1,Oxford Networks,FirstLight,,osm_overpass
+us-0249,40.06002089411765,-82.75845304117648,17,NAO 1/NAO 2,Meta,2024-09-01,osm_overpass
+us-0250,32.990701925,-96.660291375,12,Aligned  DFW-01,Aligned,,osm_overpass
+us-0251,29.6581451,-95.4433121,1,Rice Data Center,,,osm_overpass
+us-0252,34.9965845,-82.034841,1,DartPoints Spartanburg,DartPoints,,osm_overpass
+us-0253,33.4534418,-111.97675635,2,Iron Mountain AZP-2,Iron Mountain,,osm_overpass
+us-0254,45.849634925000004,-119.625038675,24,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0255,35.049146300000004,-106.5424778,2,HPC,Sandia National Laboratories,,osm_overpass
+us-0256,45.7985319,-119.36238680000001,6,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0257,36.62521156,-87.26016754,5,Google Montgomery Data Center,Google LLC,,osm_overpass
+us-0258,33.0872472,-96.8156779,1,DataBank Plano Data Center,DataBank,,osm_overpass
+us-0259,29.802893,-95.7553386,1,Skybox Houston One,Skybox,,osm_overpass
+us-0260,34.913991100000004,-85.74723916666666,3,Google Jackson County Data Center,Google LLC,2018,osm_overpass
+us-0261,40.5798956,-74.5194023,1,PSE&G Delivery Emergency Response Center,PSE&G,,osm_overpass
+us-0262,35.2504249,-81.395039,1,T5 Charlotte Campus,,,osm_overpass
+us-0263,44.0707955,-92.5221323,1,Epic / Mayo Data Center,,,osm_overpass
+us-0264,33.9716849,-96.4028488,1,Choctaw Nation of Oklahoma Data Center,Choctaw Nation of oklahoma,,osm_overpass
+us-0265,40.5843719,-74.2433813,1,,,,osm_overpass
+us-0266,40.7563065,-111.9548375,1,Flexential Salt Lake City - Downtown,Flexential,,osm_overpass
+us-0267,44.9265658,-123.001847,1,Oregon State Data Center,State of Oregon,,osm_overpass
+us-0268,26.1900857,-80.1932967,1,Flexential Fort Lauderdale,Flexential,,osm_overpass
+us-0269,30.1777082,-95.486593,1,,,,osm_overpass
+us-0270,36.2481633,-115.1012553,1,Flexential Las Vegas - North,Flexential,,osm_overpass
+us-0271,33.9533733,-98.5247859,1,,,,osm_overpass
+us-0272,44.0474074,-121.3285496,1,Fort Rock DC,Fort Rock Data Center,,osm_overpass
+us-0273,42.9687271,-83.779585,1,,,,osm_overpass
+us-0274,40.5995576,-74.7099684,1,Verizon Branchburg NEC Datacenter,Verizon,,osm_overpass
+us-0275,35.766751,-78.7839874,1,iGLASS Networks,,,osm_overpass
+us-0276,46.3321316,-113.2926719,1,,,,osm_overpass
+us-0277,40.5280718,-74.6828163,1,Vital Records,,,osm_overpass
+us-0278,34.0594667,-117.2021665,1,,,,osm_overpass
+us-0279,44.2044349,-88.3449304,1,,Involta,,osm_overpass
+us-0280,39.1826345,-85.8967042,1,DartPoints Columbus,DartPoints,,osm_overpass
+us-0281,42.2353267,-83.4441406,1,,US Signal,,osm_overpass
+us-0282,36.215518200000005,-86.78381525,2,Tennessee Processing Center LLC,BNYM,,osm_overpass
+us-0283,40.544252,-75.6543772,1,Allentown-TekPark,,,osm_overpass
+us-0284,38.2462382,-122.0671844,1,PG&E Datacenter,,,osm_overpass
+us-0285,40.9512698,-73.897901,1,,,,osm_overpass
+us-0286,40.160755,-74.0530625,1,Wall Township Cable Landing Station,Tata,,osm_overpass
+us-0287,42.213902,-83.198214,1,Comcast,Comcast,,osm_overpass
+us-0288,36.0326759,-86.63775294999999,2,HCA Information Technology & Services Data Center,,,osm_overpass
+us-0289,35.9245097,-86.8556872,1,TierPoint,,,osm_overpass
+us-0290,35.9725623,-86.8080418,1,Flexential Brentwood Data Center,,,osm_overpass
+us-0291,36.0234892,-86.7916196,1,,,,osm_overpass
+us-0292,33.3426083,-111.8409621,1,StrongMind,,,osm_overpass
+us-0293,35.8393357,-78.3281352,1,BB&T Data Center,,,osm_overpass
+us-0294,41.5165716,-93.70980694166667,12,Microsoft,Microsoft,,osm_overpass
+us-0295,41.49682850000001,-93.78704014,5,Microsoft,Microsoft,,osm_overpass
+us-0296,43.074831,-78.944809,1,,Blockfusion,2019,osm_overpass
+us-0297,43.082907718181815,-79.0034254,11,Blockfusion Niagra Falls,,,osm_overpass
+us-0298,37.062799,-113.5447485,1,Lumen,Lumen Technologies,,osm_overpass
+us-0299,33.4047759,-86.9115651,1,Sungard Systems International,,,osm_overpass
+us-0300,33.4754208,-111.7191652,1,Myndshift Technologies,,,osm_overpass
+us-0301,41.7039984,-91.5870781,1,ForceAmp.com,,,osm_overpass
+us-0302,35.1766231,-80.92724035,2,TierPoint - Charlotte Data Center,TierPoint,,osm_overpass
+us-0303,39.0176781,-78.2909424,1,Middletown Data Center,,,osm_overpass
+us-0304,47.8646928,-122.2841532,1,Norma Beach Cable Landing Station,Unity Cable System,,osm_overpass
+us-0305,32.0927065,-110.7874236,1,,DirecTV,,osm_overpass
+us-0306,36.0575434,-115.0086885,2,Google,Google,,osm_overpass
+us-0307,32.4419356,-97.06223140000002,3,Google,Google,,osm_overpass
+us-0308,41.1264338,-96.14492527,10,Meta Sarpy Data center,Meta,,osm_overpass
+us-0309,39.9891579,-105.0207261,1,JPMorgan Chase,JPMorgan Chase,,osm_overpass
+us-0310,43.7821763,-89.5748406,1,Marquette-Adams Telephone Coop,,,osm_overpass
+us-0311,32.54278775833333,-96.79722153333334,12,Compass Data Center,Google,,osm_overpass
+us-0312,42.7454447,-73.7592013,1,Turnkey Internet,,,osm_overpass
+us-0313,47.5946162,-117.5371477,1,Iron Mountain,,,osm_overpass
+us-0314,38.4626027,-78.8567247,1,DBT Data - Harrisonburg Center,,,osm_overpass
+us-0315,41.0917847,-73.5166728,1,amnet Data Center,,,osm_overpass
+us-0316,38.93086636666666,-94.76464056666667,3,Data Center Lenexa,TierPoint,,osm_overpass
+us-0317,39.05631578,-77.54715072500001,20,Stonewall Creek Business Park,Google,,osm_overpass
+us-0318,38.95147227857143,-77.52638061428571,28,Amazon IAD62,Amazon Web Services,,osm_overpass
+us-0319,42.3172742,-111.304246,1,Family History Center,The Church of Jesus Christ of Latter-day Saints,,osm_overpass
+us-0320,36.3280739,-83.3767035,1,,,,osm_overpass
+us-0321,45.837051474999996,-119.691352825,4,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0322,39.73181030000001,-104.71036004999999,2,QTS,Quality Technology Services,,osm_overpass
+us-0323,43.0449439,-78.7492033,1,,,,osm_overpass
+us-0324,42.67449275,-87.90762595000001,2,,,,osm_overpass
+us-0325,41.5050658,-81.6577764,1,Lumen Cleveland,,,osm_overpass
+us-0326,35.1794881,-80.5701825,1,,,,osm_overpass
+us-0327,43.0120761,-76.1159253,1,SU Green Data Center,Syracuse University,,osm_overpass
+us-0328,35.9934295,-86.4958261,1,Tennessee South Data Center,State of Tennessee,,osm_overpass
+us-0329,33.1536001,-117.2388464,1,,,,osm_overpass
+us-0330,39.2935593,-76.5517314,1,Johns Hopkins Data Center,,,osm_overpass
+us-0331,38.5922987,-121.27744,1,Edgeconnex Data Center,EdgeConneX,,osm_overpass
+us-0332,33.44283975,-112.37546735000001,2,Vantage Data Centers,Vantage Data Centers,,osm_overpass
+us-0333,35.9204203,-86.8155401,1,Flexential Nashville - Franklin,Flexential,,osm_overpass
+us-0334,40.5908144,-111.9037856,1,Verizon,,,osm_overpass
+us-0335,41.55811665,-93.5279406,2,,,,osm_overpass
+us-0336,36.0812515,-95.8541492,1,,,,osm_overpass
+us-0337,33.3965617,-112.0001645,1,1GServers,,,osm_overpass
+us-0338,32.4982295,-84.8836074,2,DLI ONE,DLI ONE,,osm_overpass
+us-0339,28.5779418,-81.5645492,1,E-Foam,,,osm_overpass
+us-0340,41.4788147,-72.8010139,1,,,,osm_overpass
+us-0341,44.9380753,-123.0337222,1,CenturyLink,CenturyLink,,osm_overpass
+us-0342,40.906426350000004,-74.23620324999999,2,,JPMorgan Chase,,osm_overpass
+us-0343,42.3324601,-122.880426,1,Date Center West - Eugene,"Data Center West, Inc.",,osm_overpass
+us-0344,37.4334128,-122.1807076,1,Northwest Data Center and Communications Hub,,,osm_overpass
+us-0345,41.7074166,-87.5202329,1,Digital Crossroad,Digital Crossroad,,osm_overpass
+us-0346,32.9720407,-97.1567144,1,Verizon Wireless Mew Building,,,osm_overpass
+us-0347,38.76012315384615,-77.52815530576923,52,Amazon IAD11,Amazon Web Services,,osm_overpass
+us-0348,43.0513735,-88.216698,1,Pewaukee Data Center,WE Energies,,osm_overpass
+us-0349,36.1829977,-115.0626696,1,CenturyLink,,,osm_overpass
+us-0350,33.34727782857143,-111.62324197142857,7,Apple Data Center,Apple Inc.,2012,osm_overpass
+us-0351,26.1849937,-80.2868773,1,T-Mobile Everglades MSO Data Center,,,osm_overpass
+us-0352,33.5006749,-86.8208315,1,DC Blox Data Center,,,osm_overpass
+us-0353,35.2492161,-91.7409058,1,Searcy Information Technologies,City of Searcy,,osm_overpass
+us-0354,40.26844076,-112.01683562000001,5,Meta,Meta,,osm_overpass
+us-0355,28.2940687,-81.8348651,1,,,,osm_overpass
+us-0356,36.059754,-115.1471723,1,DataBank Las Vegas LAS1,DataBank,,osm_overpass
+us-0357,31.9726748,-110.3047517,1,,DirecTV,,osm_overpass
+us-0358,33.600000075,-83.699413075,4,Meta Stanton Springs Data Center,Meta,,osm_overpass
+us-0359,40.685569,-111.8850505,1,Flexential Salt Lake City - Millcreek,Flexential,,osm_overpass
+us-0360,41.17520956875,-95.8017142625,16,Google,Google,,osm_overpass
+us-0361,36.68348543333334,-78.37617986111111,18,,,,osm_overpass
+us-0362,34.9957356,-90.03451865,2,xAI Macrohardrr,xAI,,osm_overpass
+us-0363,38.7861601,-104.7885828,1,T5@Colorado Springs,,,osm_overpass
+us-0364,28.0738698,-82.3683619,1,Flexential Tampa - North,Flexential,,osm_overpass
+us-0365,41.0523325,-73.9717745,1,,,,osm_overpass
+us-0366,40.7259269,-99.038336,1,Compute North,,,osm_overpass
+us-0367,33.730880049999996,-84.61366035,2,Flexential Atlanta - Douglasville 1,Flexential,,osm_overpass
+us-0368,43.0821786,-79.0307777,1,,US Bitcoin,2020,osm_overpass
+us-0369,39.51148184,-119.48199036000001,5,Tahoe Reno 1,Switch,,osm_overpass
+us-0370,40.7667963,-111.9202947,1,Flexential Salt Lake City - Fair Park,Flexential,,osm_overpass
+us-0371,45.90329245,-119.32040905,4,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0372,33.46278045,-111.99735815,2,QTS,Quality Technology Services,,osm_overpass
+us-0373,40.5114517,-111.8882555,1,FiberState Datacenter,,,osm_overpass
+us-0374,38.8105602,-89.9487033,1,,,,osm_overpass
+us-0375,39.133687,-76.8514344,1,,,,osm_overpass
+us-0376,41.7071342,-87.9759559,1,Datacenter (386),UChicago Argonne LLC,,osm_overpass
+us-0377,41.988254725000004,-88.00679445,4,NTT Chicago CH1,NTT,,osm_overpass
+us-0378,44.8771653,-91.9199989,1,,West Wisconsin Telcom,,osm_overpass
+us-0379,34.8479877,-86.62658830000001,5,Meta Huntsville Data center,Meta,,osm_overpass
+us-0380,41.533389424999996,-93.86344705,4,Microsoft,Microsoft,,osm_overpass
+us-0381,40.1522366,-75.4776181,1,Flexential Philadelphia - Collegeville,Flexential,,osm_overpass
+us-0382,39.3226289,-94.5964367,2,Meta Data Center,Meta,,osm_overpass
+us-0383,40.2084622,-74.119242,1,,,,osm_overpass
+us-0384,40.1295611,-74.0427733,1,Manasquan Cable Landing Station (TAT-14),Sprint,,osm_overpass
+us-0385,40.2392258,-74.3195376,1,Verizon Freehold Data Center,Verizon,,osm_overpass
+us-0386,41.14181575,-104.71720515,2,,,,osm_overpass
+us-0387,41.6672384,-93.45571365,2,Lightedge Des Moines 2,,,osm_overpass
+us-0388,41.041059,-80.633078,1,Carrier Services Group,,,osm_overpass
+us-0389,35.951045,-86.833406,1,Flexential Nashville - Cool Springs,Flexential,,osm_overpass
+us-0390,43.6383333,-89.7214027,1,,,,osm_overpass
+us-0391,36.409457825000004,-86.36847625,4,Gallatin Data Center,Meta,,osm_overpass
+us-0392,30.2156048,-97.6189387,1,Cortex supercomputer,,,osm_overpass
+us-0393,32.6512011,-97.3196729,1,Novartis,,,osm_overpass
+us-0394,32.3096657,-106.7291929,1,,CenturyLink,,osm_overpass
+us-0395,36.2218945,-115.1470466,1,Verizon North Las Vegas,Verizon,,osm_overpass
+us-0396,41.361071,-81.6327814,1,Involta Independence,,,osm_overpass
+us-0397,41.036879166666665,-73.98432836666666,3,Bloomberg Data Center,Bloomberg,,osm_overpass
+us-0398,40.04941834,-83.17590764,5,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0399,39.8502644,-82.99561425,2,Google,Google,,osm_overpass
+us-0400,45.920379159999996,-119.22876466,5,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0401,39.72407805,-82.6893317,2,Google,Google,,osm_overpass
+us-0402,37.3629981,-87.5471512,1,Dynamics Mining,,,osm_overpass
+us-0403,41.1826012,-104.0684983,1,Windbreak Cable,,,osm_overpass
+us-0404,41.0573837,-81.5219276,1,Involta-Akron,,,osm_overpass
+us-0405,38.80199866666667,-77.62126996666666,3,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0406,40.11450880769231,-83.20269539230769,13,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0407,45.88152753333333,-119.34099233333332,3,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0408,45.819323,-119.634157275,4,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0409,34.1033836,-84.2149701,1,UPS Data Center,,,osm_overpass
+us-0410,41.4428394,-81.8028724,2,T5@Cleveland,T5 Data Centers,,osm_overpass
+us-0411,37.6651447,-121.0400334,1,Modesto Junior College West Data Center,Yosemite Community College District,,osm_overpass
+us-0412,29.686403,-98.4626475,1,GVTC,GVTC,,osm_overpass
+us-0413,32.3413407,-97.7316918,1,MARA Data Center,Marathon Digital Holdings,,osm_overpass
+us-0414,41.6677641,-86.4730555,1,Amazon AWS Data Center,,,osm_overpass
+us-0415,46.8274678,-92.1304819,1,Ark Duluth Data Center,,,osm_overpass
+us-0416,35.329773,-80.7657588,1,Flexential Charlotte - North,Flexential,,osm_overpass
+us-0417,29.5801522,-98.5413037,1,,HEB,,osm_overpass
+us-0418,41.88938353333333,-88.72649716666666,3,,Meta,,osm_overpass
+us-0419,41.6168519,-93.9243968,1,Apple,Apple,,osm_overpass
+us-0420,40.2245343,-83.0457923,1,,,,osm_overpass
+us-0421,33.6746067,-78.9438847,1,DC BLOX Myrtle Beach Cable Landing Station,,,osm_overpass
+us-0422,41.08331823333334,-76.1487468,3,Nautilus Cryptomine,Amazon Web Services,,osm_overpass
+us-0423,45.1436925,-93.3871189,1,DataBank,,,osm_overpass
+us-0424,39.3852721,-84.5662844,1,CyrusOne Cincinnati-Hamilton CIN4,CyrusOne,,osm_overpass
+us-0425,44.7752235,-122.6159312,1,PTC,Stayton Cooperative Telephone Company,,osm_overpass
+us-0426,39.7440482,-93.997376,1,CenturyLink,,,osm_overpass
+us-0427,33.3531912,-111.6780726,1,,,,osm_overpass
+us-0428,41.0631592,-104.7829152,4,,,,osm_overpass
+us-0429,36.1686438,-115.1431445,1,Flexential Las Vegas - Downtown,Flexential,,osm_overpass
+us-0430,38.737711250000004,-77.826074,2,,,,osm_overpass
+us-0431,35.0599502,-90.1563819,1,xAI Colossus,xAI,,osm_overpass
+us-0432,40.019852424999996,-83.1248104,4,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0433,45.81024934,-119.27056158,5,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0434,35.5681349,-95.5124166,1,,,,osm_overpass
+us-0435,45.1321573,-93.0956156,1,Encompass Minneapolis Facility,Encompass,,osm_overpass
+us-0436,44.1892369,-105.6104802,1,,,,osm_overpass
+us-0437,46.4068846,-105.8206969,1,State of Montana Data Center,State of Montana,,osm_overpass
+us-0438,41.34219156666666,-96.08867123333333,3,Google,Google,,osm_overpass
+us-0439,46.01308254,-98.57294332000001,10,,,,osm_overpass
+us-0440,32.595466519999995,-90.09482192,5,,,,osm_overpass
+us-0441,29.450946966666667,-98.71412526666666,3,,,,osm_overpass
+us-0442,32.5498227,-97.0748553,1,Alinged Data Center DFW-03,"Aligned Data Centers, LLC",,osm_overpass
+us-0443,38.7861403,-77.5845859,8,VA 4,Digital Realty,,osm_overpass
+us-0444,44.7346468,-93.06337554999999,2,,,,osm_overpass
+us-0445,43.4632388,-116.2701637,2,,,,osm_overpass
+us-0446,37.6001856,-82.6787687,1,East Kentucky Network Datacenter,,,osm_overpass
+us-0447,31.1941757,-94.7967665,1,,,,osm_overpass
+us-0448,36.3270316,-88.3200731,1,Newrays Two LLC Mining,,,osm_overpass
+us-0449,29.2930099,-98.3915987,1,Amazon AWS SAT - 12807 Donop,Amazon Web Services,,osm_overpass
+us-0450,31.1313545,-97.3705741,2,,,,osm_overpass
+us-0451,41.69004798571429,-86.46933537142857,7,,,,osm_overpass
+us-0452,32.50016081,-99.78397213,40,,,,osm_overpass
+us-0453,33.45639365,-84.52474355,4,QTS,Quality Technology Services,,osm_overpass
+us-0454,41.076945699999996,-104.82493604999999,2,,,,osm_overpass
+us-0455,36.2821754,-86.7971366,1,Verizon Wireless,,,osm_overpass
+us-0456,33.777264,-100.8689012,1,Argo Data Center,,,osm_overpass
+us-0457,30.4880189,-97.6725256,1,Switch: The Rock,Switch,,osm_overpass
+us-0458,37.2784058,-98.5884618,1,,SC,,osm_overpass
+us-0459,31.0575233,-97.2982979,1,,,,osm_overpass
+us-0460,45.5147872,-123.078828,1,Crane DC - Portland,Crane Data Centers Inc.,,osm_overpass
+us-0461,45.71021115,-119.823621025,4,Percheron DC,Rowan Green Data LLC,,osm_overpass
+us-0462,44.8930062,-74.0728813,1,NYGC Chateaugay,2CRSi,,osm_overpass
+us-0463,31.7500067,-106.3099264,1,MDC,,,osm_overpass
+us-0464,45.8098277,-119.8589037,1,,amazon web services,,osm_overpass
+us-0465,32.411938,-90.19003465,4,Amazon Web Services,Amazon Web Services,,osm_overpass
+us-0466,31.53290075,-103.804026975,4,,,,osm_overpass
+us-0467,32.3805057,-106.4810659,1,Information Systems Facility,WSMR,,osm_overpass
+us-0468,42.9972167,-77.6458295,1,"Landmax Data Systems, Inc",,,osm_overpass
+us-0469,29.4279476,-98.87664843333334,3,Microsoft SAT 80,Microsoft,,osm_overpass
+us-0470,46.9399928,-67.9055877,1,Datacenter,,,osm_overpass
+us-0471,29.9451277,-95.4241979,1,Data Foundry,,,osm_overpass
+us-0472,31.513586266666664,-103.44877673333333,3,IONIC Digital Cedarvale,IONIC Digital,,osm_overpass
+us-0473,41.271557765625,-79.81339873125,32,,,,osm_overpass
+us-0474,44.9793795,-93.2263894,1,Advanced Operations Center,University of Minnesota,,osm_overpass
+us-0475,41.9929788,-86.0984691,1,,,,osm_overpass
+us-0476,48.1462599,-103.7727866,1,Atlas Powr Williston Datacenter,Atlas Power Holdings (ND) LLC,,osm_overpass
+us-0477,31.10356925,-103.2384625,2,,,,osm_overpass
+us-0478,40.0444893,-74.27913129999999,2,,,,osm_overpass
+us-0479,42.9876268,-72.5517562,1,,The Putney School,,osm_overpass
+us-0480,39.4275129,-75.0168617,1,DataOne Vineland,Nebius,,osm_overpass
+us-0481,32.8991167,-97.3889496,1,,CyrusOne,,osm_overpass
+us-0482,41.5990376,-73.8821955,1,,CyrusOne,,osm_overpass
+us-0483,45.5340587,-122.9558975,1,OVHcloud - Hillsboro,OVHcloud,,osm_overpass
+us-0484,41.4648153,-75.1294195,1,SES - Hawley Earth Station,SES,,osm_overpass
+us-0485,42.5334813,-83.1774894,1,Liberty Center One,,,osm_overpass
+us-0486,40.6437889,-74.2854476,1,Barclays Datacenter,Barclays,,osm_overpass
+us-0487,39.1402303,-76.6064303,1,CyberNAP Glen Burnie,AiNET,,osm_overpass
+us-0488,46.8151017,-96.8443142,1,Dakota Carrier Network,,,osm_overpass

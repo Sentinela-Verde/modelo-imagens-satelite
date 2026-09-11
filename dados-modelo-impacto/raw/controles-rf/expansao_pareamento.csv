@@ -1,0 +1,11 @@
+site_id,municipio,uf,lat,lon,ano_inicio_obra,sensor,status,motivo,site_id_controle,lat_controle,lon_controle,dist_tratamento_controle_km,l1_rf,qualidade,procedencia
+exp-elea-rjo1,Rio de Janeiro,Rio de Janeiro,-22.9683248,-43.3805263,2015,landsat,ok,,ctrl-exp-elea-rjo1-p02,-22.96824803560424,-43.22449949249443,16.0,0.597031,ruim,datacentermap
+exp-latitude-sh-sao,Sao Paulo,SP,-23.5799648,-46.6410651,2015,,sem_candidato,nenhum ponto da grade 15-40 km passou nos filtros geométricos + município dentro do teto de 80 tentativas de reverse-geocode,,,,,,,datacentermap
+exp-sitelbra-data-center,Brasília,DF,-15.7470383,-47.9233792,2015,,sem_candidato,nenhum ponto da grade 15-40 km passou nos filtros geométricos + município dentro do teto de 80 tentativas de reverse-geocode,,,,,,,datacentermap
+exp-sky-brasil---jaguariuna,Jaguariúna,,-22.69018744044072,-47.01333787517029,2015,,sem_candidato,nenhum ponto da grade 15-40 km passou nos filtros geométricos + município dentro do teto de 80 tentativas de reverse-geocode,,,,,,,datacentermap
+exp-odata-sp01,"Votuparim, Santana de Parnaíba",,-23.4550357423391,-46.91510647119536,2016,,erro,"AttributeError(""'float' object has no attribute 'upper'"")",,,,,,,datacentermap
+exp-quantico-data-center,Canoas,Rio Grande do Sul (RS),-29.9040072,-51.1283808,2020,,sem_candidato,nenhum ponto da grade 15-40 km passou nos filtros geométricos + município dentro do teto de 80 tentativas de reverse-geocode,,,,,,,datacentermap
+exp-asap-sp1,São Paulo,SP,-23.6761714,-46.6992381,2021,landsat,ok,,ctrl-exp-asap-sp1-p01,-23.676047324349884,-46.50316895335874,20.0,0.31814,ruim,datacentermap
+exp-idx-data-centers---it-services,Palmas,Tocantins,-10.1875328,-48.340776,2021,landsat,ok,,ctrl-exp-idx-data-centers---it-services-p01,-10.327254716874053,-48.30296735697227,16.0,0.625965,ruim,datacentermap
+exp-to-host-data-centers,Palmas,Tocantins,-10.2048941,-48.3529666,2022,s2,ok,,ctrl-exp-to-host-data-centers-p01,-9.951748513227699,-48.3529666,28.0,0.767199,ruim,datacentermap
+exp-netwise-empresas,Lagoa da Prata,Minas Gerais,-20.0346344,-45.5247215,2023,s2,ok,,ctrl-exp-netwise-empresas-p01,-20.136797859326254,-45.416514784765724,16.0,0.575813,ruim,datacentermap

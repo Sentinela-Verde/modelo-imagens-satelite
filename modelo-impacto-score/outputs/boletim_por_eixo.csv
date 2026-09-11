@@ -1,0 +1,61 @@
+site_id,municipio,uf,eixo,rotulo,efeito_liquido,unidade,score_0_100,selo_do_eixo,tipo_sitio,qualidade_par,ano_inicio_obra,sensor
+angonap-fortaleza,Fortaleza,CE,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",1.536,p.p.,61.5,forte,greenfield,aceitavel,2017,landsat
+ascenty-hortolandia,Hortolândia,SP,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",-1.313,p.p.,23.1,forte,greenfield,bom,2018,landsat
+ascenty-jundiai,Jundiaí,SP,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",-5.435,p.p.,7.7,forte,brownfield,bom,2019,landsat
+ascenty-maracanau,Maracanaú,CE,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",6.084,p.p.,92.3,forte,,ruim,2014,landsat
+ascenty-osasco,Osasco,SP,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",0.357,p.p.,38.5,forte,brownfield,ruim,2020,landsat
+ascenty-paulinia,Paulínia,SP,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",6.112,p.p.,100.0,forte,brownfield,bom,2019,landsat
+ascenty-sumare,Sumaré,SP,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",-3.16,p.p.,15.4,forte,brownfield,ruim,2017,landsat
+ascenty-vinhedo,Vinhedo,SP,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",,p.p.,,forte,greenfield,aceitavel,2019,landsat
+clickip-manaus,Manaus,AM,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",5.173,p.p.,84.6,forte,greenfield,ruim,2023,s2
+equinix-santana-parnaiba,Santana de Parnaíba,SP,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",1.445,p.p.,53.8,forte,greenfield,ruim,2020,landsat
+everest-goiania,Goiânia,GO,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",,p.p.,,forte,,ruim,2021,landsat
+hostdime-joao-pessoa,João Pessoa,PB,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",0.789,p.p.,46.2,forte,brownfield,ruim,2017,landsat
+scala-sgigsm01,São João de Meriti,RJ,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",3.655,p.p.,76.9,forte,brownfield,ruim,2022,s2
+scala-spoapa01,Porto Alegre,RS,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",0.26,p.p.,30.8,forte,greenfield,ruim,2023,s2
+scala-tambore,Barueri,SP,construcao_0_500m,"Conversão para construída, anel 0–500 m (SEM o prédio)",2.298,p.p.,69.2,forte,brownfield,ruim,2021,landsat
+angonap-fortaleza,Fortaleza,CE,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",0.746,p.p.,46.7,forte,greenfield,aceitavel,2017,landsat
+ascenty-hortolandia,Hortolândia,SP,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",-0.93,p.p.,13.3,forte,greenfield,bom,2018,landsat
+ascenty-jundiai,Jundiaí,SP,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",2.646,p.p.,73.3,forte,brownfield,bom,2019,landsat
+ascenty-maracanau,Maracanaú,CE,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",4.731,p.p.,93.3,forte,,ruim,2014,landsat
+ascenty-osasco,Osasco,SP,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",0.39,p.p.,33.3,forte,brownfield,ruim,2020,landsat
+ascenty-paulinia,Paulínia,SP,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",7.558,p.p.,100.0,forte,brownfield,bom,2019,landsat
+ascenty-sumare,Sumaré,SP,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",-2.787,p.p.,6.7,forte,brownfield,ruim,2017,landsat
+ascenty-vinhedo,Vinhedo,SP,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",0.056,p.p.,26.7,forte,greenfield,aceitavel,2019,landsat
+clickip-manaus,Manaus,AM,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",3.431,p.p.,86.7,forte,greenfield,ruim,2023,s2
+equinix-santana-parnaiba,Santana de Parnaíba,SP,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",1.613,p.p.,66.7,forte,greenfield,ruim,2020,landsat
+everest-goiania,Goiânia,GO,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",0.874,p.p.,53.3,forte,,ruim,2021,landsat
+hostdime-joao-pessoa,João Pessoa,PB,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",0.029,p.p.,20.0,forte,brownfield,ruim,2017,landsat
+scala-sgigsm01,São João de Meriti,RJ,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",3.266,p.p.,80.0,forte,brownfield,ruim,2022,s2
+scala-spoapa01,Porto Alegre,RS,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",0.644,p.p.,40.0,forte,greenfield,ruim,2023,s2
+scala-tambore,Barueri,SP,construcao_500m_1km,"Conversão para construída, anel 500 m–1 km",1.564,p.p.,60.0,forte,brownfield,ruim,2021,landsat
+angonap-fortaleza,Fortaleza,CE,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",-0.669,p.p.,30.8,sugestivo,greenfield,aceitavel,2017,landsat
+ascenty-hortolandia,Hortolândia,SP,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",-1.313,p.p.,23.1,sugestivo,greenfield,bom,2018,landsat
+ascenty-jundiai,Jundiaí,SP,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",-5.435,p.p.,7.7,sugestivo,brownfield,bom,2019,landsat
+ascenty-maracanau,Maracanaú,CE,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",5.239,p.p.,92.3,sugestivo,,ruim,2014,landsat
+ascenty-osasco,Osasco,SP,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",0.357,p.p.,53.8,sugestivo,brownfield,ruim,2020,landsat
+ascenty-paulinia,Paulínia,SP,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",5.985,p.p.,100.0,sugestivo,brownfield,bom,2019,landsat
+ascenty-sumare,Sumaré,SP,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",-3.644,p.p.,15.4,sugestivo,brownfield,ruim,2017,landsat
+ascenty-vinhedo,Vinhedo,SP,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",,p.p.,,sugestivo,greenfield,aceitavel,2019,landsat
+clickip-manaus,Manaus,AM,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",2.145,p.p.,76.9,sugestivo,greenfield,ruim,2023,s2
+equinix-santana-parnaiba,Santana de Parnaíba,SP,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",1.157,p.p.,69.2,sugestivo,greenfield,ruim,2020,landsat
+everest-goiania,Goiânia,GO,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",,p.p.,,sugestivo,,ruim,2021,landsat
+hostdime-joao-pessoa,João Pessoa,PB,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",0.676,p.p.,61.5,sugestivo,brownfield,ruim,2017,landsat
+scala-sgigsm01,São João de Meriti,RJ,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",0.232,p.p.,46.2,sugestivo,brownfield,ruim,2022,s2
+scala-spoapa01,Porto Alegre,RS,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",0.0,p.p.,38.5,sugestivo,greenfield,ruim,2023,s2
+scala-tambore,Barueri,SP,vegetacao_0_500m,"Vegetação convertida em construída, anel 0–500 m",2.298,p.p.,84.6,sugestivo,brownfield,ruim,2021,landsat
+angonap-fortaleza,Fortaleza,CE,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",-1.427,°C,8.3,nulo_amostra_pequena,greenfield,aceitavel,2017,landsat
+ascenty-hortolandia,Hortolândia,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",0.42,°C,50.0,nulo_amostra_pequena,greenfield,bom,2018,landsat
+ascenty-jundiai,Jundiaí,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",-1.097,°C,16.7,nulo_amostra_pequena,brownfield,bom,2019,landsat
+ascenty-maracanau,Maracanaú,CE,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",1.298,°C,91.7,nulo_amostra_pequena,,ruim,2014,landsat
+ascenty-osasco,Osasco,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",0.606,°C,58.3,nulo_amostra_pequena,brownfield,ruim,2020,landsat
+ascenty-paulinia,Paulínia,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",1.125,°C,83.3,nulo_amostra_pequena,brownfield,bom,2019,landsat
+ascenty-sumare,Sumaré,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",0.302,°C,41.7,nulo_amostra_pequena,brownfield,ruim,2017,landsat
+ascenty-vinhedo,Vinhedo,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",-0.804,°C,25.0,nulo_amostra_pequena,greenfield,aceitavel,2019,landsat
+clickip-manaus,Manaus,AM,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",,°C,,nulo_amostra_pequena,greenfield,ruim,2023,s2
+equinix-santana-parnaiba,Santana de Parnaíba,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",1.825,°C,100.0,nulo_amostra_pequena,greenfield,ruim,2020,landsat
+everest-goiania,Goiânia,GO,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",-0.732,°C,33.3,nulo_amostra_pequena,,ruim,2021,landsat
+hostdime-joao-pessoa,João Pessoa,PB,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",1.081,°C,75.0,nulo_amostra_pequena,brownfield,ruim,2017,landsat
+scala-sgigsm01,São João de Meriti,RJ,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",,°C,,nulo_amostra_pequena,brownfield,ruim,2022,s2
+scala-spoapa01,Porto Alegre,RS,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",,°C,,nulo_amostra_pequena,greenfield,ruim,2023,s2
+scala-tambore,Barueri,SP,temperatura_0_500m,"Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m",0.981,°C,66.7,nulo_amostra_pequena,brownfield,ruim,2021,landsat

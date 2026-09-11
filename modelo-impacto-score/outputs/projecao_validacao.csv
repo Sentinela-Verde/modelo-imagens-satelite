@@ -1,0 +1,3 @@
+estrategia,n,cobertura_faixa_15_85,cobertura_nominal,largura_mediana_pp,leitura,recomendada
+condicionada_no_tipo_de_sitio,12,0.5,0.7,5.076,condicionar estreita a faixa em só +1.24 p.p. e DERRUBA a cobertura para 50% (nominal 70%) — faixa estreita demais para o que ela afirma; não use,False
+classe_unica,12,0.667,0.7,6.311,cobertura 67% contra nominal 70% — calibrada; é esta que deve ser usada,True

@@ -29,9 +29,12 @@ classes:
   3:
     slug: solo_exposto_obras
     nome_exibicao: "Solo exposto / em obras"
-    cor_hex: "#C87137"
+    cor_hex: "#F5A623"
     descricao: >
-      Classe crítica — sinal mais forte de início de construção. ATENÇÃO: quando vem do
+      Classe crítica — sinal mais forte de início de construção. Cor trocada em 2026-09-05
+      (era #C87137) por ficar visualmente perto demais do vermelho da classe 4 (18.5° de
+      distância de matiz numa roda de 360°, difícil de distinguir sobretudo pra quem tem
+      dificuldade de ver vermelho/laranja) — #F5A623 fica a ~32° de distância. ATENÇÃO: quando vem do
       remap do WorldCover, esse código representa solo natural exposto, não necessariamente
       canteiro de obra — por isso existe a rotulagem manual complementar (SV-09/SV-10).
   4:
@@ -51,6 +54,28 @@ classes:
 
 # codigo_da_fonte -> nosso id de classe. Código ausente na tabela vira 0 (nodata) automaticamente.
 remaps:
+  # Google Dynamic World V1 (`GOOGLE/DYNAMICWORLD/V1`, banda `label`), 10 m, global,
+  # junho/2015 em diante. Adotado como fonte principal em 2026-09-11 (ADR-006 §2).
+  #
+  # A razão de existir deste remap: o MapBiomas **não tem** classe de canteiro de obras,
+  # e por isso a nossa classe 3 é a pior do classificador (F1 0,579 — ADR-004). O DW tem
+  # uma classe `bare` NATIVA, que é o defeito de origem corrigido.
+  #
+  # ATENÇÃO, e isto precisa acompanhar qualquer número que saia daqui: `bare` do DW também
+  # não é "canteiro de obras". É solo nu — inclui deserto, praia e lavoura arada. No Brasil
+  # é gerenciável; a rotulagem manual complementar da classe 3 (SV-09/SV-10) continua
+  # obrigatória.
+  dynamic_world:
+    0: 5    # water
+    1: 1    # trees
+    2: 2    # grass
+    3: 5    # flooded_vegetation — agrupado em água, mesmo critério do wetland do MapBiomas
+    4: 2    # crops (agricultura leve, conforme CLAUDE.md)
+    5: 2    # shrub_and_scrub
+    6: 4    # built
+    7: 3    # bare — a classe que motiva a troca de fonte
+    8: 5    # snow_and_ice — não ocorre na AOI
+
   worldcover:
     10: 1   # Tree cover
     20: 2   # Shrubland

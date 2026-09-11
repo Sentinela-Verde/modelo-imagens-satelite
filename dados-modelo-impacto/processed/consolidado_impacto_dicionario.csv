@@ -1,0 +1,29 @@
+coluna,bloco,descricao,origem
+site_id,identidade,id do ponto; `ctrl-*` é ponto de controle,passos 3/4
+tipo,identidade,`tratamento` (data center) ou `controle` (par sem data center),passo 3
+pareado_com,identidade,site_id do tratamento do par; é a chave do par,passo 3
+ids_datacenter,identidade,"id_datacenter da lista do Guilherme, separados por `;` — vazio nos campi que não estavam nela e em todo controle",passo 1
+n_predios_no_campus,identidade,quantos prédios da lista do Guilherme caem neste campus,passo 1
+codigo_ibge,identidade,código IBGE do município do ponto,passo 9
+ano,tempo,ano da observação,—
+ano_inicio_obra,tempo,"início da obra do data center do par, validado em `config/sites.geojson`",repo
+ano_fim_obra,tempo,último ano de `periodo_durante` — a melhor aproximação de fim de obra que o repo tem,repo
+ano_relativo_ao_inicio_obra,tempo,`ano - ano_inicio_obra`; alinha pares com obras em anos diferentes,passo 4
+fase,tempo,"`pre` / `durante` / `pos`, derivado de início e fim de obra",passo 4
+l1_rf,qualidade,"distância L1 entre as distribuições de classe do par, no ano anterior à obra; menor é mais parecido",passo 3
+qualidade_par,qualidade,"`bom` (L1<=0,10) / `aceitavel` (<=0,20) / `ruim` — limiares de SV-29, calibrados no MapBiomas (ver METODOLOGIA)",passo 3
+dist_tratamento_controle_km,qualidade,distância geodésica entre tratamento e controle,passo 3
+municipio_compartilhado_com_par,qualidade,True quando tratamento e controle caem no MESMO município: contraste socioeconômico zero,passo 9
+sensor,cobertura,"`landsat` ou `s2`; constante dentro de cada par, por desenho (SV-20)",passo 4
+area_ha_*,cobertura,"área da classe no buffer de 5 km, em hectares",classificador `rf_v1.0-tuned`
+prop_*,cobertura,proporção da classe sobre os pixels válidos; soma 1 por linha,classificador `rf_v1.0-tuned`
+pixels_validos,cobertura,pixels classificados no buffer; base das proporções,passo 4
+lst_media_celsius,ambiental,"média das cenas MOD11A2 do ano no buffer de 5 km, em Celsius",passo 8
+lst_n_cenas,ambiental,quantas cenas de 8 dias entraram na média; baixo = ano nublado,passo 8
+populacao,socioeconômico,"população do MUNICÍPIO (não do buffer) — contexto, não evidência de efeito",passo 9
+emprego_formal_total,socioeconômico,pessoal ocupado assalariado no MUNICÍPIO,passo 9
+pib_mil_reais,socioeconômico,"PIB do MUNICÍPIO, mil reais correntes",passo 9
+mw_construido_total,data center,"MW construídos no campus — nulo no controle, por definição",scraping do Guilherme
+whitespace_construido_sqm_total,data center,whitespace em m² — nulo no controle,scraping do Guilherme
+tier / tier_projetado_max,data center,tier do campus — nulo no controle,repo / scraping
+regiao / bioma,data center,atributos do campus de tratamento; nulos no controle,repo

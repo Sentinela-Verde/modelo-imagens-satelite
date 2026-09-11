@@ -1,0 +1,6 @@
+categoria,n_pares,n_maior_no_tratamento,diferenca_mediana_pp,p_bilateral,media_tratamento_pct,media_controle_pct
+indeterminado,7,5,23.71,0.4531,60.85,42.48
+industrial_logistico,7,5,10.34,0.4531,12.99,7.93
+institucional,7,3,0.0,1.0,3.84,0.42
+comercial,7,3,-1.84,1.0,5.66,5.75
+residencial,7,2,-37.5,0.4531,16.67,43.42
