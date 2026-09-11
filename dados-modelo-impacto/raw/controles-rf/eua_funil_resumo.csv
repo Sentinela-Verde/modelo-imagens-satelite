@@ -1,0 +1,4 @@
+etapa,restam,observacao
+predios_osm,1649,elementos com telecom/building=data_center nos EUA
+campi_distintos,488,prédios a <2 km agrupados
+com_data_qualquer,15,"com start_date no OSM — e a data é do PRÉDIO, não da virada para data center"

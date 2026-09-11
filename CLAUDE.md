@@ -35,10 +35,13 @@ riscos) vive no Notion: página **"🧭 Plano de Modelos de ML — Product Flow"
   para change detection, comparação de abordagens.
 - **Split:** nunca aleatório por pixel — usar split espacial e/ou temporal explícito para evitar
   vazamento de dados entre treino/teste.
-- **Cronograma (atualizado 2026-08-27):** este repo usa um cronograma próprio por fases, não mais
-  as sprints do Notion — ver `docs/plano-execucao.md`. Prazo final fixo: **14/09/2026** (apresentação,
-  sem prorrogação). Congelamento de escopo em 10/09; 11–13/09 é reserva protegida para documentação
-  e ensaio de demo (critério de nota), nunca sacrificada por atraso de modelagem.
+- **Cronograma (prazo atualizado 2026-09-11):** este repo usa um cronograma próprio por fases, não
+  mais as sprints do Notion — ver `docs/plano-execucao.md`. Prazo final fixo: **17/09/2026, quinta**
+  (apresentação, sem prorrogação). Congelamento de escopo em **16/09**; **14–16/09 é reserva
+  protegida** para documentação e ensaio de demo (critério de nota), nunca sacrificada por atraso de
+  modelagem. **Atenção:** `docs/plano-execucao.md` ainda descreve o cronograma antigo (prazo 14/09,
+  congelamento 10/09, reserva 11–13/09) em todas as fases, ondas e no diagrama — vale como registro
+  histórico do plano, não como as datas correntes. Em caso de divergência, esta linha vence.
 - **Janela temporal e sites (ADR-001/ADR-003):** 2013–2025, multi-sensor — Landsat 8/9 (30 m) para
   2013–2018, Sentinel-2 (10 m) para 2019–2025, harmonizados via `sentinela.gee.harmonizacao`
   (coeficientes Claverie/NASA HLS). `sensor` entra como feature explícita no modelo (SV-12) porque
