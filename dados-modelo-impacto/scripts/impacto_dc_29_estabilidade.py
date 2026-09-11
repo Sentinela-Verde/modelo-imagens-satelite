@@ -61,6 +61,24 @@ SAIDA_RESUMO = C.DIR_SAIDA / "estabilidade_resumo.csv"
 REMAP_DW = {0: 5, 1: 1, 2: 2, 3: 5, 4: 2, 5: 2, 6: 4, 7: 3, 8: 5}
 
 
+def _dirs_modelos() -> dict[str, Path]:
+    """Todo classificador nosso que tem rasters de controle em disco.
+
+    `classificado/` e o de producao (rf_v1.0-tuned); `classificado-<versao>/` sao
+    candidatos escritos pelo passo 30. Medir todos de uma vez na MESMA tabela e o que
+    torna o §4 legivel: o portao nao e "o modelo novo e bom", e "o modelo novo e mais
+    estavel que o rotulo que o treinou".
+    """
+    dirs: dict[str, Path] = {}
+    producao = C.DIR_SAIDA / "classificado"
+    if producao.is_dir():
+        dirs["rf_v1.0-tuned"] = producao
+    for d in sorted(C.DIR_SAIDA.glob("classificado-*")):
+        if d.is_dir():
+            dirs[d.name.removeprefix("classificado-")] = d
+    return dirs
+
+
 def _ler(caminho: Path) -> np.ndarray | None:
     if not caminho.exists():
         return None
@@ -97,12 +115,16 @@ def fase_medir() -> None:
         ctrl = r.site_id_controle
         anos = C.janela_anos(int(r.ano_inicio_obra))
 
-        # --- nosso classificador (rf_v1.0-tuned), na grade de 30 m -------------------
-        pilha_rf = {}
-        for ano in anos:
-            arr = _ler(Path(C.caminho_classificado(r.sensor, ctrl, ano)))
-            if arr is not None:
-                pilha_rf[ano] = arr
+        # --- todos os nossos classificadores disponiveis, na grade de 30 m ----------
+        pilhas = {}
+        for versao, base in _dirs_modelos().items():
+            pilha = {}
+            for ano in anos:
+                arr = _ler(base / r.sensor / ctrl / f"{ano}.tif")
+                if arr is not None:
+                    pilha[ano] = arr
+            if pilha:
+                pilhas[versao] = pilha
 
         # --- Dynamic World, na grade nativa de 10 m ---------------------------------
         pilha_dw = {}
@@ -110,8 +132,10 @@ def fase_medir() -> None:
             arr = _ler(DIR_DW / ctrl / f"{ano}.tif")
             if arr is not None:
                 pilha_dw[ano] = _remapear_dw(arr)
+        if pilha_dw:
+            pilhas["dynamic_world"] = pilha_dw
 
-        for nome, pilha in (("rf_v1.0-tuned", pilha_rf), ("dynamic_world", pilha_dw)):
+        for nome, pilha in pilhas.items():
             disponiveis = sorted(pilha)
             for a0, a1 in zip(disponiveis, disponiveis[1:]):
                 if a1 - a0 != 1:
@@ -140,7 +164,7 @@ def fase_medir() -> None:
     ))
     df["par_comum"] = [tuple(x) in comuns for x in df[chave].values]
     C.salvar_csv(df, SAIDA)
-    print(f"\n  {len(comuns)} pares (controle, ano->ano) cobertos pelos DOIS instrumentos")
+    print(f"\n  {len(comuns)} pares (controle, ano->ano) cobertos por TODOS os instrumentos")
     df = df[df.par_comum]
 
     # agregado ponderado por pixel: um controle grande nao vale o mesmo que um pequeno,
