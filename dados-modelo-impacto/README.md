@@ -376,8 +376,16 @@ dele. Descontando os pixels do footprint (subtração exata, sem reprocessar ras
 - conversão: **+2,06 → +1,50 p.p.**, mesmos 12/14, mesmo p — **~73% do efeito está fora da cerca**
 - vegetação: 10/14 p=0,090 → **11/14 p=0,0287** — passou de sugestivo a **forte**
 
-A vegetação melhorou porque o footprint costuma estar sobre terreno já construído e diluía o sinal
-do anel. A correção tornou a análise mais **estrita**, e um eixo ficou mais forte.
+> **⚠ Correção (2026-09-11) — os dois números acima estão errados.** A subtração aritmética só vale
+> se o footprint estiver *dentro* do disco de 500 m, e não está em **4 dos 14** campi
+> (`ascenty-vinhedo` 100% fora, a 615 m do ponto validado; `ascenty-sumare` 67%; `scala-sgigsm01`
+> 15%; `equinix-santana-parnaiba` 3%). Recalculado por **mascaramento direto sobre o raster**:
+> `ascenty-hortolandia` vai de +0,25 para **−1,31 p.p.** (troca de sinal), e o eixo de vegetação
+> fica em **16 pares, p=0,105, `sugestivo`** — **não** `forte`. A leitura de que a análise mais
+> estrita havia *fortalecido* um eixo era artefato do bug. O achado que se sustenta é o de
+> conversão para área construída, e o número de destaque passou a ser o anel de **0,5–1 km**
+> (18/20, p=0,0002), livre do prédio por construção. Ver
+> `modelo-impacto-score/reports/relatorio-impacto.md`, seção 4.
 
 **Por que três resultados ficaram fracos, e é um só motivo.** O passo 22 isola a causa: a classe
 `construida_urbana`, que a trajetória detecta com 13/15 e p=0,0037, fica **invisível** medida como

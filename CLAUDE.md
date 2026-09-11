@@ -58,7 +58,7 @@ riscos) vive no Notion: página **"🧭 Plano de Modelos de ML — Product Flow"
   (medição / explicação / projeção). **Não produz um score único agregado, por decisão de desenho:**
   publica um boletim por eixo, cada um com selo de evidência (`forte` / `sugestivo` /
   `nulo_informativo` / `nulo_amostra_pequena` / `nulo_sem_poder`). Resultado central: o padrão se sustenta (conversão no anel
-  de 0-500 m, 12/14 pares, p=0,0065), a **magnitude não é predizível** (R² LOOCV negativo em 13
+  de 0,5-1 km, 18/20 pares, p=0,0002), a **magnitude não é predizível** (R² LOOCV negativo em 13
   modelos, permutação p=0,77). Ver `modelo-impacto-score/README.md`.
 
 ## Regras do repositório

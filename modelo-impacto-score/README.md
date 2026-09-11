@@ -13,7 +13,7 @@ Tem prazo próprio e **não segue o cronograma do classificador** (congelamento 
 **Não existe um score único de impacto aqui, e isso é deliberado.**
 
 Um número agregado ("impacto: 73/100") exigiria pesos arbitrários e misturaria eixos com qualidade
-de evidência incompatível — conversão de solo (p=0,0065) somada a temperatura, que com n=12 não
+de evidência incompatível — conversão de solo (p=0,0002) somada a temperatura, que com n=12 não
 atinge significância. O agregado esconderia a parte forte do trabalho e seria a peça mais fácil de
 derrubar numa banca.
 
@@ -35,7 +35,7 @@ Os três selos de nulo não são sinônimos, e a diferença entre eles é o que 
 
 | camada | script | pergunta | resposta obtida |
 |---|---|---|---|
-| **1 — Medição** | `01_boletim.py` | Quanto cada campus impactou, por eixo? | 4 eixos medidos, 3 com selo `forte` |
+| **1 — Medição** | `01_boletim.py` | Quanto cada campus impactou, por eixo? | 4 eixos medidos, 2 com selo `forte` |
 | **2 — Explicação** | `02_explicacao.py` | O que prediz o tamanho do impacto? | **nada** — todos os R² LOOCV negativos, permutação p=0,77 |
 | **3 — Projeção** | `03_projecao.py` | Dado um site novo, que faixa esperar? | classe de referência calibrada (cobertura 69% vs nominal 70%) |
 
@@ -45,9 +45,9 @@ Os três selos de nulo não são sinônimos, e a diferença entre eles é o que 
 
 | eixo | n | efeito mediano | p | selo |
 |---|---:|---:|---:|---|
-| Conversão para construída, anel 0–500 m (**sem o prédio**) | 14 | **+1,50 p.p.** | **0,0065** | `forte` |
-| Conversão para construída, anel 500 m–1 km | 14 | **+1,15 p.p.** | **0,0065** | `forte` |
-| Vegetação → construída, anel 0–500 m | 14 | **+0,52 p.p.** | **0,0287** | `forte` |
+| Conversão para construída, anel **500 m–1 km** | **20** | **+1,05 p.p.** | **0,0002** | `forte` |
+| Conversão para construída, anel 0–500 m (**sem o prédio**) | 16 | **+1,49 p.p.** | **0,0384** | `forte` |
+| Vegetação → construída, anel 0–500 m | 16 | +0,52 p.p. | 0,105 | `sugestivo` |
 | Aquecimento (LST Landsat 30 m), anel 0–500 m | 12 | +0,51 °C | 0,388 | `nulo_amostra_pequena` |
 
 **Todo eixo `forte` foi validado por placebo.** A mesma estatística, aplicada a 15 pares de lugares
