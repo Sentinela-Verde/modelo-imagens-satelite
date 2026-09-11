@@ -90,6 +90,29 @@ from .config import CONFIG_DIR, REPO_ROOT, SETTINGS
 # --------------------------------------------------------------------------------------------
 
 TETO_POR_CLASSE_SITE_ANO_SENSOR = 8000  # default histórico (v0.1, 3 sites) — v0.2 passa --teto explícito
+
+# Grade em que o teto nominal é expresso: a mais fina da pipeline (S2, 10 m).
+RESOLUCAO_BASE_TETO_M = 10
+
+
+def teto_por_area(teto_nominal: int, resolucao_m: int) -> int:
+    """Teto de amostragem equalizado por ÁREA, não por contagem de pixel (ADR-006 §3).
+
+    **O bug que isto corrige**, medido em 2026-09-10: o teto era um número fixo de pixels
+    por classe x site x ano x sensor, igual para os dois sensores. As classes abundantes
+    enchiam o teto nos dois; a classe 3 **nunca** enchia no Landsat (mediana 229 px, máximo
+    1.205 contra teto de 4.000), porque um pixel de 30 m cobre 9x a área de um de 10 m e
+    portanto existem 9x menos deles para a mesma feição no chão.
+
+    Resultado: a classe 3 era **2,9%** das linhas Landsat contra **17,3%** das S2. Como
+    `sensor` é feature do modelo (ADR-003), o modelo aprendeu o prior condicionado ao sensor
+    e o reproduzia na saída — 2,4% previsto no Landsat contra 19,3% no S2.
+
+    Equalizar por área significa dividir o teto pelo quadrado da razão de resolução: com
+    teto nominal N na grade de 10 m, o Landsat de 30 m recebe N/9.
+    """
+    fator = (resolucao_m / RESOLUCAO_BASE_TETO_M) ** 2
+    return max(1, int(round(teto_nominal / fator)))
 TAMANHO_BLOCO_M = 1000.0  # grade 1 km x 1 km, ver docstring do módulo
 TEST_SIZE = 0.30
 PESO_LABEL_DISCORDANCIA_CROSSCHECK = 0.5  # fator aplicado no ano de verificação cruzada (2021)
@@ -162,7 +185,8 @@ def _manifest_features_path(sensor_token: str, site_id: str, ano: int) -> Path:
 
 
 def _manifest_labels_path(sensor_token: str, site_id: str, ano: int) -> Path:
-    return SETTINGS.manifests_dir / f"labels_{sensor_token}_{site_id}_{ano}.json"
+    # o token carrega a fonte: `labels` para MapBiomas, `labels-dw` para Dynamic World
+    return SETTINGS.manifests_dir / f"{SETTINGS.token_labels()}_{sensor_token}_{site_id}_{ano}.json"
 
 
 def _carregar_json(path: Path) -> dict:
@@ -547,7 +571,9 @@ def processar_combo(
         idx_automatico_todos = np.nonzero(~manual_disp)[0]
 
         n_auto_disponivel = idx_automatico_todos.size
-        n_amostra_auto = min(teto, n_auto_disponivel)
+        # ADR-006 §3: teto por ÁREA, não por contagem de pixel. Sem isto, a classe 3 nunca
+        # enche o teto no Landsat e o modelo aprende o prior condicionado ao sensor.
+        n_amostra_auto = min(teto_por_area(teto, resolucao_m), n_auto_disponivel)
         if n_amostra_auto < n_auto_disponivel:
             escolhidos_auto = rng.choice(n_auto_disponivel, size=n_amostra_auto, replace=False)
             idx_automatico_sel = idx_automatico_todos[escolhidos_auto]
