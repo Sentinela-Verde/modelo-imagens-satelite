@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import sys
 import unicodedata
@@ -55,8 +56,11 @@ DIR_PROCESSED = REPO_ROOT / "dados-modelo-impacto" / "processed"
 CSV_GUILHERME_DCS = Path.home() / "Downloads" / "datacenter_filtrado (1).csv"
 CSV_GUILHERME_CANDIDATOS = Path.home() / "Downloads" / "datacenter_expandido_6_pontos (1).csv"
 
-MODELO_PATH = REPO_ROOT / "models" / "rf_v1.0-tuned.joblib"
-MODELO_VERSAO = "rf_v1.0-tuned"
+# O classificador de producao. Sobrescrevivel por SENTINELA_MODELO_IMPACTO para avaliar um
+# modelo candidato (ADR-006 §4) sem tocar nos artefatos do atual: enquanto o retreino nao
+# passar no criterio de estabilidade, `rf_v1.0-tuned` continua sendo o modelo de producao.
+MODELO_VERSAO = os.environ.get("SENTINELA_MODELO_IMPACTO", "rf_v1.0-tuned")
+MODELO_PATH = REPO_ROOT / "models" / f"{MODELO_VERSAO}.joblib"
 
 SEED = 42
 BUFFER_KM = 5.0
@@ -219,7 +223,11 @@ PREFIXO_EXPANSAO = "exp-"
 # pareados (`ctrl-`) e os campi da expansão de amostra do passo 25 (`exp-`), que são data centers
 # reais mas vindos do `datacentermap`, sem a validação de coordenada em 5 camadas dos 16 oficiais.
 PREFIXOS_FORA_DO_OFICIAL = (PREFIXO_CONTROLE, PREFIXO_EXPANSAO)
-DIR_CLASSIFICADO_CONTROLES = DIR_SAIDA / "classificado"
+# Cada modelo escreve num diretorio proprio. O de producao mantem o caminho historico para
+# nao invalidar nada ja calculado; um candidato vai para `classificado-<versao>`.
+DIR_CLASSIFICADO_CONTROLES = DIR_SAIDA / (
+    "classificado" if MODELO_VERSAO == "rf_v1.0-tuned" else f"classificado-{MODELO_VERSAO}"
+)
 DIR_MANIFESTS_CONTROLES = DIR_SAIDA / "manifests"
 
 
