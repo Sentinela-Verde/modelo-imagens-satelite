@@ -191,8 +191,12 @@ def fase_controles() -> None:
 
     sites_tratamento = G.carregar_sites_tratamento()
     pontos_contaminacao = G.carregar_pontos_contaminacao(sites_tratamento, cache)
-    # os campi novos também contaminam: são data centers reais, ainda que não validados
-    pontos_contaminacao += [{"lat": r.lat, "lon": r.lon} for _, r in novos.iterrows()]
+    # Os campi novos também contaminam: são data centers reais, ainda que não validados. O `id` é
+    # obrigatório — o filtro geométrico o usa para dizer QUAL ponto rejeitou o candidato
+    # (`f"contaminacao:{p['id']}"`), e sem ele o passo 3 morre com KeyError.
+    pontos_contaminacao += [
+        {"id": r.site_id, "lat": r.lat, "lon": r.lon} for _, r in novos.iterrows()
+    ]
     print(f"{len(pontos_contaminacao)} pontos de contaminação (inclui os {len(novos)} novos)")
 
     buffers_ocupados = [(s["lat"], s["lon"], s["buffer_km"]) for s in sites_tratamento]
