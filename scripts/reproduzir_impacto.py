@@ -106,11 +106,29 @@ PLANO: list[Passo] = [
           ["--fase", "baixar"]),
     Passo("23b", _dmi("impacto_dc_23_lst_landsat.py"), "LST Landsat 30 m: análise", "analise",
           ["--fase", "analise"]),
+    # ---------------------------------------------------------------- validação e expansão
+    Passo("24a", _dmi("impacto_dc_24_validacao_dynamic_world.py"), "Dynamic World: baixa", "rede",
+          ["--fase", "baixar"]),
+    Passo("24b", _dmi("impacto_dc_24_validacao_dynamic_world.py"),
+          "validação cruzada de instrumento", "analise", ["--fase", "analise"]),
+    Passo("25a", _dmi("impacto_dc_25_expansao_amostra.py"), "expansão: lista de campi novos",
+          "rede", ["--fase", "lista"]),
+    Passo("25b", _dmi("impacto_dc_25_expansao_amostra.py"), "expansão: pareia os controles",
+          "rede", ["--fase", "controles"]),
+    Passo("25c", _dmi("impacto_dc_25_expansao_amostra.py"), "expansão: classifica os pares",
+          "rede", ["--fase", "classificar"]),
+    Passo("26a", _dmi("impacto_dc_26_analise_expandida.py"), "expansão: footprints dos novos",
+          "rede", ["--fase", "footprints"]),
+    Passo("26b", _dmi("impacto_dc_26_analise_expandida.py"),
+          "o achado com N=20, em três recortes", "analise", ["--fase", "analise"]),
     # ---------------------------------------------------------------- modelo de score
     Passo("S1", _mis("01_boletim.py"), "camada 1 — boletim por eixo", "analise"),
     Passo("S2", _mis("02_explicacao.py"), "camada 2 — poder preditivo (LOOCV)", "analise"),
     Passo("S3", _mis("03_projecao.py"), "camada 3 — projeção por classe", "analise"),
-    Passo("S4", _mis("04_gerar_notebook.py"), "notebook de demo (gera e executa)", "analise"),
+    Passo("S4", _mis("04_gerar_notebook.py"), "notebook 02 — demo do impacto", "analise"),
+    Passo("S5", _mis("06_figuras_demo_visual.py"), "figuras visuais do classificador", "analise"),
+    Passo("S6", _mis("07_gerar_notebook_demo_visual.py"), "notebook 04 — demo visual", "analise"),
+    Passo("S7", _mis("05_gerar_notebook_status.py"), "notebook 03 — status", "analise"),
 ]
 
 
