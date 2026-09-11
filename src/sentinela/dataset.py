@@ -168,7 +168,7 @@ def _combos_disponiveis() -> list[tuple[str, str, int]]:
             site_id = site_dir.name
             for tif in sorted(site_dir.glob("*.tif")):
                 ano = int(tif.stem)
-                label_tif = SETTINGS.raw_dir / "labels" / sensor_token / site_id / f"{ano}.tif"
+                label_tif = SETTINGS.raw_dir / SETTINGS.token_labels() / sensor_token / site_id / f"{ano}.tif"
                 if label_tif.exists():
                     combos.append((sensor_token, site_id, ano))
                 else:
@@ -469,7 +469,7 @@ def processar_combo(
     label_manifest = _carregar_json(_manifest_labels_path(sensor_token, site_id, ano))
 
     feat_path = SETTINGS.interim_dir / "features" / sensor_token / site_id / f"{ano}.tif"
-    label_path = SETTINGS.raw_dir / "labels" / sensor_token / site_id / f"{ano}.tif"
+    label_path = SETTINGS.raw_dir / SETTINGS.token_labels() / sensor_token / site_id / f"{ano}.tif"
 
     feat_arr, transform, nodata_feat = _ler_stack_features(feat_path)
     label_arr, nodata_label = _ler_label(label_path)
