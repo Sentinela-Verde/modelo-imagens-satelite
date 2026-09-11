@@ -192,6 +192,23 @@ def fase_baixar() -> None:
     print(f"\n{total} rasters DW baixados")
 
 
+def _distancia_grade(caminho: Path, lat: float, lon: float) -> np.ndarray:
+    """Distancia em metros de cada pixel ao ponto, na grade do proprio raster."""
+    with rasterio.open(caminho) as src:
+        transform, largura, altura, crs = src.transform, src.width, src.height, src.crs
+    cols = np.arange(largura, dtype=float) + 0.5
+    lins = np.arange(altura, dtype=float) + 0.5
+    x = transform.c + cols * transform.a
+    y = transform.f + lins * transform.e
+    mx, my = np.meshgrid(x, y)
+    para_wgs = Transformer.from_crs(crs, "EPSG:4326", always_xy=True)
+    lons, lats = para_wgs.transform(mx, my)
+    from pyproj import Geod
+    geod = Geod(ellps="WGS84")
+    _, _, dist = geod.inv(np.full_like(lons, lon), np.full_like(lats, lat), lons, lats)
+    return dist
+
+
 def _mascaras_raio(caminho: Path, lat: float, lon: float) -> dict[object, np.ndarray]:
     """Máscaras na grade do próprio raster (10 m aqui, não 30 m).
 
@@ -212,6 +229,11 @@ def _mascaras_raio(caminho: Path, lat: float, lon: float) -> dict[object, np.nda
     from pyproj import Geod
     geod = Geod(ellps="WGS84")
     _, _, dist = geod.inv(np.full_like(lons, lon), np.full_like(lats, lat), lons, lats)
+    return _mascaras_de_distancia(dist)
+
+
+def _mascaras_de_distancia(dist: np.ndarray) -> dict[object, np.ndarray]:
+    """Discos e o anel de destaque, a partir de uma grade de distancia em metros."""
     mascaras: dict[object, np.ndarray] = {r: dist <= r * 1000 for r in RAIOS_KM}
     mascaras[ANEL_DESTAQUE] = (dist > 500) & (dist <= 1000)
     return mascaras
@@ -369,11 +391,106 @@ def fase_analise() -> None:
                   f"p={r0.p_unilateral:.4f}  mediana {r0.excesso_mediano_pp:+.3f} pp")
 
 
+# ---------------------------------------------------------------- diagnostico de resolucao
+
+SAIDA_RESOLUCAO = C.DIR_SAIDA / "dw_resolucao.csv"
+FATOR_30M = 3  # 10 m -> 30 m
+
+
+def _moda_bloco(camada: np.ndarray, k: int = FATOR_30M) -> np.ndarray:
+    """Agrega por moda em blocos k x k. 0 = invalido e nunca vence se houver valido."""
+    h, w = camada.shape
+    h, w = (h // k) * k, (w // k) * k
+    blocos = camada[:h, :w].reshape(h // k, k, w // k, k)
+    contagens = [np.sum(blocos == c, axis=(1, 3)) for c in range(1, 6)]
+    pilha = np.stack(contagens)                       # (5, H/k, W/k)
+    vencedor = np.argmax(pilha, axis=0) + 1
+    tem_valido = pilha.sum(axis=0) > 0
+    return np.where(tem_valido, vencedor, 0).astype(np.uint8)
+
+
+def _media_bloco(grade: np.ndarray, k: int = FATOR_30M) -> np.ndarray:
+    h, w = grade.shape
+    h, w = (h // k) * k, (w // k) * k
+    return grade[:h, :w].reshape(h // k, k, w // k, k).mean(axis=(1, 3))
+
+
+def fase_resolucao() -> None:
+    """O DW discorda do nosso RF por ROTULO ou por RESOLUCAO?
+
+    O passo 24 mostrou que o anel de destaque nao replica sob o Dynamic World
+    (9/14, p=0,212) contra o nosso RF (14/14, p=0,0001). Duas causas competem, e
+    elas exigem consertos diferentes:
+
+      - **rotulo** — o MapBiomas nao tem classe de canteiro de obras (ADR-004), e a
+        nossa classe 3 e a pior do modelo (F1 0,579);
+      - **resolucao** — um pixel de 30 m vira "construida" quando uma fracao dele
+        e construida; a 10 m a mesma obra afeta menos pixels, cada um mais
+        comprometido.
+
+    Este diagnostico separa as duas de forma limpa: degrada o DW de 10 m para 30 m
+    por **moda de bloco 3x3** e refaz a mesma medicao. O rotulo nao muda -- so a
+    grade. Entao:
+
+      - se o DW-a-30m passar a concordar com o nosso RF, a discordancia e de
+        RESOLUCAO, e retreinar com rotulo novo a 30 m nao resolveria nada;
+      - se continuar discordando, a discordancia e de ROTULO/MODELO, e o retreino
+        do ADR-006 e o conserto certo.
+    """
+    cabe = campi_elegiveis()
+    registros = []
+    for _, r in cabe.iterrows():
+        anos = r.anos
+        por_tipo = {}
+        for tipo, pid, lat, lon in (
+            ("tratamento", r.site_id, float(r.lat), float(r.lon)),
+            ("controle", r.site_id_controle, float(r.lat_controle), float(r.lon_controle)),
+        ):
+            pilha = _empilhar_dw(pid, anos)
+            if pilha is None:
+                por_tipo = {}
+                break
+            dist = _distancia_grade(DIR_DW / pid / f"{anos[0]}.tif", lat, lon)
+            grossa = np.stack([_moda_bloco(c) for c in pilha])
+            dist_grossa = _media_bloco(dist)
+            por_tipo[tipo] = {
+                10: _assinaturas(pilha, _mascaras_de_distancia(dist)[ANEL_DESTAQUE]),
+                30: _assinaturas(grossa, _mascaras_de_distancia(dist_grossa)[ANEL_DESTAQUE]),
+            }
+        if len(por_tipo) != 2:
+            print(f"  ! {r.site_id}: par incompleto, fora")
+            continue
+        for res in (10, 30):
+            linha = {"campus": r.site_id, "resolucao_m": res}
+            for tipo in ("tratamento", "controle"):
+                a = por_tipo[tipo][res]
+                n = a["pixels_validos_mascara"]
+                linha[f"pct_{tipo}"] = 100.0 * a["virou_construida"] / n if n else np.nan
+                linha[f"px_{tipo}"] = n
+            linha["excesso_pp"] = linha["pct_tratamento"] - linha["pct_controle"]
+            registros.append(linha)
+        print(f"  {r.site_id} ok")
+
+    df = pd.DataFrame(registros)
+    C.salvar_csv(df, SAIDA_RESOLUCAO)
+
+    print()
+    print(f"--- anel 0,5-1 km, DW na grade nativa e degradado ({len(cabe)} campi) ---")
+    for res in (10, 30):
+        d = df[df.resolucao_m == res].excesso_pp.dropna().to_numpy()
+        n, k = len(d), int((d > 0).sum())
+        pv = sum(math.comb(n, i) * 0.5 ** n for i in range(k, n + 1))
+        print(f"  DW @ {res} m   {k}/{n}  p={pv:.4f}  mediana {np.median(d):+.3f} pp")
+    print("  rf_v1.0-tuned @ 30 m   14/14  p=0.0001  mediana +1.589 pp   (do passo 24)")
+    print()
+    print(f"  -> {SAIDA_RESOLUCAO.relative_to(C.REPO_ROOT)}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--fase", required=True, choices=["baixar", "analise"])
+    ap.add_argument("--fase", required=True, choices=["baixar", "analise", "resolucao"])
     args = ap.parse_args()
-    fase_baixar() if args.fase == "baixar" else fase_analise()
+    {"baixar": fase_baixar, "analise": fase_analise, "resolucao": fase_resolucao}[args.fase]()
     return 0
 
 
