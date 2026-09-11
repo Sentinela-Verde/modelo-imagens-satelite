@@ -63,6 +63,7 @@ sys.path.insert(0, str(C.REPO_ROOT / "src"))
 URL_OVERPASS = "https://overpass-api.de/api/interpreter"
 CACHE_GEOM = C.DIR_SAIDA / "eua_footprints_geom.json"
 SAIDA_SERIE = C.DIR_SAIDA / "eua_dw_serie.csv"
+SAIDA_META = C.DIR_SAIDA / "eua_campi_footprint.csv"
 SAIDA_DATAS = C.DIR_SAIDA / "eua_datas_derivadas.csv"
 SAIDA_FUNIL = C.DIR_SAIDA / "eua_funil_completo.csv"
 
@@ -211,6 +212,15 @@ def fase_datar() -> None:
     C.salvar_csv(df, SAIDA_SERIE)
     print(f"  -> {SAIDA_SERIE.relative_to(C.REPO_ROOT)}")
 
+    # metadados dos campi num CSV proprio, para a fase `funil` rodar offline
+    # sem depender do cache de geometria (que e regeneravel e fica fora do git)
+    meta = pd.DataFrame([
+        {k: c[k] for k in ("campus_id", "lat", "lon", "n_predios", "nome", "operadora")}
+        for c in campi
+    ])
+    C.salvar_csv(meta, SAIDA_META)
+    print(f"  -> {SAIDA_META.relative_to(C.REPO_ROOT)}")
+
 
 def fase_funil() -> None:
     """Detecta t0 e mede o funil inteiro do ADR-006 §6."""
@@ -218,7 +228,9 @@ def fase_funil() -> None:
         sys.exit("rode --fase datar antes")
 
     serie = pd.read_csv(SAIDA_SERIE)
-    campi = {c["campus_id"]: c for c in carregar_campi()}
+    if not SAIDA_META.exists():
+        sys.exit("falta eua_campi_footprint.csv — rode --fase datar")
+    campi = {r["campus_id"]: r for _, r in pd.read_csv(SAIDA_META).iterrows()}
 
     linhas = []
     for cid, g in serie.groupby("campus_id"):

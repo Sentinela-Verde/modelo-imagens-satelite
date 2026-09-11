@@ -188,12 +188,11 @@ def fase_funil() -> None:
     if not SAIDA_CAMPI.exists():
         sys.exit("rode --fase lista antes")
     df = pd.read_csv(SAIDA_CAMPI)
-    els = baixar_osm()
-
     com_data = int(df["start_date_osm"].notna().sum())
+    n_predios = int(df["n_predios"].sum())
 
     etapas = [
-        ("predios_osm", len(els), "elementos com telecom/building=data_center nos EUA"),
+        ("predios_osm", n_predios, "elementos com telecom/building=data_center nos EUA"),
         ("campi_distintos", len(df), f"prédios a <{RAIO_CAMPUS_KM:g} km agrupados"),
         ("com_data_qualquer", com_data,
          "com start_date no OSM — e a data é do PRÉDIO, não da virada para data center"),
