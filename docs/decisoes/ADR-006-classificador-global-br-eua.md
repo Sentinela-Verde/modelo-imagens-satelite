@@ -119,20 +119,45 @@ consecutivos nos pontos de CONTROLE**, onde por construção quase nada mudou e 
 O placebo **não se herda**. Ele mede a taxa de falso positivo do método *naquele território*, com
 aquele classificador e aquela paisagem. Rodar de novo é obrigatório.
 
-## 6. O risco que pode matar a expansão, e é o mesmo do Brasil
+## 6. O risco que pode matar a expansão — e o funil é mais estreito do que eu escrevi
 
-**Não é o classificador nem o rótulo — é a data da obra.** No Brasil, dos 118 campi distintos,
-apenas 53 têm ano documentado, e só 10 são novos e utilizáveis. Não há razão para supor que a lista
-americana seja melhor nesse ponto.
+**Não é o classificador nem o rótulo.** A expansão brasileira (passo 25) foi executada e mediu o
+funil inteiro, em vez de estimá-lo:
 
-**Portanto o ADR propõe um portão explícito, antes de qualquer retreino:**
+| etapa | restam | perda |
+|---|---:|---|
+| registros no `datacentermap` | 242 | — |
+| campi distintos (prédios <2 km agrupados) | 118 | duplicidade de campus |
+| com ano documentado | 53 | **65 sem data** |
+| com janela de satélite utilizável | 16 | 22 antes de 2016, 15 recentes demais |
+| **novos** (fora dos 16 validados) | 10 | 6 já eram nossos |
+| **com controle pareável** | **5** | **4 urbanos demais, 1 sem `uf` na fonte** |
 
-> Levantar a lista de data centers dos EUA e medir **quantos têm data e coordenada com janela
-> 2018–2022 utilizável**. Se forem menos de ~30 campi novos, o retreino não se paga: o custo é o
-> mesmo e o ganho de N não resolve nenhum dos resultados que hoje travam por amostra.
+**O gargalo tem dois estágios, não um.** Eu havia escrito só o primeiro (a data). O segundo só
+apareceu ao rodar: **metade dos campi que têm data não consegue controle**. São sites urbanos densos
+onde o anel de 15–40 km cai em outro município ou perto de outro data center. Isso não é defeito do
+filtro — é o filtro funcionando: um "controle" contaminado seria pior que nenhum.
+
+Nota de leitura, para não superestimar a perda: os 5 que passaram saem como `ruim` (L1 > 0,20), mas
+os **15 pares originais também são 10 `ruim`**, com L1 mediano de 0,489. "Ruim" é a norma deste
+dataset, não uma degradação dos novos.
+
+**Portanto o portão antes do retreino precisa medir as DUAS etapas:**
+
+> Levantar a lista americana e medir **quantos campi têm data, janela 2018–2022 utilizável E
+> sobrevivem ao pareamento**. Pela taxa brasileira, espere perder ~50% na etapa de pareamento — o
+> que significa que uma lista com 60 campi datados pode render 30, não 60.
+>
+> Se o resultado final for menos de ~30 campi novos **pareados**, o retreino não se paga: o custo é
+> o mesmo e o ganho de N não resolve nenhum dos resultados que hoje travam por amostra.
+
+Há uma razão para esperar taxa **melhor** nos EUA, e ela deve ser verificada e não assumida: muitos
+data centers americanos ficam em áreas rurais ou peri-urbanas (Virgínia rural, Iowa, Oregon), onde
+achar um par a 15–40 km com cobertura parecida é bem mais fácil que em São Paulo.
 
 É a mesma disciplina do portão do CEP (que aprovou) e do portão de acesso ao CNPJ (que reprovou):
-**medir a viabilidade antes de construir em cima dela.**
+**medir a viabilidade antes de construir em cima dela** — e, agora, medir o funil inteiro em vez de
+só a primeira peneira.
 
 ## Alternativas consideradas
 
