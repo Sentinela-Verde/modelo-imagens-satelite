@@ -29,9 +29,16 @@ Três razões, e a terceira é a que mais importa:
 
 ## O limite, e quem entra
 
-A série do DW começa em **junho de 2015**. Com a janela `obra-3 .. obra+3`, só campi com obra entre
-**2018 e 2022** cabem — **9 dos 15**. É amostra suficiente para a checagem, e não é escolha nossa:
-é o que o instrumento permite.
+A série do DW começa em **junho de 2015**. Com a janela `obra-3 .. obra+3`, só entram campi cuja
+janela inteira caia de 2016 em diante — **14 dos 20** desde a expansão do passo 25 (eram 9 quando a
+amostra tinha 15). Não é escolha nossa: é o que o instrumento permite.
+
+## A geometria: discos E o anel de destaque
+
+Este passo mediu por muito tempo só **discos** (0,5 / 1 / 2 km). Desde o passo 26, o resultado de
+destaque do relatório é o **anel de 0,5–1 km** — que nunca contém o prédio. Validar só o disco
+seria validar uma geometria que o relatório não usa mais. Agora as duas são medidas, e o lado RF
+do anel vem de `analise_expandida.csv`, onde o mascaramento direto sobre o raster é feito.
 
 ## Uma diferença deliberada
 
@@ -84,6 +91,8 @@ DIR_DW = C.DIR_SAIDA / "dynamic_world"
 RESOLUCAO_DW = 10
 DW_ANO_MIN = 2016  # 1o ano cheio; a colecao comeca em jun/2015
 RAIOS_KM = [0.5, 1.0, 2.0]
+# recorte do resultado de destaque (passo 26): anel, nao disco -- nunca contem o predio
+ANEL_DESTAQUE = "0.5-1km"
 N_PONTA = 2
 
 # DW label -> classe do projeto
@@ -94,13 +103,34 @@ SAIDA_COMP = C.DIR_SAIDA / "dw_comparacao.csv"
 SAIDA_FIGURA = C.DIR_FIGURAS / "fig_17_validacao_dw.png"
 
 
+COLS_PAREAMENTO = [
+    "site_id", "lat", "lon", "ano_inicio_obra", "sensor",
+    "site_id_controle", "lat_controle", "lon_controle",
+]
+
+
 def campi_elegiveis() -> pd.DataFrame:
-    """Campi cuja janela inteira cabe na série do Dynamic World."""
-    par = pd.read_csv(C.DIR_SAIDA / "pareamento_controle_rf.csv")
+    """Campi cuja janela inteira cabe na série do Dynamic World.
+
+    Inclui os 15 originais e os 5 da expansão (passo 25), com `procedencia`
+    marcada — a mesma disciplina do passo 26: o achado é reportado com e sem os
+    campi que não passaram pela validação de coordenada em 5 camadas.
+    """
+    orig = pd.read_csv(C.DIR_SAIDA / "pareamento_controle_rf.csv")
+    orig = orig[COLS_PAREAMENTO].copy()
+    orig["procedencia"] = "validado_5_camadas"
+
+    caminho_exp = C.DIR_SAIDA / "expansao_pareamento.csv"
+    if caminho_exp.exists():
+        exp = pd.read_csv(caminho_exp)
+        exp = exp[exp.status == "ok"][COLS_PAREAMENTO + ["procedencia"]].copy()
+        par = pd.concat([orig, exp], ignore_index=True)
+    else:
+        par = orig
+
     par = par[par.site_id_controle.notna() & (par.site_id_controle != "")].copy()
     par["anos"] = par.ano_inicio_obra.astype(int).map(lambda o: C.janela_anos(o))
-    cabe = par[par.anos.map(lambda a: min(a) >= DW_ANO_MIN)]
-    return cabe
+    return par[par.anos.map(lambda a: min(a) >= DW_ANO_MIN)].reset_index(drop=True)
 
 
 def _grade_10m(lat: float, lon: float) -> dict:
@@ -162,8 +192,14 @@ def fase_baixar() -> None:
     print(f"\n{total} rasters DW baixados")
 
 
-def _mascaras_raio(caminho: Path, lat: float, lon: float) -> dict[float, np.ndarray]:
-    """Máscaras de disco na grade do próprio raster (10 m aqui, não 30 m)."""
+def _mascaras_raio(caminho: Path, lat: float, lon: float) -> dict[object, np.ndarray]:
+    """Máscaras na grade do próprio raster (10 m aqui, não 30 m).
+
+    Devolve os **discos** históricos (0,5 / 1 / 2 km) e também o **anel de
+    0,5–1 km**, que é o recorte do resultado de destaque desde o passo 26. Sem o
+    anel, esta validação cruzada mediria uma geometria que o relatório não usa
+    mais — validaria o número antigo, não o que vai à banca.
+    """
     with rasterio.open(caminho) as src:
         transform, largura, altura, crs = src.transform, src.width, src.height, src.crs
     cols = np.arange(largura, dtype=float) + 0.5
@@ -176,7 +212,9 @@ def _mascaras_raio(caminho: Path, lat: float, lon: float) -> dict[float, np.ndar
     from pyproj import Geod
     geod = Geod(ellps="WGS84")
     _, _, dist = geod.inv(np.full_like(lons, lon), np.full_like(lats, lat), lons, lats)
-    return {r: dist <= r * 1000 for r in RAIOS_KM}
+    mascaras: dict[object, np.ndarray] = {r: dist <= r * 1000 for r in RAIOS_KM}
+    mascaras[ANEL_DESTAQUE] = (dist > 500) & (dist <= 1000)
+    return mascaras
 
 
 def _empilhar_dw(pid: str, anos: list[int]) -> np.ndarray | None:
@@ -225,7 +263,7 @@ def fase_analise() -> None:
                 registros = [x for x in registros if x["campus"] != r.site_id]
                 break
             raios = _mascaras_raio(DIR_DW / pid / f"{anos[0]}.tif", lat, lon)
-            for raio in RAIOS_KM:
+            for raio in [*RAIOS_KM, ANEL_DESTAQUE]:
                 cont = _assinaturas(pilha, raios[raio])
                 n = cont["pixels_validos_mascara"]
                 registros.append({
@@ -242,15 +280,28 @@ def fase_analise() -> None:
     C.salvar_csv(dw, SAIDA)
 
     # ---------------------------------------------------------------- DW vs. rf_v1.0-tuned
-    rf = pd.read_csv(C.DIR_SAIDA / "trajetoria_pixel.csv")
+    # O lado RF vem de duas tabelas, porque as duas geometrias vivem em lugares
+    # diferentes: os discos historicos no passo 12, e o anel de destaque no passo 26
+    # (que e onde o mascaramento direto sobre o raster passou a ser feito).
+    rf_disco = pd.read_csv(C.DIR_SAIDA / "trajetoria_pixel.csv")
+    caminho_anel = C.DIR_SAIDA / "analise_expandida.csv"
+    rf_anel = pd.read_csv(caminho_anel) if caminho_anel.exists() else None
+
     campi_dw = set(dw.campus.unique())
     linhas = []
-    for raio in RAIOS_KM:
+    for raio in [*RAIOS_KM, ANEL_DESTAQUE]:
+        eh_anel = raio == ANEL_DESTAQUE
+        if eh_anel and rf_anel is None:
+            print("  ! analise_expandida.csv ausente: anel de destaque sem lado RF")
+            continue
+        fontes = [("dynamic_world", dw, "campus", "raio_km")]
+        fontes.append(("rf_v1.0-tuned", rf_anel, "campus", "zona") if eh_anel
+                      else ("rf_v1.0-tuned", rf_disco, "pareado_com", "raio_km"))
+
         for assin in ("virou_construida", "vegetacao_para_construida"):
             col = f"pct_{assin}"
-            for nome, tab, chave in (("dynamic_world", dw, "campus"),
-                                     ("rf_v1.0-tuned", rf, "pareado_com")):
-                g = tab[(tab.raio_km == raio) & (tab[chave].isin(campi_dw))]
+            for nome, tab, chave, col_geo in fontes:
+                g = tab[(tab[col_geo] == raio) & (tab[chave].isin(campi_dw))]
                 difs = []
                 for _, par in g.groupby(chave):
                     t = par[par.tipo == "tratamento"][col]
@@ -274,21 +325,28 @@ def fase_analise() -> None:
 
     # ---------------------------------------------------------------- figura
     prin = comp[comp.assinatura == "virou_construida"]
-    fig, ax = plt.subplots(figsize=(10, 5.2))
-    x = np.arange(len(RAIOS_KM))
+    # ordem explicita: os discos, e por ultimo o anel de destaque. `raio_km` mistura
+    # float e str desde que o anel entrou, entao sort_values() nao serve.
+    ordem = [*RAIOS_KM, ANEL_DESTAQUE]
+    rotulos = [f"{r} km" for r in RAIOS_KM] + ["anel 0,5-1 km\n(destaque)"]
+    fig, ax = plt.subplots(figsize=(11, 5.2))
+    x = np.arange(len(ordem))
     larg = 0.36
     for i, (nome, cor) in enumerate((("rf_v1.0-tuned", "#1A5276"),
                                      ("dynamic_world", "#E67E22"))):
-        s = prin[prin.classificador == nome].sort_values("raio_km")
+        s = (prin[prin.classificador == nome]
+             .set_index("raio_km").reindex(ordem).reset_index())
         ax.bar(x + (i - 0.5) * larg, s.excesso_mediano_pp, larg,
                label=f"{nome} ({'30 m' if i == 0 else '10 m'})", color=cor)
         for j, (_, r0) in enumerate(s.iterrows()):
+            if pd.isna(r0.excesso_mediano_pp):
+                continue
             ax.text(j + (i - 0.5) * larg, r0.excesso_mediano_pp,
                     f"{int(r0.n_positivo)}/{int(r0.n_pares)}\np={r0.p_unilateral:.3f}",
                     ha="center", va="bottom", fontsize=8)
     ax.axhline(0, color="#333", lw=1)
     ax.set_xticks(x)
-    ax.set_xticklabels([f"{r} km" for r in RAIOS_KM])
+    ax.set_xticklabels(rotulos)
     ax.set_xlabel("raio")
     ax.set_ylabel("excesso mediano de conversão vs. controle (p.p.)")
     ax.set_title("Passo 24 — validação cruzada de instrumento\n"
@@ -303,8 +361,9 @@ def fase_analise() -> None:
     print(f"  -> {SAIDA_FIGURA.relative_to(C.REPO_ROOT)}")
 
     print(f"\n--- DW vs rf_v1.0-tuned, nos mesmos {len(campi_dw)} campi ---")
-    for raio in RAIOS_KM:
-        print(f"  raio {raio} km")
+    for raio in [*RAIOS_KM, ANEL_DESTAQUE]:
+        eh = raio == ANEL_DESTAQUE
+        print(f"  {'ANEL 0,5-1 km (DESTAQUE)' if eh else f'raio {raio} km'}")
         for _, r0 in prin[prin.raio_km == raio].iterrows():
             print(f"    {r0.classificador:16s} {int(r0.n_positivo)}/{int(r0.n_pares)}  "
                   f"p={r0.p_unilateral:.4f}  mediana {r0.excesso_mediano_pp:+.3f} pp")
