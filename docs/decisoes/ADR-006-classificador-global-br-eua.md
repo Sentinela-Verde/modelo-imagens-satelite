@@ -1,6 +1,7 @@
 # ADR-006 — Classificador global (Brasil + EUA): rótulos, base de treino e validação
 
-- **Status:** **Proposto** — aguarda decisão do owner
+- **Status:** **Proposto — o portão do §6 foi medido em 2026-09-11 e REPROVOU.**
+  Aguarda decisão do owner sobre rejeitar formalmente ou seguir por uma das saídas do §7.
 - **Proposto em:** 2026-09-10
 - **Contexto que gerou:** a amostra brasileira tem teto medido de ~25 campi (passo 25); a
   temperatura precisaria de n=31 e a janela longa é inconclusiva com n=9. N não melhora com método
@@ -158,6 +159,98 @@ achar um par a 15–40 km com cobertura parecida é bem mais fácil que em São 
 É a mesma disciplina do portão do CEP (que aprovou) e do portão de acesso ao CNPJ (que reprovou):
 **medir a viabilidade antes de construir em cima dela** — e, agora, medir o funil inteiro em vez de
 só a primeira peneira.
+
+
+## 7. O portão do §6, medido — e ele reprova
+
+Executado em 2026-09-11 pelos passos 27 e 28. **Medido, não estimado.**
+
+### A lista não era o gargalo
+
+| etapa | Brasil | EUA |
+|---|---:|---:|
+| registros / prédios | 242 | **1.649** (OSM) |
+| campi distintos (<2 km) | 118 | **488** |
+| com ano documentado na fonte | 53 | **15** |
+
+O pool americano é ~4x o brasileiro e sai de graça, via Overpass — fonte que esta frente
+já usa. O `datacentermap`, que teria `ano_operacional`, responde **HTTP 429 /
+"Vercel Security Checkpoint"**; o scraper do repo irmão contorna com Selenium a 15–40 s
+por página e espera de 5 min por bloqueio, o que põe os EUA em dezenas de horas.
+
+**O gargalo é a data**, exatamente como o §5 previa ("ano da obra | em aberto — é o
+gargalo"). Os 15 com `start_date` no OSM carregam a data de construção do **prédio**
+(1929, 1938, 1974…), não da virada para data center.
+
+### A saída que tentamos: datar pelo Dynamic World dentro do footprint
+
+O OSM dá o footprint; o DW é global desde jun/2015. Derivamos o t0 pela fração `built`
+**dentro do polígono do prédio**, reservando o desfecho ao anel de **0,5–1 km**. Os dois
+conjuntos de pixels são **disjuntos** — o t0 não pode fabricar o efeito porque não
+compartilha um pixel com a zona onde o efeito é medido. Não é a circularidade que o
+passo 26 corrigiu.
+
+| status | campi |
+|---|---:|
+| `pre_ja_construido` (já construído em 2016) | **329** |
+| `datado` | 75 |
+| `nunca_cruza_limiar` | 37 |
+| `sem_leitura_dw` | 34 |
+| `pre_periodo_curto` | 7 |
+
+Dos 75 datados, **38 caem na janela 2018–2022** (7 em 2018, 5 em 2019, 8 em 2020, 10 em
+2021, 8 em 2022).
+
+### Por que isso reprova, e o argumento não depende de rodar o pareamento
+
+O portão pede **~30 campi novos pareados**. O teto do método é **38**. Logo o portão só
+fecha com uma taxa de pareamento de **≥79%**.
+
+O Brasil mediu **50%** (10 novos → 5 pareados). Mesmo concedendo ao §6 a hipótese de que
+os EUA pareiam melhor por serem mais rurais — hipótese que o próprio ADR manda verificar
+e não assumir — seria preciso quase o dobro da taxa brasileira, e sem folga. **A 70%,
+ainda excelente, dá 27 — abaixo do limiar.** O resultado não muda medindo o pareamento;
+muda só o quanto ele reprova.
+
+### A limitação que limita o veredito, e precisa estar escrita
+
+**329 dos 482 campi já estavam construídos em 2016** e são invisíveis a este método,
+porque o DW começa em jun/2015. Isso não quer dizer que sejam indatáveis — quer dizer
+que **esta** fonte não os data. O teto de 38 é teto *do método*, não da expansão
+americana em geral: uma fonte com datas reais (datacentermap raspado, ou outra) poderia
+recuperar parte dos 329 e mudar a conta.
+
+**O que o portão reprova, portanto, é o caminho barato** — expandir para os EUA sem
+adquirir dado de data. Expandir *com* aquisição de data continua aberto, e custa as
+dezenas de horas de scraping que este ADR tentou evitar.
+
+### Consequência
+
+Pelo critério do próprio ADR, **o retreino não se paga** no estado atual: o ganho de N
+não resolve nenhum dos resultados que hoje travam por amostra (temperatura precisaria de
+n=31 e tem 12; janela longa é inconclusiva com n=9).
+
+A alternativa **(c) — manter MapBiomas e expandir só no Brasil** — volta a ser o caminho
+corrente, com o teto medido de ~25 campi que o ADR-005 já registrava.
+
+Nada disso invalida o §4: a pergunta "um classificador nosso é mais estável que o DW?"
+(16,8% contra 7,3%) continua de pé e continua respondível **sem** os EUA, porque os
+rótulos DW existem para o Brasil. Se o owner quiser um único número novo desta frente
+antes da banca, é esse — e ele decide entre "treinar modelo próprio" e "usar o DW
+direto", que é a alternativa (a).
+
+### Reproduzir
+
+```bash
+python dados-modelo-impacto/scripts/impacto_dc_27_lista_eua.py --fase lista
+python dados-modelo-impacto/scripts/impacto_dc_27_lista_eua.py --fase funil
+python dados-modelo-impacto/scripts/impacto_dc_28_datar_eua_dw.py --fase geometria
+python dados-modelo-impacto/scripts/impacto_dc_28_datar_eua_dw.py --fase datar
+python dados-modelo-impacto/scripts/impacto_dc_28_datar_eua_dw.py --fase funil
+```
+
+Saídas em `dados-modelo-impacto/raw/controles-rf/`: `eua_campi.csv`,
+`eua_datas_derivadas.csv`, `eua_funil_completo.csv`.
 
 ## Alternativas consideradas
 

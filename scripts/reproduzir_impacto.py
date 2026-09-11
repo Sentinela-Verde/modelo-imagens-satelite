@@ -121,6 +121,18 @@ PLANO: list[Passo] = [
           "rede", ["--fase", "footprints"]),
     Passo("26b", _dmi("impacto_dc_26_analise_expandida.py"),
           "o achado com N=20, em três recortes", "analise", ["--fase", "analise"]),
+
+    # ------------------------------------------------- portão do ADR-006 (expansão EUA)
+    Passo("27a", _dmi("impacto_dc_27_lista_eua.py"), "lista americana via OSM/Overpass",
+          "rede", ["--fase", "lista"]),
+    Passo("27b", _dmi("impacto_dc_27_lista_eua.py"), "funil EUA: a data é o gargalo",
+          "analise", ["--fase", "funil"]),
+    Passo("28a", _dmi("impacto_dc_28_datar_eua_dw.py"), "footprints EUA com geometria",
+          "rede", ["--fase", "geometria"]),
+    Passo("28b", _dmi("impacto_dc_28_datar_eua_dw.py"),
+          "data da obra pelo DW dentro do footprint", "rede", ["--fase", "datar"]),
+    Passo("28c", _dmi("impacto_dc_28_datar_eua_dw.py"), "funil completo e portão do §6",
+          "analise", ["--fase", "funil"]),
     # ---------------------------------------------------------------- modelo de score
     Passo("S1", _mis("01_boletim.py"), "camada 1 — boletim por eixo", "analise"),
     Passo("S2", _mis("02_explicacao.py"), "camada 2 — poder preditivo (LOOCV)", "analise"),
