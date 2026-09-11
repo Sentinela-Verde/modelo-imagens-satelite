@@ -59,7 +59,7 @@ riscos) vive no Notion: página **"🧭 Plano de Modelos de ML — Product Flow"
   publica um boletim por eixo, cada um com selo de evidência (`forte` / `sugestivo` /
   `nulo_informativo` / `nulo_amostra_pequena` / `nulo_sem_poder`). Resultado central: o padrão se sustenta (conversão no anel
   de 0-500 m, 12/14 pares, p=0,0065), a **magnitude não é predizível** (R² LOOCV negativo em 13
-  modelos, permutação p=0,64). Ver `modelo-impacto-score/README.md`.
+  modelos, permutação p=0,77). Ver `modelo-impacto-score/README.md`.
 
 ## Regras do repositório
 - Nunca commitar dado bruto pesado (raster/GeoTIFF), credenciais ou artefato de modelo grande — usar

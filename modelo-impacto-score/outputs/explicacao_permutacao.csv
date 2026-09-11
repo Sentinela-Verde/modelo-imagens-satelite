@@ -1,2 +1,2 @@
 melhor_modelo_observado,loocv_r2_observado,n_permutacoes,r2_maximo_mediano_sob_ruido,r2_maximo_p95_sob_ruido,p_permutacao,leitura
-ols_1f::x_pre_lst_media_celsius,-0.068,999,-0.013,0.366,0.6426,NÃO se distingue do melhor resultado que ruído puro produziria na mesma busca — não há poder preditivo demonstrado
+regra_grupo::x_bioma,-0.087,999,0.009,0.395,0.7748,NÃO se distingue do melhor resultado que ruído puro produziria na mesma busca — não há poder preditivo demonstrado

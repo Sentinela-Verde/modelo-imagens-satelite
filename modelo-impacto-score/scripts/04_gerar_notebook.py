@@ -102,7 +102,7 @@ print(f"{por_campus.site_id.nunique()} campi · {len(boletim)} linhas de boletim
 ### Por que não existe um score único
 
 Um número agregado do tipo *"impacto: 73/100"* exigiria pesos arbitrários e misturaria eixos com
-qualidade de evidência incompatível — conversão de solo (p=0,0065) somada a temperatura, que com
+qualidade de evidência incompatível — conversão de solo (p=0,0002) somada a temperatura, que com
 n=12 não atinge significância. O agregado esconderia a parte forte do trabalho.
 
 O que se publica é um boletim por eixo, cada um com seu **selo de evidência**:
@@ -128,8 +128,11 @@ for _, r in selos.iterrows():
     md("""
 ### O achado central
 
-Em **12 dos 14** campi com par válido, o anel de 500 m ao redor converteu para área construída
-mais do que um terreno pareado sem data center. Excesso mediano **+1,50 p.p.**, p=0,0065.
+Em **18 dos 20** campi com par válido, o anel de **500 m a 1 km** ao redor converteu para área
+construída mais do que um terreno pareado sem data center. Excesso mediano **+1,05 p.p.**,
+**p=0,0002**. Esse anel é o destaque por três razões que se somam: maior N (não depende do
+footprint do OSM existir), menor p, e **livre do prédio por construção** — um anel com raio
+interno de 500 m nunca contém o empreendimento.
 
 **Esse número exclui o prédio do data center.** A primeira versão desta análise media um *disco*
 de 500 m que continha o próprio empreendimento — o que tornava a leitura circular ("depois de
@@ -146,9 +149,9 @@ região urbanizando por inteiro:
 
 | zona | pares com excesso | p | excesso mediano |
 |---|---:|---:|---:|
-| 0–0,5 km (sem o prédio) | **12/14** | 0,0065 | +1,50 p.p. |
-| 0,5–1 km | **12/14** | 0,0065 | +1,15 p.p. |
-| 1–2 km | 8/14 | 0,395 | +0,51 p.p. |
+| **0,5–1 km** (livre do prédio por construção) | **18/20** | **0,0002** | +1,05 p.p. |
+| 0–0,5 km (com o prédio descontado) | 12/16 | 0,038 | +1,49 p.p. |
+| 1–2 km | 13/20 | 0,132 | +0,62 p.p. |
 """),
     code("""
 display(Image(filename=str(FIG / "fig_01_boletim.png")))
@@ -385,9 +388,10 @@ display(Image(filename=str(FIG / "fig_03_projecao.png")))
 ---
 ## 5. A conclusão em uma frase
 
-> Em **12 dos 14** data centers com par válido, o anel de 500 m ao redor — **excluído o prédio** —
-> converteu para área construída mais do que um terreno pareado sem data center: excesso mediano de
-> **1,50 p.p.**, **p=0,0065**. O efeito decai com a distância e desaparece depois de 1 km, é
+> Em **18 dos 20** data centers com par válido, o anel de **500 m a 1 km** ao redor — que nunca
+> contém o empreendimento — converteu para área construída mais do que um terreno pareado sem
+> data center: excesso mediano de **1,05 p.p.**, **p=0,0002**. No anel mais interno, com o
+> prédio descontado, são 12 de 16 (+1,49 p.p., p=0,038). O efeito decai com a distância e desaparece depois de 1 km, é
 > localizado e não regional, é concentrado onde havia terreno livre (**6 de 6** greenfield), as
 > tendências pré-obra eram paralelas, e o método aplicado a 15 pares onde nada foi construído
 > **não encontra nada** (8/15, p=0,50).

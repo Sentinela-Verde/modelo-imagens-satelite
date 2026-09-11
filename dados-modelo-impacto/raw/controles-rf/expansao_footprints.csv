@@ -1,0 +1,6 @@
+site_id,metodo_footprint,osm_id,area_footprint_ha,n_feicoes_osm
+exp-elea-rjo1,osm_data_center_explicito,way/1427547793,68.3311,86
+exp-asap-sp1,osm_landuse_industrial,way/251266012,1.6464,140
+exp-idx-data-centers---it-services,osm_edificacao_mais_proxima,way/253900859,0.1675,30
+exp-to-host-data-centers,osm_edificacao_mais_proxima,way/1198215235,0.0273,1
+exp-netwise-empresas,osm_landuse_industrial,way/684638889,7.7602,9

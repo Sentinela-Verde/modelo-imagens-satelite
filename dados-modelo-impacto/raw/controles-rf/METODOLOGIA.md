@@ -1,6 +1,6 @@
 # Metodologia — grupo de controle pareado pelo classificador (frente do modelo de impacto)
 
-Gerado por `dados-modelo-impacto/scripts/impacto_dc_06_metodologia.py` em 2026-09-10 21:36 UTC.
+Gerado por `dados-modelo-impacto/scripts/impacto_dc_06_metodologia.py` em 2026-09-11 05:40 UTC.
 Ver `dados-modelo-impacto/README.md` para o contexto geral desta pasta e
 `DIAGNOSTICO-TABELA-GUILHERME.md` (mesma pasta) para por que a tabela de pontos de controle que
 veio do Guilherme não foi usada.

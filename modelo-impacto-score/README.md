@@ -36,7 +36,7 @@ Os três selos de nulo não são sinônimos, e a diferença entre eles é o que 
 | camada | script | pergunta | resposta obtida |
 |---|---|---|---|
 | **1 — Medição** | `01_boletim.py` | Quanto cada campus impactou, por eixo? | 4 eixos medidos, 3 com selo `forte` |
-| **2 — Explicação** | `02_explicacao.py` | O que prediz o tamanho do impacto? | **nada** — todos os R² LOOCV negativos, permutação p=0,64 |
+| **2 — Explicação** | `02_explicacao.py` | O que prediz o tamanho do impacto? | **nada** — todos os R² LOOCV negativos, permutação p=0,77 |
 | **3 — Projeção** | `03_projecao.py` | Dado um site novo, que faixa esperar? | classe de referência calibrada (cobertura 69% vs nominal 70%) |
 
 ## Resultados
@@ -69,10 +69,10 @@ entre os 14, não medida absoluta de dano. Está rotulado assim na saída.
 
 Testados 13 modelos contra o baseline "prever a mediana", todos por LOOCV (N=13):
 
-- melhor modelo: R² fora-da-amostra **−0,07** — pior que prever a média;
+- melhor modelo: R² fora-da-amostra negativo — pior que prever a média;
 - **todos** os modelos com R² negativo;
 - nenhuma feature atinge significância (a melhor, `pct_ja_construida`, dá Spearman ρ=−0,31, p=0,30);
-- teste de permutação com 999 embaralhamentos: **p=0,64** — o melhor ajuste encontrado é
+- teste de permutação com 999 embaralhamentos: **p=0,77** — o melhor ajuste encontrado é
   indistinguível do que ruído puro produz na mesma busca.
 
 **Isto não contradiz o achado greenfield/brownfield do passo 15 de `dados-modelo-impacto`.** São

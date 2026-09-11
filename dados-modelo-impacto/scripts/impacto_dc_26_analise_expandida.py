@@ -189,13 +189,19 @@ def fase_analise() -> None:
 
             for nome, r_int, r_ext in ZONAS:
                 base = raios[r_ext] if r_int == 0 else (raios[r_ext] & ~raios[r_int])
-                mascara = base & ~m_fp if m_fp is not None else base
+                # O footprint só conta como excluído se de fato SOBREPÕE a zona. Dois campi têm
+                # polígono OSM a 500-615 m do ponto validado (`ascenty-vinhedo`, 0,615 km;
+                # `ascenty-sumare`, 0,498 km), ambos `landuse=industrial` — são áreas industriais
+                # vizinhas, não o data center. Nesses casos a máscara não remove nada do disco, e
+                # tratar isso como "prédio excluído" seria falso: o prédio continua lá dentro.
+                sobrepoe = bool(m_fp is not None and (m_fp & base).any())
+                mascara = base & ~m_fp if sobrepoe else base
                 cont = P12.contar_assinaturas(pilha, mascara)
                 n = cont["pixels_validos_mascara"]
                 registros.append({
                     "campus": r.site_id, "site_id": pid, "tipo": tipo, "zona": nome,
                     "procedencia": r.procedencia, "sensor": r.sensor,
-                    "footprint_excluido": bool(m_fp is not None), **cont,
+                    "footprint_excluido": sobrepoe, **cont,
                     **{f"pct_{a}": (100.0 * cont[a] / n if n else np.nan)
                        for a in P12.ASSINATURAS},
                 })
@@ -211,10 +217,27 @@ def fase_analise() -> None:
         "so_expansao": lambda d: d[d.procedencia == "datacentermap"],
         "conjunto": lambda d: d,
     }
+    # Campi sem footprint no OSM: a zona de 0-0,5 km deles é um DISCO que contém o próprio
+    # prédio. Nas outras zonas isso não acontece (são anéis de verdade), então eles só saem do
+    # recorte interno. Hoje é 1 campus — `everest-goiania`, o único dos 15 sem footprint no
+    # passo 13. Mantê-lo no anel interno misturaria o empreendimento com o efeito dele, que é
+    # exatamente a circularidade já corrigida para todos os outros.
+    # Só a zona interna importa aqui: nos anéis externos o footprint naturalmente não sobrepõe
+    # (ele fica no centro), então `footprint_excluido` é False para todo mundo lá — filtrar por
+    # isso sem restringir a zona derrubaria a amostra inteira.
+    sem_fp = set(
+        longo[(longo.tipo == "tratamento") & (longo.zona == "0-0.5km")
+              & ~longo.footprint_excluido].campus
+    )
+    if sem_fp:
+        print(f"\n! fora do anel 0-0.5km por falta de footprint: {sorted(sem_fp)}")
+
     for nome_rec, filtro in recortes.items():
         sub = filtro(longo)
         for zona, _, _ in ZONAS:
             g = sub[sub.zona == zona]
+            if zona == "0-0.5km" and sem_fp:
+                g = g[~g.campus.isin(sem_fp)]
             for assin in ("virou_construida", "vegetacao_para_construida"):
                 col = f"pct_{assin}"
                 difs = []
@@ -249,15 +272,24 @@ def fase_analise() -> None:
         x = np.arange(len(s))
         ax.bar(x, s.excesso_mediano_pp, color=[cores[r] for r in s.recorte])
         for i, (_, r0) in enumerate(s.iterrows()):
+            # p com casas suficientes: 0,0002 com 3 decimais vira "p=0.000" e parece zero exato
+            texto_p = (f"p={r0.p_unilateral:.4f}" if r0.p_unilateral < 0.001
+                       else f"p={r0.p_unilateral:.3f}")
             ax.text(i, r0.excesso_mediano_pp,
-                    f"{int(r0.n_positivo)}/{int(r0.n_pares)}\np={r0.p_unilateral:.3f}",
+                    f"{int(r0.n_positivo)}/{int(r0.n_pares)}\n{texto_p}",
                     ha="center", va="bottom", fontsize=8)
         ax.axhline(0, color="#333", lw=1)
         ax.set_xticks(x)
-        ax.set_xticklabels([r.replace("so_", "só ") for r in s.recorte], fontsize=8)
+        ax.set_xticklabels([r.replace("so_validados", "só validados")
+                             .replace("so_expansao", "só expansão") for r in s.recorte],
+                           fontsize=8)
         ax.set_title(f"anel {zona}", fontsize=10)
         ax.grid(axis="y", alpha=0.25)
     axes[0].set_ylabel("excesso mediano de conversão (p.p.)")
+    # folga no topo para os rótulos de n/p não baterem no título
+    for ax in axes:
+        lo, hi = ax.get_ylim()
+        ax.set_ylim(lo, hi * 1.18)
     fig.suptitle("Passo 26 — o achado com a amostra expandida, e o efeito de incluir os novos",
                  fontsize=11, y=0.99)
     fig.tight_layout()

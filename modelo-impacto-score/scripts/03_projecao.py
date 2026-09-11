@@ -8,7 +8,7 @@ Rode com:
 ## Por que isto NÃO é uma previsão pontual
 
 A camada 2 mediu, e o resultado foi negativo: com N=13, **nenhum** modelo supera o baseline de
-prever a mediana. Todos os R² fora-da-amostra são negativos e o teste de permutação dá p=0,64 — o
+prever a mediana. Todos os R² fora-da-amostra são negativos e o teste de permutação dá p=0,77 — o
 melhor ajuste encontrado é indistinguível do que ruído puro produz na mesma busca. A **magnitude**
 do impacto não é predizível a partir das features pré-obra que temos.
 
@@ -158,7 +158,7 @@ def main() -> int:
               "cobertura calibrada; condicionar no tipo de sítio derruba a cobertura para 46%)")
         print("\nlembrete obrigatório: é a taxa-base de uma classe de referência, NÃO uma previsão "
               "deste site. A magnitude individual não é predizível com as features disponíveis "
-              "(camada 2: R² LOOCV negativo em todos os modelos, permutação p=0,64).")
+              "(camada 2: R² LOOCV negativo em todos os modelos, permutação p=0,77).")
         return 0
 
     linhas = []

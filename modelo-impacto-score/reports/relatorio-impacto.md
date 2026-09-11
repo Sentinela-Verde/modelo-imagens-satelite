@@ -4,8 +4,9 @@
 
 - **Gerado por:** `dados-modelo-impacto/scripts/impacto_dc_*.py` (passos 1–22) e
   `modelo-impacto-score/scripts/0{1,2,3}_*.py`
-- **Atualizado:** 2026-09-10
-- **Amostra:** 15 campi de data center, cada um com um controle pareado sem data center; painel 2013–2025
+- **Atualizado:** 2026-09-11
+- **Amostra:** **20 campi** de data center, cada um com um controle pareado sem data center
+  (15 validados em 5 camadas + 5 da expansão via `datacentermap`); painel 2013–2025
 - **Classificador:** `rf_v1.0-tuned` · **Pareamento:** `dados-modelo-impacto/raw/controles-rf/METODOLOGIA.md`
 
 ---
@@ -50,12 +51,17 @@ evidência incompatível.
 
 | eixo | n | efeito mediano | p | selo |
 |---|---:|---:|---:|---|
-| Conversão para construída, anel **0–500 m** (sem o prédio) | 14 | **+1,50 p.p.** | **0,0065** | `forte` |
-| Conversão para construída, anel **500 m–1 km** | 14 | **+1,15 p.p.** | **0,0065** | `forte` |
-| Vegetação → construída, anel 0–500 m | 14 | **+0,52 p.p.** | **0,0287** | `forte` |
+| Conversão para construída, anel **500 m–1 km** | **20** | **+1,05 p.p.** | **0,0002** | `forte` |
+| Conversão para construída, anel **0–500 m** (sem o prédio) | 16 | **+1,49 p.p.** | **0,0384** | `forte` |
+| Vegetação → construída, anel 0–500 m | 16 | +0,52 p.p. | 0,105 | `sugestivo` |
 | Aquecimento de superfície (LST Landsat 30 m), anel 0–500 m | 12 | +0,51 °C | 0,388 | `nulo_amostra_pequena` |
 
-O efeito **decai com a distância e desaparece**: 12/14 a 500 m e a 1 km, 8/14 e p=0,395 em 1–2 km.
+**O anel de 500 m–1 km é o resultado de destaque**, e por três razões que se somam: é o de maior N
+(20, porque não depende de o footprint do OSM existir), o de menor p (0,0002), e o **único que é
+livre do prédio por construção** — um anel com raio interno de 500 m nunca contém o
+empreendimento, então não há correção a fazer nem hipótese a checar.
+
+O efeito **decai com a distância e desaparece**: 18/20 no anel de 0,5–1 km (p=0,0002), 12/16 no de 0–500 m (p=0,038), e 13/20 sem significância em 1–2 km (p=0,13).
 E é **localizado, não regional**: de 0,5 km para 5 km o disco cresce 100×, mas o excesso cresce só
 11,6× — a densidade cai 7×.
 
@@ -81,7 +87,7 @@ por motivo **mecânico**, não por ausência de efeito.
 
 ## 4. O que sobreviveu a teste — e o que não
 
-Esta é a seção que decide se o trabalho vale. Cinco verificações independentes:
+Esta é a seção que decide se o trabalho vale. Sete verificações independentes:
 
 | verificação | o que testa | resultado |
 |---|---|---|
@@ -90,6 +96,45 @@ Esta é a seção que decide se o trabalho vale. Cinco verificações independen
 | **Gradiente de distância** (passo 14) | o efeito é local ou regional? | **PASSOU** ✓ |
 | **Circularidade** (passo 22 / correção) | o "efeito" é o próprio prédio? | **PASSOU** ✓ |
 | **Estudo de evento + janela longa** (passos 18, 20) | quando acontece, e persiste? | **INCONCLUSIVO** ⚠ |
+| **Validação cruzada** (passo 24) | outro classificador reproduz? | **PARCIAL** ⚠ |
+| **Amostra expandida** (passos 25–26) | o achado sobrevive a mais casos? | **PASSOU, e ficou mais forte** ✓ |
+
+### A amostra expandida — e um erro meu que ela expôs
+
+A amostra foi de 15 para **20 campi** (passo 25). Os 5 novos vêm do `datacentermap`, sem a
+validação de coordenada em 5 camadas dos originais, e por isso o teste roda em **três recortes**:
+
+| recorte | anel 0,5–1 km | |
+|---|---|---|
+| só os 15 validados | 13/15 | p=0,0037 |
+| **só os 5 novos** | **5/5** | **p=0,031** |
+| **conjunto** | **18/20** | **p=0,0002** |
+
+Os cinco campi novos são positivos **todos os cinco**, e sozinhos já atingem significância. O
+conjunto fica uma ordem de grandeza mais forte que os originais isolados. O gradiente continua: o
+anel de 1–2 km segue nulo (13/20, p=0,13).
+
+**O que a expansão expôs, e precisa estar escrito:** ao recalcular tudo por mascaramento direto
+sobre o raster, dois números anteriores deste relatório se mostraram **errados**.
+
+A correção de circularidade original subtraía *aritmeticamente* as contagens do footprint das
+contagens do disco. Isso só vale se o footprint estiver inteiramente **dentro** do disco de 500 m —
+e não está em 4 dos 14 campi: `ascenty-vinhedo` tem o polígono 100% fora (a 615 m do ponto
+validado), `ascenty-sumare` 67% fora, `scala-sgigsm01` 15%, `equinix-santana-parnaiba` 3%.
+
+O efeito não foi cosmético:
+
+| | antes (aritmético, errado) | agora (mascaramento direto) |
+|---|---|---|
+| `ascenty-hortolandia` | +0,25 p.p. | **−1,31 p.p.** (troca de sinal) |
+| eixo de vegetação | 11/14, p=0,029, `forte` | **16 pares, p=0,105, `sugestivo`** |
+
+**O eixo de vegetação não é `forte`.** A significância que ele tinha era artefato da subtração
+indevida. O achado que se sustenta é o de conversão para área construída.
+
+Dois campi ficam **fora** do anel interno por não terem footprint que sobreponha a zona
+(`everest-goiania`, sem polígono no OSM; `ascenty-vinhedo`, polígono a 615 m). Mantê-los ali
+deixaria o próprio prédio dentro da conta.
 
 ### O placebo — a validação mais importante
 
@@ -186,7 +231,7 @@ logradouro**) mas está bloqueado por acesso à base CNPJ da Receita — ver o R
 `dados-modelo-impacto/`.
 
 **Magnitude individual de um site novo.** 13 modelos testados, **todos** com R² LOOCV negativo,
-permutação p=0,64. A direção é predizível; a magnitude não.
+permutação p=0,77. A direção é predizível; a magnitude não.
 
 **Inferência causal formal.** É padrão consistente contra grupo de controle, com pré-tendências
 verificadas e placebo. Não é estimativa causal de magnitude.
@@ -207,9 +252,11 @@ verificadas e placebo. Não é estimativa causal de magnitude.
 
 ## 7. A conclusão
 
-> Em **12 dos 14** data centers com par válido, o anel de 500 m ao redor — **excluído o prédio** —
-> converteu para área construída mais do que um terreno pareado sem data center: excesso mediano de
-> **1,50 p.p.**, **p=0,0065**. O efeito decai com a distância e desaparece depois de 1 km, é
+> Em **18 dos 20** data centers com par válido, o anel de 500 m a 1 km ao redor — que nunca
+> contém o empreendimento — converteu para área construída mais do que um terreno pareado sem
+> data center: excesso mediano de **1,05 p.p.**, **p=0,0002**. No anel mais interno, com o
+> prédio descontado, são 12 de 16 (+1,49 p.p., p=0,038). O efeito decai com a distância e some
+> em 1–2 km, é
 > localizado e não regional, e é concentrado onde havia terreno livre (**6 de 6** greenfield). As
 > tendências pré-obra eram paralelas, e o método, aplicado a 15 pares onde nada foi construído,
 > **não encontra nada** (8/15, p=0,50).

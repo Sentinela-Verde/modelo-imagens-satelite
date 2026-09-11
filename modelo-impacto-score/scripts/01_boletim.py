@@ -8,7 +8,7 @@ Rode com:
 
 **Não existe um score único.** Um número agregado do tipo "impacto 73/100" exigiria pesos
 arbitrários e misturaria eixos com qualidade de evidência incompatível — hoje, conversão para
-construída (p=0,0065) somada a temperatura (nulo sem poder de detecção). O agregado esconderia
+construída (p=0,0002) somada a temperatura (nulo sem poder de detecção). O agregado esconderia
 exatamente a parte forte do trabalho e seria a peça mais fácil de derrubar numa banca.
 
 O que se publica é um **boletim por eixo**: cada eixo carrega seu efeito medido, seu N, seu p e um

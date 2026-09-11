@@ -2,7 +2,7 @@
 
 **Para:** Guilherme (frente do modelo de impacto)
 **De:** Gabriel (frente do classificador de imagem / `modelo-imagens-satelite`)
-**Gerado em:** 2026-09-10 21:35 UTC por `dados-modelo-impacto/scripts/impacto_dc_01_reconciliar.py`
+**Gerado em:** 2026-09-11 05:40 UTC por `dados-modelo-impacto/scripts/impacto_dc_01_reconciliar.py`
 
 Recebi `datacenter_filtrado.csv` (12 data centers) e `datacenter_expandido_6_pontos.csv`
 (6 candidatos a controle por data center, 72 pontos). Antes de rodar o classificador em cima

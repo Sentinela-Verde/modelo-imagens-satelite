@@ -33,14 +33,14 @@ aconteceu num lugar equivalente sem data center.
 
 **Um data center adensa o terreno imediatamente ao redor dele.**
 
-Em **12 de 14** casos, o anel de 500 metros no entorno — **excluído o prédio do próprio data
-center** — converteu-se em área construída mais do que o terreno de comparação. Em números
-concretos:
+Em **18 de 20** casos, o anel entre 500 metros e 1 quilômetro no entorno — uma faixa que, por
+definição, **não contém o prédio do próprio data center** — converteu-se em área construída
+mais do que o terreno de comparação. Em números concretos:
 
 | | |
 |---|---|
 | Data center típico | **1,3 hectare** de prédio |
-| Convertido a mais no entorno, dentro de 500 m | **~1,2 hectare** |
+| Convertido a mais no entorno, até 1 km | **~1,2 hectare** |
 
 **Para cada hectare de data center, aproximadamente outro hectare se converte ao redor** — fora da
 cerca, em terreno que não é do empreendimento.

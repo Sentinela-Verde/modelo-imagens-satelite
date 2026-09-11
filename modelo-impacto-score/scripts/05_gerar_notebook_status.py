@@ -70,8 +70,9 @@ print("ok")
 ---
 ## 1. O achado, em uma linha
 
-Em **12 dos 14** data centers com par válido, o anel de 500 m ao redor — **excluído o prédio** —
-converteu para área construída mais do que um terreno pareado sem data center.
+Em **18 dos 20** data centers com par válido, o anel de **500 m a 1 km** ao redor — que nunca
+contém o empreendimento — converteu para área construída mais do que um terreno pareado sem
+data center (p=0,0002). No anel mais interno, com o prédio descontado, são 12 de 16.
 
 Em hectares: o data center mediano tem **1,29 ha**; o excesso convertido fora dele é **~1,2 ha**.
 Aproximadamente um hectare a mais se converte ao redor para cada hectare construído.
@@ -105,6 +106,8 @@ placar = pd.DataFrame([
      "INCONCLUSIVO", "n=9; os dois anéis apontam para lados opostos"),
     ("Validação cruzada (Dynamic World)", "outro classificador reproduz?",
      "PARCIAL", "direção sim, significância não"),
+    ("Amostra expandida (15 -> 20)", "o achado sobrevive a mais casos?",
+     "PASSOU, e ficou mais forte", "18/20, p=0,0002 no anel de 0,5-1 km"),
 ], columns=["verificação", "o que testa", "resultado", "número"])
 placar
 """),
@@ -171,7 +174,7 @@ nao = pd.DataFrame([
     ("Aquecimento", "estimativa sem confirmação",
      "+0,51 °C no anel com Landsat 30 m, gradiente coerente; precisaria de n=31 e temos 12"),
     ("Magnitude num site novo", "não",
-     "13 modelos, todos com R² LOOCV negativo, permutação p=0,64"),
+     "13 modelos, todos com R² LOOCV negativo, permutação p=0,77"),
     ("Persistência após 3 anos", "inconclusivo",
      "n=9; anel interno sugere que o controle alcança, o externo sugere o contrário"),
 ], columns=["pergunta", "resposta", "por quê"])

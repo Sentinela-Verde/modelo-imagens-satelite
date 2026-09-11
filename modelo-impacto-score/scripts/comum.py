@@ -80,52 +80,43 @@ ZONA_POR_EIXO = {
 }
 
 
-def _sem_footprint(anel: pd.DataFrame, zona: str, assinatura: str) -> pd.DataFrame:
-    """Recalcula uma zona removendo os pixels do footprint do data center.
+def _excesso_expandido(zona: str, assinatura: str, recorte: str = "conjunto") -> pd.Series:
+    """Excesso tratamento − controle por campus, lido do passo 26.
 
-    **Por que isto existe.** No passo 14 a zona "0-0.5km" é um DISCO (`r_int == 0`), não um anel:
-    ela contém o próprio prédio do data center. Com footprint mediano de 1,29 ha num disco de
-    78,5 ha, o prédio é 1,6% da zona — e o excesso medido é ~1,6 ha. Reportar esse número como
-    "impacto no entorno" mistura o empreendimento com o efeito dele, e a leitura vira circular:
-    *"depois de construir um data center, detectamos um data center."*
+    **Por que não se calcula aqui.** A versão anterior desta função subtraía, do disco de 0–500 m,
+    as contagens da linha `zona == "footprint"` do passo 14 — uma subtração aritmética. Ela só é
+    válida se o footprint estiver inteiramente DENTRO do disco, e isso é falso em 4 dos 14 campi
+    originais: `ascenty-vinhedo` tem o polígono 100% fora (a 615 m do ponto validado),
+    `ascenty-sumare` 67% fora, `scala-sgigsm01` 15% e `equinix-santana-parnaiba` 3%.
 
-    A correção é subtração exata, não estimativa: a linha `zona == "footprint"` traz a contagem de
-    pixels válidos e de pixels que cumpriram a assinatura DENTRO do footprint, então basta
-    descontar as duas do disco. Não precisa reprocessar raster nenhum.
+    O efeito não era cosmético: em `ascenty-hortolandia` a subtração indevida **trocava o sinal**
+    do excesso (+0,25 p.p. aritmético contra −1,31 p.p. real).
 
-    Só o tratamento tem footprint; no controle a zona fica inalterada, que é o comportamento certo
-    (o controle não tem prédio a descontar, e é justamente a hipótese nula do disco do tratamento).
+    O passo 26 calcula por **mascaramento direto** sobre o raster (`disco AND NOT footprint`), que
+    é correto por construção, e marca `footprint_excluido` só quando o polígono de fato sobrepõe a
+    zona. Esta função apenas consome aquilo.
     """
-    disco = anel[anel.zona == zona].set_index("site_id")
-    fp = anel[anel.zona == "footprint"].set_index("site_id")
-
-    linhas = []
-    for sid, r in disco.iterrows():
-        px, marcados = r.pixels_validos_mascara, r[assinatura]
-        if sid in fp.index:
-            f = fp.loc[sid]
-            if pd.notna(f.pixels_validos_mascara) and f.pixels_validos_mascara > 0:
-                px = px - f.pixels_validos_mascara
-                marcados = marcados - f[assinatura]
-        linhas.append(
-            {
-                "site_id": sid, "pareado_com": r.pareado_com, "tipo": r.tipo,
-                f"pct_{assinatura}": 100.0 * marcados / px if px > 0 else np.nan,
-            }
+    caminho = DIR_RESULTADOS / "analise_expandida.csv"
+    if not caminho.exists():
+        raise FileNotFoundError(
+            f"{caminho.name} não existe — rode "
+            "`impacto_dc_26_analise_expandida.py --fase analise` antes do boletim."
         )
-    return pd.DataFrame(linhas)
+    d = pd.read_csv(caminho)
+    d = d[d.zona == zona]
+    if recorte == "so_validados":
+        d = d[d.procedencia == "validado_5_camadas"]
+    elif recorte == "so_expansao":
+        d = d[d.procedencia == "datacentermap"]
 
+    # No anel interno, campus sem footprint sobreposto fica FORA: a zona dele conteria o prédio.
+    if zona == "0-0.5km":
+        sem = set(d[(d.tipo == "tratamento") & ~d.footprint_excluido].campus)
+        d = d[~d.campus.isin(sem)]
 
-def _excesso_por_zona(anel: pd.DataFrame, zona: str, coluna: str) -> pd.Series:
-    """Excesso tratamento − controle de `coluna` na `zona`, indexado por campus.
-
-    Para a zona "0-0.5km" o cálculo passa por `_sem_footprint` — ver a docstring de lá: aquela
-    zona é um disco e conteria o próprio prédio.
-    """
-    assinatura = coluna.replace("pct_", "")
-    z = _sem_footprint(anel, zona, assinatura) if zona == "0-0.5km" else anel[anel.zona == zona]
-    t = z[z.tipo == "tratamento"].set_index("pareado_com")[coluna]
-    c = z[z.tipo == "controle"].set_index("pareado_com")[coluna]
+    col = f"pct_{assinatura}"
+    t = d[d.tipo == "tratamento"].set_index("campus")[col]
+    c = d[d.tipo == "controle"].set_index("campus")[col]
     return (t - c).dropna()
 
 
@@ -162,30 +153,20 @@ def selos_de_evidencia() -> pd.DataFrame:
     nem se existisse". Essa terceira categoria é a que costuma ser reportada errado: um nulo sem
     poder NÃO é evidência de ausência de efeito.
     """
-    anel = pd.read_csv(DIR_RESULTADOS / "footprint_vs_anel_resumo.csv")
-    lst = pd.read_csv(DIR_RESULTADOS / "lst_did_resumo.csv")
     poder = pd.read_csv(DIR_RESULTADOS / "lst_did_poder.csv")
-
-    # A zona 0-0.5km precisa do teste de sinal RECALCULADO sem o footprint — o resumo publicado
-    # pelo passo 14 é do disco com o prédio dentro. As demais zonas são anéis de verdade e o
-    # resumo serve como está.
-    bruto = pd.read_csv(DIR_RESULTADOS / "footprint_vs_anel.csv")
 
     linhas = []
     for eixo, (zona, coluna) in ZONA_POR_EIXO.items():
         assinatura = coluna.replace("pct_", "")
-        if zona == "0-0.5km":
-            e = _excesso_por_zona(bruto, zona, coluna).to_numpy(float)
-            n_p, k = len(e), int((e > 0).sum())
-            p = sum(math.comb(n_p, i) * 0.5**n_p for i in range(k, n_p + 1))
-            mediana = float(np.median(e))
-        else:
-            r0 = anel[(anel.zona == zona) & (anel.assinatura == assinatura)]
-            if r0.empty:
-                continue
-            r0 = r0.iloc[0]
-            n_p, k = int(r0.n_pares), int(r0.n_positivo)
-            p, mediana = float(r0.p_unilateral), float(r0.excesso_mediano_pp)
+        # Tudo vem do passo 26, que calcula por mascaramento direto sobre o raster e já inclui a
+        # amostra expandida (N=20). Ver `_excesso_expandido` para por que o cálculo aritmético
+        # anterior era inválido.
+        e = _excesso_expandido(zona, assinatura).to_numpy(float)
+        if len(e) < 3:
+            continue
+        n_p, k = len(e), int((e > 0).sum())
+        p = sum(math.comb(n_p, i) * 0.5**n_p for i in range(k, n_p + 1))
+        mediana = float(np.median(e))
         linhas.append(
             {
                 "eixo": eixo,
@@ -285,9 +266,9 @@ def tabela_mestra() -> pd.DataFrame:
     m["x_regiao"] = m.regiao
     m["x_bioma"] = m.bioma
 
-    # --- alvos
+    # --- alvos (passo 26: mascaramento direto, amostra expandida)
     for eixo, (zona, coluna) in ZONA_POR_EIXO.items():
-        m[f"y_{eixo}"] = m.site_id.map(_excesso_por_zona(anel, zona, coluna))
+        m[f"y_{eixo}"] = m.site_id.map(_excesso_expandido(zona, coluna.replace("pct_", "")))
     # Temperatura: passo 23 (Landsat 30 m, anel de 500 m), não o passo 16 (MODIS, disco de 5 km).
     lst_anel = pd.read_csv(DIR_RESULTADOS / "lst_landsat_did.csv")
     lst_anel = lst_anel[lst_anel.zona == "0-0.5km"].set_index("campus")["excesso_c"]
