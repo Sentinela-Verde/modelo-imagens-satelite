@@ -12,6 +12,12 @@ numpy==2.5.2
 pandas==3.0.5
 pyarrow==25.0.1
 scikit-learn==1.9.0
+# Dependência transitiva do scikit-learn, mas importada DIRETAMENTE por duas frentes
+# (`modelo-impacto-score/scripts/02_explicacao.py` usa `scipy.stats`;
+# `dados-modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py` usa `scipy.ndimage`).
+# Declarada explicitamente porque depender de transitividade quebra no dia em que o
+# scikit-learn trocar de backend.
+scipy==1.18.1
 joblib==1.5.3
 matplotlib==3.11.1
 pyyaml==6.0.3
