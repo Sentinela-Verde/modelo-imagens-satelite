@@ -1,0 +1,5 @@
+campus_id,lat,lon,n_predios,nome,operadora,cidade,uf,ano_obra,mw_total,frac_construida_antes,campus_osm,greenfield,tem_data,na_janela
+dcm-us-0001,33.5006933,-86.8207532,1,DC BLOX Birmingham,DC BLOX Inc.,Birmingham,Alabama,2019.0,5.0,,,,True,True
+dcm-us-0002,34.913896329247414,-85.74716916278736,3,Google Jackson County Campus,Google,Bridgeport,Alabama,2018.0,,0.03,us-0260,True,True,True
+dcm-us-0003,33.5194657,-86.8097904,1,Lumen Birmingham 1,Lumen,Birmingham,Alabama,,,,,,False,False
+dcm-us-0004,33.34365458220975,-87.03864563455572,1,QTS Bessemer Campus,QTS Data Centers,Bessemer,Alabama,,,,,,False,False
