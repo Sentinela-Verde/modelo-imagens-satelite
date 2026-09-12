@@ -46,12 +46,17 @@ def _ee():
     init_ee()
 
 
+# O token vem de `SETTINGS.token_labels()` e NÃO pode ser fixado em "labels" aqui: desde a troca
+# de fonte para Dynamic World (ADR-006 §2), os labels do MapBiomas ficam em `labels/` e os do DW
+# em `labels-dw/`. Com o caminho fixo, estes helpers liam o manifest do MapBiomas enquanto
+# `gerar_label_site_ano` já escrevia e devolvia o do DW — e o cenário 7 (idempotência) quebrava
+# comparando o sha256 de duas fontes diferentes.
 def _tif_label(sensor: str, site_id: str, ano: int):
-    return SETTINGS.raw_dir / "labels" / sensor / site_id / f"{ano}.tif"
+    return SETTINGS.raw_dir / SETTINGS.token_labels() / sensor / site_id / f"{ano}.tif"
 
 
 def _manifest_label(sensor: str, site_id: str, ano: int):
-    return SETTINGS.manifests_dir / f"labels_{sensor}_{site_id}_{ano}.json"
+    return SETTINGS.manifests_dir / f"{SETTINGS.token_labels()}_{sensor}_{site_id}_{ano}.json"
 
 
 def _tif_imagem(sensor: str, site_id: str, ano: int):
@@ -320,7 +325,20 @@ def test_manifest_contrato_de_campos_e_sha256(sensor, anos):
         pytest.skip(f"nenhum manifest labels_{sensor}_* encontrado — rode a geração antes.")
 
 
+# Estes dois testam contrato ESPECIFICO da forma (b) do ADR-004 (MapBiomas + WorldCover):
+# `distancia_safra` existe porque a Colecao 9 para em 2023 e replica em 2024/25, e `crosscheck`
+# porque 2021 e o unico ano de sobreposicao com o WorldCover. O Dynamic World (ADR-006 §2) e
+# anual de verdade e nao tem fonte de verificacao cruzada -- entao os dois campos sao
+# legitimamente diferentes la, e o teste nao se aplica.
+def _pular_se_nao_for_mapbiomas():
+    fonte = (SETTINGS.params().get("labels") or {}).get("fonte_principal", "mapbiomas")
+    if fonte != "mapbiomas":
+        pytest.skip(f"labels.fonte_principal = '{fonte}': contrato da forma (b) do ADR-004 "
+                    "nao se aplica (ver ADR-006 §2).")
+
+
 def test_manifest_distancia_safra_2024_2025_marca_replicacao_de_2023():
+    _pular_se_nao_for_mapbiomas()
     algum = False
     for site_id in SITES:
         for ano in (2024, 2025):
@@ -336,6 +354,7 @@ def test_manifest_distancia_safra_2024_2025_marca_replicacao_de_2023():
 
 
 def test_manifest_crosscheck_so_existe_no_ano_de_verificacao_cruzada():
+    _pular_se_nao_for_mapbiomas()
     algum = False
     for sensor in ("s2", "landsat"):
         for site_id in SITES:
