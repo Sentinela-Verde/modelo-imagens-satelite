@@ -87,7 +87,7 @@ por motivo **mecânico**, não por ausência de efeito.
 
 ## 4. O que sobreviveu a teste — e o que não
 
-Esta é a seção que decide se o trabalho vale. Sete verificações independentes:
+Esta é a seção que decide se o trabalho vale. Nove verificações independentes:
 
 | verificação | o que testa | resultado |
 |---|---|---|
@@ -95,9 +95,15 @@ Esta é a seção que decide se o trabalho vale. Sete verificações independent
 | **Tendências pré-obra** (passo 12) | o DC foi construído onde já adensava? | **PASSOU** ✓ |
 | **Gradiente de distância** (passo 14) | o efeito é local ou regional? | **PASSOU** ✓ |
 | **Circularidade** (passo 22 / correção) | o "efeito" é o próprio prédio? | **PASSOU** ✓ |
-| **Estudo de evento + janela longa** (passos 18, 20) | quando acontece, e persiste? | **INCONCLUSIVO** ⚠ |
-| **Validação cruzada** (passo 24) | outro classificador reproduz? | **PARCIAL** ⚠ |
 | **Amostra expandida** (passos 25–26) | o achado sobrevive a mais casos? | **PASSOU, e ficou mais forte** ✓ |
+| **Robustez temporal** (passo 35) | sobrevive a exigir 3 anos em vez de 2? | **PASSOU** ✓ |
+| **Estudo de evento + janela longa** (passos 18, 20) | quando acontece, e persiste? | **INCONCLUSIVO** ⚠ |
+| **Validação cruzada** (passo 24) | outro classificador reproduz? | **NÃO REPLICA** ✗ |
+| **Robustez à confiança** (passo 35) | sobrevive a filtrar pixels incertos? | **NÃO SOBREVIVE** ✗ |
+
+**Duas verificações falham, e elas são a parte mais importante desta seção.** As duas
+falhas apontam para a mesma coisa e estão detalhadas em §4.4 — a direção do achado é
+robusta; a **magnitude** depende do instrumento.
 
 ### A amostra expandida — e um erro meu que ela expôs
 
@@ -135,6 +141,103 @@ indevida. O achado que se sustenta é o de conversão para área construída.
 Dois campi ficam **fora** do anel interno por não terem footprint que sobreponha a zona
 (`everest-goiania`, sem polígono no OSM; `ascenty-vinhedo`, polígono a 615 m). Mantê-los ali
 deixaria o próprio prédio dentro da conta.
+
+### 4.4 As duas falhas: a magnitude depende do instrumento
+
+Esta subseção existe porque um trabalho que só reporta o que deu certo não é verificável.
+Três medições independentes, feitas em 2026-09-11 e 12, apontam na mesma direção.
+
+**(a) O achado de destaque não replica sob outro classificador.**
+
+O passo 24 mediu por muito tempo apenas *discos* (0,5 / 1 / 2 km). Desde a correção do
+passo 26, o resultado de destaque é o **anel de 0,5–1 km** — ou seja, o número que este
+relatório publica nunca tinha sido testado contra instrumento independente. Testado, nos
+**mesmos 14 campi** onde a série do Dynamic World alcança:
+
+| classificador | pares positivos | p | mediana |
+|---|---:|---:|---:|
+| `rf_v1.0-tuned` (nosso, 30 m) | **14/14** | **0,0001** | **+1,589 p.p.** |
+| `dynamic_world` (10 m, independente) | 9/14 | 0,2120 | +0,326 p.p. |
+
+A **direção** replica — mediana positiva em todos os raios. A **significância** não, e a
+magnitude fica ~5× menor.
+
+**A discordância não é de resolução.** Degradamos o DW de 10 m para 30 m por moda de bloco
+3×3 — mesmo rótulo, só a grade muda — e a mediana não se move (+0,326 → +0,325 p.p.). Se
+fosse resolução, o DW degradado teria caminhado para o nosso +1,589. A causa é rótulo ou
+modelo.
+
+**(b) O nosso classificador é medidamente mais ruidoso.**
+
+Fração de pixels que trocam de classe entre anos consecutivos nos **controles**, onde por
+construção quase nada mudou e toda troca é ruído. Mesmos 10 controles, mesmos 58 pares de
+anos, mesmos pixels:
+
+| instrumento | instabilidade |
+|---|---:|
+| `dynamic_world` | **7,2%** |
+| `rf_v1.0-tuned` | **17,5%** |
+
+Somos **2,4× mais instáveis** que o instrumento que discorda de nós. A desculpa fácil ("o
+DW é que é ruidoso") está medida e fechada.
+
+Tentamos consertar. O `rf_v2.0-dw`, retreinado com rótulos do Dynamic World e com o teto
+de amostragem equalizado por área, melhora em tudo — macro-F1 0,776 → 0,828, F1 da classe
+3 **0,580 → 0,804**, e o viés de sensor desaparece (a feature `sensor` deixa de ser
+adotada). A instabilidade cai para **13,1%**. Não basta: o critério de aceite do ADR-006
+§4 exige ficar **abaixo dos 7,2% do próprio rótulo que o treinou**, e 13,1% continua 1,8×
+pior. O retreino foi reprovado pelo critério que o propôs.
+
+A causa provável, e é hipótese não testada: estabilidade temporal vem em boa parte de
+suavização espacial, e o DW tem contexto espacial que um Random Forest por pixel com 13
+features espectrais não tem. Trocar o rótulo corrige a **definição** das classes — a
+classe 3 prova isso — mas não dá contexto ao modelo.
+
+**(c) A conversão se concentra nos pixels de baixa confiança.**
+
+Cada raster classificado tem um mapa de confiança de 0 a 100 que nunca havia sido usado
+nesta frente. Filtrando por ele, no anel de destaque:
+
+| confiança mínima | pixels válidos | **pixels que viraram construída** |
+|---|---:|---:|
+| 0 (publicado) | 2.620 | **69** |
+| 70 | 1.400 (53%) | **6,5** |
+| 85 | 624 (24%) | **0** |
+
+O denominador cai pela metade e o numerador cai 10×.
+
+Duas leituras competem e este teste não as separa: **(i)** o sinal é ruído do
+classificador, ou **(ii)** pixel recém-convertido é genuinamente mais difícil de
+classificar — telhado novo a 30 m é pixel misto — e o filtro seleciona *contra* conversões
+reais.
+
+**O placebo desempata parcialmente.** Se fosse ruído puro, os 15 pares controle-contra-
+controle teriam encontrado algo. Deram 8/15, p=0,50. Logo: ruído sozinho **não** produz o
+efeito, mas o efeito **se concentra** onde o classificador está inseguro. As duas coisas
+são verdadeiras ao mesmo tempo.
+
+### 4.5 O que sobrevive a tudo isso
+
+O eixo temporal, que é o outro lado da mesma superfície de robustez (passo 35):
+
+| anos de ponta exigidos | pares positivos | p | mediana |
+|---|---:|---:|---:|
+| 1 | 12/20 | 0,2517 | +1,573 |
+| **2** (publicado) | **18/20** | **0,0002** | +1,219 |
+| **3** | **15/19** | **0,0096** | **+0,763** |
+
+Exigir **três** anos consecutivos de não-construída no início e construída no fim — em vez
+de dois — mantém p<0,01. O achado não depende de `n_ponta=2` ser um ponto de sorte da
+escala. E `n_ponta=1` ser pior confirma que o requisito temporal faz trabalho real de
+filtragem de ruído.
+
+**A afirmação que o conjunto sustenta**, e que este relatório adota:
+
+> O padrão de adensamento é robusto: aparece nos dois classificadores, sobrevive a critério
+> temporal mais estrito, e o placebo confirma que o método não fabrica sinal onde nada foi
+> construído. A **magnitude** não é robusta: depende do instrumento e se concentra nos
+> pixels de menor confiança. Reportamos **direção confirmada e magnitude com incerteza de
+> instrumento**.
 
 ### O placebo — a validação mais importante
 

@@ -1,0 +1,3 @@
+campus_id,lat,lon,ano_obra,greenfield,site_id_controle,lat_controle,lon_controle,dist_tratamento_controle_km,l1_dw,qualidade,n_candidatos_validos,status,motivo
+dcm-us-0024,33.5006933,-86.8207532,2019,,ctrl-dcm-us-0024,33.36579505911219,-86.82075320000001,15,0.7556,ruim,151,ok,
+dcm-us-0025,34.913896329247414,-85.74716916278736,2018,True,ctrl-dcm-us-0025,35.0306938562147,-85.66479812842323,15,0.0893,bom,167,ok,

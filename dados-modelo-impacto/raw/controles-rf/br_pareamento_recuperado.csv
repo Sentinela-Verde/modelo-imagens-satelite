@@ -1,0 +1,6 @@
+campus_id,status,motivo,lat,lon,ano_obra,greenfield,site_id_controle,lat_controle,lon_controle,dist_tratamento_controle_km,l1_dw,qualidade,n_candidatos_validos,metodo_pareamento
+exp-latitude-sh-sao,erro,Image.remap: Image has no bands.,,,,,,,,,,,,
+exp-sitelbra-data-center,erro,Image.remap: Image has no bands.,,,,,,,,,,,,
+exp-sky-brasil---jaguariuna,erro,Image.remap: Image has no bands.,,,,,,,,,,,,
+exp-odata-sp01,ok,,-23.4550357423391,-46.91510647119536,2016.0,,ctrl-exp-odata-sp01,-23.333460320872245,-46.68609101796312,27.0,0.1077,aceitavel,100.0,dw_l1_sem_filtro_municipio
+exp-quantico-data-center,ok,,-29.9040072,-51.1283808,2020.0,,ctrl-exp-quantico-data-center,-29.66119036640194,-51.1283808,27.0,0.0814,bom,145.0,dw_l1_sem_filtro_municipio
