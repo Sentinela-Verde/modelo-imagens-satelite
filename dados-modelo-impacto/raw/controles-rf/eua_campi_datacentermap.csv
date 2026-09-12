@@ -1,5 +1,28 @@
 campus_id,lat,lon,n_predios,nome,operadora,cidade,uf,ano_obra,mw_total,frac_construida_antes,campus_osm,greenfield,tem_data,na_janela
-dcm-us-0001,33.5006933,-86.8207532,1,DC BLOX Birmingham,DC BLOX Inc.,Birmingham,Alabama,2019.0,5.0,,,,True,True
-dcm-us-0002,34.913896329247414,-85.74716916278736,3,Google Jackson County Campus,Google,Bridgeport,Alabama,2018.0,,0.03,us-0260,True,True,True
-dcm-us-0003,33.5194657,-86.8097904,1,Lumen Birmingham 1,Lumen,Birmingham,Alabama,,,,,,False,False
-dcm-us-0004,33.34365458220975,-87.03864563455572,1,QTS Bessemer Campus,QTS Data Centers,Bessemer,Alabama,,,,,,False,False
+dcm-us-0001,33.01502307664025,-96.76480828117784,1,1000 Coit Road,Lincoln Property Company,Plano,Texas,,,,,,False,False
+dcm-us-0002,38.73760385,-77.5084272,2,10050 Brickyard Wy (IAD50),Digital Realty,Manassas,Virginia,,,,,,False,False
+dcm-us-0003,33.63250552231545,-111.9185758090433,1,11:11 Systems Scottsdale,11:11 Systems,Scottsdale,Arizona,,,,,,False,False
+dcm-us-0004,33.4519088,-112.0719012,1,120 East Van Buren St (PHX10),Digital Realty,Phoenix,Arizona,,9.9,,,,False,False
+dcm-us-0005,32.96540513333333,-96.7147751,3,1210 Integrity Drive (DFW18),Digital Realty,Richardson,Texas,2010.0,49.6,0.9299,us-0229,False,True,False
+dcm-us-0006,32.975824100000004,-96.65088493333333,3,1502 Ferris Rd,Digital Realty,Garland,Texas,,8.0,,,,False,False
+dcm-us-0007,39.0665229,-77.47890249999999,1,19886 Ashburn Rd,JK Land Holdings,Ashburn,Virginia,,,,,,False,False
+dcm-us-0008,32.7856228,-96.79445505000001,2,Provision Data Services,Provision Data Services,Dallas,Texas,,3.8,1.0,us-0005,False,False,False
+dcm-us-0009,39.05632961042977,-77.5460791505095,4,20335 Celtic Park Drive (Campus),TA Realty,Leesburg,Virginia,,,0.0954,us-0317,True,False,False
+dcm-us-0010,33.2748503,-111.8869478,1,2121 S. Price Road (PHX15),Digital Realty,Chandler,Arizona,2000.0,32.6,0.5488,us-0110,False,True,False
+dcm-us-0011,39.00617574704094,-77.47328305939091,16,21362 Smith Switch (ACC8),Digital Realty,Ashburn,Virginia,2001.0,294.0,,,,True,False
+dcm-us-0012,39.967663,-82.9954016,1,226 North Fifth Street,Hackman Capital Partners,Columbus,Ohio,,,,,,False,False
+dcm-us-0013,32.9799672,-96.8534887,1,2440 Marsh Lane (DFW12),Digital Realty,Carrollton,Texas,1998.0,6.75,,,,True,False
+dcm-us-0014,33.0079997,-96.7020342,1,24 Hour Data Plano,24 Hour Data,Plano,Texas,2009.0,,,,,True,False
+dcm-us-0015,33.3008813,-111.8863212,1,2500 W Frye Rd,Lincoln Property Company,Chandler,Arizona,2002.0,,,,,True,False
+dcm-us-0016,33.0533231,-96.9173431,1,2501 S. State Highway 121 (DFW26),Digital Realty,Lewisville,Texas,1979.0,,,,,True,False
+dcm-us-0017,39.977319,-82.70725399999999,1,3000-3007 Etna Pkwy,Microsoft,Pataskala,Ohio,,,,,,False,False
+dcm-us-0018,40.10734787701467,-82.726253548139,1,3439-3445 Clover Valley Road,Meta,Johnstown,Ohio,,,,,,False,False
+dcm-us-0019,38.9101976468827,-77.46820263793305,4,3721 Stonecroft Boulevard,Starwood Digital Ventures,Chantilly,Virginia,2006.0,,0.435,us-0090,True,True,False
+dcm-us-0020,33.0217187,-96.84483895,2,4025 Midway Rd (DFW11),Digital Realty,Carrollton,Texas,2008.0,7.7,,,,True,False
+dcm-us-0021,32.2681019,-97.7988681,1,4099 Hereford Street,Frasier Cole,Glen Rose,Texas,,,,,,False,False
+dcm-us-0022,39.0747062,-77.51927069999999,1,42277 Cochran Mill Rd,SDC Capital Partners,Leesburg,Virginia,,,,,,False,False
+dcm-us-0023,38.96116390842681,-77.49159623257039,1,43704 Efficiency (IAD44),Digital Realty,Dulles,Virginia,,,,,,False,False
+dcm-us-0024,33.5006933,-86.8207532,1,DC BLOX Birmingham,DC BLOX Inc.,Birmingham,Alabama,2019.0,5.0,,,,True,True
+dcm-us-0025,34.913896329247414,-85.74716916278736,3,Google Jackson County Campus,Google,Bridgeport,Alabama,2018.0,,0.03,us-0260,True,True,True
+dcm-us-0026,33.5194657,-86.8097904,1,Lumen Birmingham 1,Lumen,Birmingham,Alabama,,,,,,False,False
+dcm-us-0027,33.34365458220975,-87.03864563455572,1,QTS Bessemer Campus,QTS Data Centers,Bessemer,Alabama,,,,,,False,False
