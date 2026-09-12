@@ -58,6 +58,7 @@ LINKS_SCRAPER = (
     / "output" / "datacenters_links_usa.csv"
 )
 SAIDA = C.DIR_SAIDA / "eua_pareamento.csv"
+SAIDA_BR = C.DIR_SAIDA / "br_pareamento_recuperado.csv"
 SAIDA_CAND = C.DIR_SAIDA / "eua_candidatos_avaliados.csv"
 
 # Mesma grade do desenho brasileiro (SV-29), para os dois conjuntos serem comparáveis
@@ -90,16 +91,35 @@ def _dist_km(a: tuple[float, float], b: tuple[float, float]) -> float:
     return 2 * r * math.asin(math.sqrt(h))
 
 
-def _datacenters_conhecidos() -> list[tuple[float, float]]:
-    """Toda coordenada de data center que conhecemos, para o filtro de contaminação."""
+def _datacenters_conhecidos(pais: str = "US") -> list[tuple[float, float]]:
+    """Toda coordenada de data center que conhecemos NAQUELE pais.
+
+    Filtrar por pais nao e detalhe: um controle brasileiro nunca seria contaminado por um
+    data center do Texas, e carregar 1.100 coordenadas americanas na busca so desperdicia
+    comparacao. Mais importante, o inverso e perigoso -- rodar o Brasil com a lista
+    americana deixaria os data centers brasileiros FORA do filtro, e o "controle" poderia
+    cair em cima de um.
+    """
     pontos: list[tuple[float, float]] = []
-    if CAMPI_OSM.exists():
-        d = pd.read_csv(CAMPI_OSM)
+
+    mestra = C.DIR_SAIDA / "lista_mestra_campi.csv"
+    if mestra.exists():
+        d = pd.read_csv(mestra)
+        d = d[d.pais == pais]
         pontos += [(r.lat, r.lon) for r in d.itertuples()]
-    if LINKS_SCRAPER.exists():
+
+    if pais == "US" and LINKS_SCRAPER.exists():
         d = pd.read_csv(LINKS_SCRAPER)
         d = d[d.latitude.notna() & d.longitude.notna()]
         pontos += [(float(r.latitude), float(r.longitude)) for r in d.itertuples()]
+
+    if pais == "BR":
+        # os 16 oficiais + os controles ja escolhidos: nenhum controle novo pode cair em
+        # cima de um ponto que ja e tratamento ou controle de outro par
+        par = pd.read_csv(C.DIR_SAIDA / "pareamento_controle_rf.csv")
+        pontos += [(r.lat, r.lon) for r in par.itertuples()]
+        pontos += [(r.lat_controle, r.lon_controle) for r in par.itertuples()
+                   if pd.notna(r.lat_controle)]
     return pontos
 
 
@@ -109,6 +129,35 @@ def _tratamentos() -> pd.DataFrame:
     d = pd.read_csv(CAMPI_DCM)
     d = d[d.ano_obra.notna() & d.na_janela]
     return d.reset_index(drop=True)
+
+
+def _tratamentos_br_recuperaveis() -> pd.DataFrame:
+    """Os campi brasileiros que a expansao do passo 25 perdeu, e por que vale retentar.
+
+    Dos 10 candidatos daquela rodada, 5 pareraram e 5 nao:
+
+      4x `sem_candidato` -- nenhum ponto da grade passou no **filtro de municipio**
+                            (Nominatim + IBGE, teto de 80 tentativas de reverse-geocode)
+      1x `erro`          -- `uf` nulo derrubava `.upper()` (bug corrigido em 2026-09-12)
+
+    Os dois motivos somem neste pareamento: ele nao usa Nominatim nem IBGE, so distancia
+    a data center conhecido e similaridade de cobertura por Dynamic World.
+
+    **Mas isso cria heterogeneidade de metodo dentro da amostra brasileira**, e nao pode
+    passar escondido: 15 campi originais e 5 da expansao foram pareados pelo criterio
+    MapBiomas+RF com filtro de municipio; estes 5 viriam por criterio diferente, mais
+    permissivo. A coluna `metodo_pareamento` marca isso, e a analise tem de rodar com e
+    sem eles -- a mesma disciplina que `procedencia` ja impoe.
+    """
+    exp = pd.read_csv(C.DIR_SAIDA / "expansao_pareamento.csv")
+    falhou = exp[exp.status != "ok"].copy()
+    return pd.DataFrame({
+        "campus_id": falhou.site_id,
+        "lat": falhou.lat, "lon": falhou.lon,
+        "ano_obra": falhou.ano_inicio_obra,
+        "greenfield": None,
+        "motivo_original": falhou.status,
+    }).reset_index(drop=True)
 
 
 def _perfil_dw(feats, ano: int) -> dict[str, list[float]]:
@@ -143,7 +192,7 @@ def _l1(a: list[float], b: list[float]) -> float:
     return sum(abs(x - y) for x, y in zip(a, b))
 
 
-def fase_parear() -> None:
+def fase_parear(pais: str = "US") -> None:
     import ee
     from sentinela.config import SETTINGS
     from sentinela.gee.auth import init_ee
@@ -152,8 +201,8 @@ def fase_parear() -> None:
     SETTINGS_PARAMS = SETTINGS.params()
     init_ee()
 
-    trat = _tratamentos()
-    dcs = _datacenters_conhecidos()
+    trat = _tratamentos_br_recuperaveis() if pais == "BR" else _tratamentos()
+    dcs = _datacenters_conhecidos(pais)
     print(f"  {len(trat)} campi de tratamento (com data, na janela)")
     print(f"  {len(dcs)} coordenadas de data center para o filtro de contaminação")
 
@@ -226,12 +275,13 @@ def fase_parear() -> None:
             "dist_tratamento_controle_km": raio,
             "l1_dw": round(d, 4), "qualidade": qualidade,
             "n_candidatos_validos": len(avaliados),
+            "metodo_pareamento": "dw_l1_sem_filtro_municipio",
             "status": "ok", "motivo": None,
         })
         print(f"  {r.campus_id}: {len(avaliados)} candidatos, melhor L1={d:.3f} ({qualidade})")
 
     par = pd.DataFrame(linhas_par)
-    C.salvar_csv(par, SAIDA)
+    C.salvar_csv(par, SAIDA_BR if pais == "BR" else SAIDA)
     if linhas_cand:
         C.salvar_csv(pd.DataFrame(linhas_cand), SAIDA_CAND)
 
@@ -250,8 +300,10 @@ def fase_parear() -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--fase", choices=("parear",), required=True)
-    ap.parse_args()
-    fase_parear()
+    ap.add_argument("--pais", choices=("US", "BR"), default="US",
+                    help="BR retenta os campi que o passo 25 perdeu (ver docstring)")
+    args = ap.parse_args()
+    fase_parear(args.pais)
 
 
 if __name__ == "__main__":

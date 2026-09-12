@@ -9,7 +9,7 @@ dcm-us-0007,39.0665229,-77.47890249999999,1,19886 Ashburn Rd,JK Land Holdings,As
 dcm-us-0008,32.7856228,-96.79445505000001,2,Provision Data Services,Provision Data Services,Dallas,Texas,,3.8,1.0,us-0005,False,False,False
 dcm-us-0009,39.05632961042977,-77.5460791505095,4,20335 Celtic Park Drive (Campus),TA Realty,Leesburg,Virginia,,,0.0954,us-0317,True,False,False
 dcm-us-0010,33.2748503,-111.8869478,1,2121 S. Price Road (PHX15),Digital Realty,Chandler,Arizona,2000.0,32.6,0.5488,us-0110,False,True,False
-dcm-us-0011,39.00617574704094,-77.47328305939091,16,21362 Smith Switch (ACC8),Digital Realty,Ashburn,Virginia,2001.0,294.0,,,,True,False
+dcm-us-0011,39.00961088290879,-77.46930939272487,26,21362 Smith Switch (ACC8),Digital Realty,Ashburn,Virginia,2001.0,566.8,,,,True,False
 dcm-us-0012,39.967663,-82.9954016,1,226 North Fifth Street,Hackman Capital Partners,Columbus,Ohio,,,,,,False,False
 dcm-us-0013,32.9799672,-96.8534887,1,2440 Marsh Lane (DFW12),Digital Realty,Carrollton,Texas,1998.0,6.75,,,,True,False
 dcm-us-0014,33.0079997,-96.7020342,1,24 Hour Data Plano,24 Hour Data,Plano,Texas,2009.0,,,,,True,False
@@ -22,7 +22,29 @@ dcm-us-0020,33.0217187,-96.84483895,2,4025 Midway Rd (DFW11),Digital Realty,Carr
 dcm-us-0021,32.2681019,-97.7988681,1,4099 Hereford Street,Frasier Cole,Glen Rose,Texas,,,,,,False,False
 dcm-us-0022,39.0747062,-77.51927069999999,1,42277 Cochran Mill Rd,SDC Capital Partners,Leesburg,Virginia,,,,,,False,False
 dcm-us-0023,38.96116390842681,-77.49159623257039,1,43704 Efficiency (IAD44),Digital Realty,Dulles,Virginia,,,,,,False,False
-dcm-us-0024,33.5006933,-86.8207532,1,DC BLOX Birmingham,DC BLOX Inc.,Birmingham,Alabama,2019.0,5.0,,,,True,True
-dcm-us-0025,34.913896329247414,-85.74716916278736,3,Google Jackson County Campus,Google,Bridgeport,Alabama,2018.0,,0.03,us-0260,True,True,True
-dcm-us-0026,33.5194657,-86.8097904,1,Lumen Birmingham 1,Lumen,Birmingham,Alabama,,,,,,False,False
-dcm-us-0027,33.34365458220975,-87.03864563455572,1,QTS Bessemer Campus,QTS Data Centers,Bessemer,Alabama,,,,,,False,False
+dcm-us-0024,40.1211618,-82.7516585,1,4500 Beech Rd NW,KARIS Critical,Johnstown,Ohio,,,,,,False,False
+dcm-us-0025,32.93394,-96.827985,1,4849 Alpha Road (DFW14),Digital Realty,Dallas,Texas,,4.5,,,,False,False
+dcm-us-0026,33.4790452,-113.11006,1,491st Ave & Thomas Rd,Unknown Company,Wintersburg,Arizona,,,,,,False,False
+dcm-us-0027,32.55002,-97.07486,1,Aligned DFW-03,Aligned Data Centers,Mansfield,Texas,,,0.0,us-0442,True,False,False
+dcm-us-0028,40.04945575,-83.17596950000001,4,Amazon AWS CMH - 4600 Cosgray,Amazon AWS,Hilliard,Ohio,,,0.0,us-0398,True,False,False
+dcm-us-0029,40.0594539,-83.1342136,4,Amazon AWS CMH - 5113 Hayden,Amazon AWS,Hilliard,Ohio,,,0.3816,us-0178,True,False,False
+dcm-us-0030,40.01905589788036,-83.12445248769956,2,Amazon AWS CMH - Scioto Campus,Amazon AWS,Hilliard,Ohio,,,0.0,us-0432,True,False,False
+dcm-us-0031,45.798405472795594,-119.36270102463625,3,Amazon AWS PDX - 28803B Livestock,Amazon AWS,Hermiston,Oregon,,,0.0,us-0256,True,False,False
+dcm-us-0032,45.920558979538214,-119.2285387281142,3,Amazon AWS PDX - 34830 Wanapa,Amazon AWS,Umatilla,Oregon,,,0.0,us-0400,True,False,False
+dcm-us-0033,45.83721022667643,-119.69237514791621,2,Amazon AWS PDX - 79390 Olson,Amazon AWS,Boardman,Oregon,,,0.0,us-0321,True,False,False
+dcm-us-0034,45.88189151067181,-119.34113071847615,2,Amazon AWS PDX - 80817 Powerline,Amazon AWS,Umatilla,Oregon,,,0.0,us-0407,True,False,False
+dcm-us-0035,45.90330305,-119.32041805,2,Amazon AWS PDX - 81714 Lind,Amazon AWS,Hermiston,Oregon,,,0.0,us-0371,True,False,False
+dcm-us-0036,45.8103851,-119.2686601,1,Amazon AWS PDX - 982 Penney,Amazon AWS,Hermiston,Oregon,,,0.0,us-0433,True,False,False
+dcm-us-0037,32.543722,-96.7980062,1,Compass Red Oak Campus,Compass Datacenters,Red Oak,Texas,,360.0,0.0001,us-0311,True,False,False
+dcm-us-0038,33.13833066666667,-96.65825486666667,3,CyrusOne DFW3 - Allen,CyrusOne Data Centers,Allen,Texas,2017.0,62.0,0.2649,us-0135,True,True,True
+dcm-us-0039,33.08704092771105,-96.81565026359459,3,DataBank DFW3 - Plano,DataBank,Plano,Texas,,54.0,0.2084,us-0258,True,False,False
+dcm-us-0040,33.5006933,-86.8207532,1,DC BLOX Birmingham,DC BLOX Inc.,Birmingham,Alabama,2019.0,5.0,,,,True,True
+dcm-us-0041,34.913896329247414,-85.74716916278736,3,Google Jackson County Campus,Google,Bridgeport,Alabama,2018.0,,0.03,us-0260,True,True,True
+dcm-us-0042,39.7242626461674,-82.6902831163575,2,Google Lancaster - Building 1,Google,Lancaster,Ohio,,,0.0,us-0401,True,False,False
+dcm-us-0043,33.3531558,-111.6780931,1,Google Mesa - Phase 1,Google,Mesa,Arizona,,,0.0,us-0427,True,False,False
+dcm-us-0044,32.44210073014027,-97.0625364742346,1,Google Midlothian - Bldg 2,Google,Midlothian,Texas,,,0.0,us-0307,True,False,False
+dcm-us-0045,33.5194657,-86.8097904,1,Lumen Birmingham 1,Lumen,Birmingham,Alabama,,,,,,False,False
+dcm-us-0046,33.34365458220975,-87.03864563455572,1,QTS Bessemer Campus,QTS Data Centers,Bessemer,Alabama,,,,,,False,False
+dcm-us-0047,33.4116965,-112.3648315,3,Microsoft Goodyear Airpark Campus,Microsoft,Goodyear,Arizona,,,0.1665,us-0188,True,False,False
+dcm-us-0048,33.46272436666666,-111.9978701,3,QTS Phoenix 2 DC3,QTS Data Centers,Phoenix,Arizona,2024.0,,0.0,us-0372,True,True,False
+dcm-us-0049,38.80197257748208,-77.62131925717391,3,Village Place Technology Park Bldg 2,The BlackChamber Group,Gainesville,Virginia,,,0.0,us-0405,True,False,False
