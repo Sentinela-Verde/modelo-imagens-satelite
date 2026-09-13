@@ -1,4 +1,0 @@
-variante,features_removidas,n_features,pr_auc_modelo,pr_auc_dist,ganho_relativo_vs_dist,sitios_com_ganho,passa_criterio
-completo,-,20,0.295445,0.16132,0.831418,20,True
-sem_confianca,confianca_media_pre,19,0.289227,0.16132,0.792871,20,True
-sem_dist_centro,dist_centro_m,19,0.294173,0.16132,0.823533,20,True
