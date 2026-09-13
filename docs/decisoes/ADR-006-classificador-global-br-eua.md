@@ -246,14 +246,14 @@ direto", que é a alternativa (a).
 ### Reproduzir
 
 ```bash
-python dados-modelo-impacto/scripts/impacto_dc_27_lista_eua.py --fase lista
-python dados-modelo-impacto/scripts/impacto_dc_27_lista_eua.py --fase funil
-python dados-modelo-impacto/scripts/impacto_dc_28_datar_eua_dw.py --fase geometria
-python dados-modelo-impacto/scripts/impacto_dc_28_datar_eua_dw.py --fase datar
-python dados-modelo-impacto/scripts/impacto_dc_28_datar_eua_dw.py --fase funil
+python modelo-impacto/scripts/impacto_dc_27_lista_eua.py --fase lista
+python modelo-impacto/scripts/impacto_dc_27_lista_eua.py --fase funil
+python modelo-impacto/scripts/impacto_dc_28_datar_eua_dw.py --fase geometria
+python modelo-impacto/scripts/impacto_dc_28_datar_eua_dw.py --fase datar
+python modelo-impacto/scripts/impacto_dc_28_datar_eua_dw.py --fase funil
 ```
 
-Saídas em `dados-modelo-impacto/raw/controles-rf/`: `eua_campi.csv`,
+Saídas em `modelo-impacto/raw/controles-rf/`: `eua_campi.csv`,
 `eua_datas_derivadas.csv`, `eua_funil_completo.csv`.
 
 ## Alternativas consideradas
@@ -347,12 +347,12 @@ ou trocar a arquitetura, e nenhuma das duas cabe antes de 17/09.
 ```bash
 # controles com o candidato (Earth Engine) e o portão
 SENTINELA_MODELO_IMPACTO=rf_v2.0-dw \
-  python dados-modelo-impacto/scripts/impacto_dc_30_reclassificar_controles.py --fase rodar
-python dados-modelo-impacto/scripts/impacto_dc_29_estabilidade.py --fase medir
+  python modelo-impacto/scripts/impacto_dc_30_reclassificar_controles.py --fase rodar
+python modelo-impacto/scripts/impacto_dc_29_estabilidade.py --fase medir
 
 # tratamentos com o candidato (offline) e o cruzamento de instrumento
 python scripts/classificar_com_candidato.py
 SENTINELA_MODELO_IMPACTO=rf_v2.0-dw \
-  python dados-modelo-impacto/scripts/impacto_dc_26_analise_expandida.py --fase analise
-python dados-modelo-impacto/scripts/impacto_dc_41_cruzar_classificador.py
+  python modelo-impacto/scripts/impacto_dc_26_analise_expandida.py --fase analise
+python modelo-impacto/scripts/impacto_dc_41_cruzar_classificador.py
 ```

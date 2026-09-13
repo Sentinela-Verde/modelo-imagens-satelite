@@ -33,22 +33,24 @@ outputs/
 # retirada daqui para que não voltem como 1.361 linhas de "untracked" em todo `git status`.
 data/manifests/
 
-# modelo-impacto-score/ (frente criada em 2026-09-10, ver modelo-impacto-score/README.md): a regra
-# `outputs/` acima mira o output pesado do classificador (rasters classificados, GeoJSONs por
-# site x ano). Aqui `outputs/` são 6 CSVs de resultado somando poucos KB — boletim, placar de
-# modelos, faixas de projeção — que são a ENTREGA da frente, não material intermediário. Mesma
-# lógica da exceção de dados-modelo-impacto/raw/controles-rf/ mais abaixo.
-!modelo-impacto-score/outputs/
-!modelo-impacto-score/outputs/*.csv
+# modelo-impacto/ — a frente de impacto inteira, fundida em 2026-09-13 a partir de
+# `dados-modelo-impacto/` e `modelo-impacto-score/`. Se sobrou alguma regra com um desses dois
+# nomes em qualquer lugar deste arquivo, ela está morta: não casa com nada, e o efeito prático é
+# deixar entrar no git ~1.500 arquivos que deveriam estar ignorados.
+#
+# `outputs/`: a regra `outputs/` mais acima mira o output pesado do CLASSIFICADOR (rasters
+# classificados, GeoJSONs por site x ano). Os desta pasta são 6 CSVs de poucos KB — boletim,
+# placar de modelos, faixas de projeção — que são a ENTREGA da frente, não material
+# intermediário. Mesma lógica da exceção de raw/controles-rf/ mais abaixo.
+!modelo-impacto/outputs/
+!modelo-impacto/outputs/*.csv
 
-# dados-modelo-impacto/ — apoio de dados externos ao modelo de impacto do Guilherme (fora do
-# escopo do classificador deste repo, ver dados-modelo-impacto/README.md). raw/ fica de fora
-# (~7,5MB de respostas de API, reproduzível rodando os scripts de novo). processed/ é leve
-# (~384KB, é o resultado útil, mesma lógica de data/manifests/) — commitado.
+# `raw/` fica de fora (~7,5MB de respostas de API, reproduzível rodando os scripts de novo).
+# `processed/` é leve (~384KB, é o resultado útil, mesma lógica de data/manifests/) — commitado.
 # `raw/*` e não `raw/`: com a barra final o git trata o diretório como excluído e não desce nele,
 # o que torna impossível reabrir exceção para qualquer arquivo lá dentro. Excluindo o CONTEÚDO,
 # tudo segue ignorado como antes, mas as exceções abaixo passam a valer.
-dados-modelo-impacto/raw/*
+modelo-impacto/raw/*
 
 # Exceção para raw/controles-rf/ (rodada 2, 2026-09-05): a regra acima existe para dados BRUTOS
 # (respostas de API, rasters), mas esta pasta guarda também os RESULTADOS da rodada — a tabela de
@@ -56,13 +58,13 @@ dados-modelo-impacto/raw/*
 # é resultado útil, não insumo: mesma lógica que já mantém processed/ versionado. Ficam de fora,
 # ainda assim, os rasters classificados (*.tif já é ignorado globalmente), os manifests, o cache de
 # geocodificação e os checkpoints — esses são reproduzíveis rodando os scripts de novo.
-!dados-modelo-impacto/raw/controles-rf/
-dados-modelo-impacto/raw/controles-rf/*
-!dados-modelo-impacto/raw/controles-rf/*.md
-!dados-modelo-impacto/raw/controles-rf/*.csv
-!dados-modelo-impacto/raw/controles-rf/*.geojson
-!dados-modelo-impacto/raw/controles-rf/figuras/
-!dados-modelo-impacto/raw/controles-rf/figuras/*.png
+!modelo-impacto/raw/controles-rf/
+modelo-impacto/raw/controles-rf/*
+!modelo-impacto/raw/controles-rf/*.md
+!modelo-impacto/raw/controles-rf/*.csv
+!modelo-impacto/raw/controles-rf/*.geojson
+!modelo-impacto/raw/controles-rf/figuras/
+!modelo-impacto/raw/controles-rf/figuras/*.png
 
 # PNGs de apoio à rotulagem manual (SV-09/SV-09b): recortes RGB/falsa-cor por (site, ano) somam
 # ~120MB (SV-09, por site) / ~185MB (SV-09b, por estrato) e são regenerados em segundos via

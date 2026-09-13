@@ -19,9 +19,9 @@ Saída desejada: para um site novo, um **mapa de probabilidade** — "se constru
 manchas devem converter".
 
 Isso é diferente do que já existe. A **camada 2** do modelo de impacto
-(`modelo-impacto-score/scripts/02_explicacao.py`) pergunta *"quanto este SÍTIO vai converter?"* e
+(`modelo-impacto/scripts/score_02_explicacao.py`) pergunta *"quanto este SÍTIO vai converter?"* e
 falhou — 13 modelos, todos com R² LOOCV negativo
-(`modelo-impacto-score/outputs/explicacao_modelos.csv`). Este pergunta *"ONDE, dentro do sítio, vai
+(`modelo-impacto/outputs/explicacao_modelos.csv`). Este pergunta *"ONDE, dentro do sítio, vai
 converter?"*.
 
 A aposta é que a variação **dentro** de um sítio (perto de via, perto do que já é construído,
@@ -35,13 +35,13 @@ Tudo em disco, nada a baixar.
 
 | o que | onde | como abrir |
 |---|---|---|
-| rasters classificados (5 classes, uint8, 30 m) | `data/processed/classificado/{sensor}/{site}/{ano}.tif` e `dados-modelo-impacto/raw/controles-rf/classificado/...` | `C.caminho_classificado(sensor, site_id, ano)` |
+| rasters classificados (5 classes, uint8, 30 m) | `data/processed/classificado/{sensor}/{site}/{ano}.tif` e `modelo-impacto/raw/controles-rf/classificado/...` | `C.caminho_classificado(sensor, site_id, ano)` |
 | confiança do classificador (0–100) | mesmo caminho, sufixo `_confianca.tif` | `rasterio.open` |
 | features de 13 bandas | `data/interim/features/{sensor}/{site}/{ano}.tif` | só para sites oficiais; controles têm os intermediários **descartados** |
 | os 20 pares tratamento/controle | — | `P26.pares_unificados()` |
 | janela de 7 anos de cada par | — | `C.janela_anos(ano_inicio_obra)` |
 
-Helpers prontos, em `dados-modelo-impacto/scripts/`:
+Helpers prontos, em `modelo-impacto/scripts/`:
 
 ```python
 import impacto_dc_comum as C
@@ -157,8 +157,8 @@ sorte.
 ## 6. Saídas esperadas
 
 ```
-dados-modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py   # --fase dataset | treinar | avaliar
-dados-modelo-impacto/raw/controles-rf/
+modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py   # --fase dataset | treinar | avaliar
+modelo-impacto/raw/controles-rf/
     conversao_dataset.parquet          # pixels, features, rotulo, site_id (para o split)
     conversao_loso_resultado.csv       # por sitio retido: PR-AUC do modelo e dos 2 baselines
     conversao_importancias.csv         # importancia de feature

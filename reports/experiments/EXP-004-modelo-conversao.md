@@ -1,11 +1,11 @@
 # EXP-004 — Modelo de conversão por pixel (SV-40): onde, dentro do sítio, a conversão acontece?
 
 - **Data:** 2026-09-12
-- **Frente:** `dados-modelo-impacto/` (passo 40) — fora do escopo do classificador `src/sentinela/`
+- **Frente:** `modelo-impacto/` (passo 40) — fora do escopo do classificador `src/sentinela/`
 - **Especificação:** `docs/handoff-modelo-conversao-pixel.md`
-- **Script:** `dados-modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py`
+- **Script:** `modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py`
   (`--fase dataset | treinar | avaliar | ablacao`)
-- **Dataset:** `dados-modelo-impacto/raw/controles-rf/conversao_dataset.parquet`
+- **Dataset:** `modelo-impacto/raw/controles-rf/conversao_dataset.parquet`
 - **Seed:** 42 (`impacto_dc_comum.SEED`) em todo sorteio e treino
 
 ## 1. A pergunta
@@ -14,7 +14,7 @@ Um classificador binário por pixel: **dado um pixel e o contexto dele antes da 
 probabilidade de ele virar área construída nos anos seguintes?**
 
 É uma pergunta diferente da que já falhou. A camada 2 do modelo de impacto
-(`modelo-impacto-score/scripts/02_explicacao.py`) pergunta *quanto este SÍTIO vai converter* e não
+(`modelo-impacto/scripts/score_02_explicacao.py`) pergunta *quanto este SÍTIO vai converter* e não
 se sustentou — 13 modelos, todos com R² LOOCV negativo, permutação p=0,77. Aqui a pergunta é
 *ONDE, dentro do sítio, vai converter*. A aposta é que a variação **dentro** de um sítio seja
 aprendível mesmo quando a variação **entre** sítios não é; as duas coisas são independentes.
@@ -325,10 +325,10 @@ são independentes e agora estão medidas as duas.
 ## 14. Reprodução
 
 ```bash
-python dados-modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py --fase dataset   # ~30 s
-python dados-modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py --fase treinar   # ~18 min
-python dados-modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py --fase avaliar   # ~3 min
-python dados-modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py --fase ablacao   # ~34 min
+python modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py --fase dataset   # ~30 s
+python modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py --fase treinar   # ~18 min
+python modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py --fase avaliar   # ~3 min
+python modelo-impacto/scripts/impacto_dc_40_modelo_conversao.py --fase ablacao   # ~34 min
 ```
 
 Zero rede: tudo lê os rasters classificados que já estão em disco desde o passo 4. Seed 42 em todo
