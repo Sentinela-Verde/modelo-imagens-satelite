@@ -71,8 +71,8 @@ Achado contraintuitivo registrado: **a resolução melhorou 33× e o poder estat
 ## Entregáveis
 
 - `scripts/reproduzir_impacto.py` — 41 passos declarados (15 de rede), **26 offline em ~4 min**, um comando, determinístico
-- `modelo-impacto-score/reports/sumario-executivo.md` — 1 página, sem um p-valor no corpo
-- `modelo-impacto-score/reports/relatorio-impacto.md` — técnico, com a reconciliação das evidências que pareciam discordar e o registro do bug acima
+- `modelo-impacto/reports/sumario-executivo.md` — 1 página, sem um p-valor no corpo
+- `modelo-impacto/reports/relatorio-impacto.md` — técnico, com a reconciliação das evidências que pareciam discordar e o registro do bug acima
 - **`notebooks/04_demo_visual_classificador.ipynb`** — o modelo funcionando com imagem de satélite: RGB → falsa-cor → classificação, série ano a ano, mapa de confiança, anéis de medição, e uma célula interativa
 - `notebooks/03_status_e_proximos_passos.ipynb` — retrato de estado
 - `notebooks/02_impacto_score.ipynb` — demo do modelo de impacto

@@ -94,6 +94,51 @@ TETO_POR_CLASSE_SITE_ANO_SENSOR = 8000  # default histórico (v0.1, 3 sites) —
 # Grade em que o teto nominal é expresso: a mais fina da pipeline (S2, 10 m).
 RESOLUCAO_BASE_TETO_M = 10
 
+_FONTES_LABEL = {
+    "mapbiomas": "mapbiomas_coleção9_anual (ADR-004 opção b) + worldcover_crosscheck_2021",
+    "dynamic_world": "dynamic_world_v1 (ADR-006 §2), composto anual por moda",
+}
+
+
+def _descricao_regra_peso_label() -> str:
+    """Descreve a regra de `peso_label` que ESTE dataset aplicou.
+
+    A mecânica é a mesma nas duas fontes (`peso_label`), mas o que ela produz não é: o
+    MapBiomas tem safra defasada em 2024/2025 e um crosscheck com o WorldCover em 2021; o
+    Dynamic World é anual nativo e não tem crosscheck, então `distancia_safra` é sempre 0 e
+    nenhum pixel entra com peso 0.5.
+    """
+    fonte = (SETTINGS.params().get("labels") or {}).get("fonte_principal", "mapbiomas")
+    if fonte == "dynamic_world":
+        return (
+            "peso_label = 1/(1+distancia_safra) x (1.0 se concorda no crosscheck, senão 0.5). "
+            "Com o Dynamic World (ADR-006 §2) os dois redutores ficam inativos: a fonte é anual "
+            "nativa em todo o período do dataset (distancia_safra=0) e não há verificação "
+            "cruzada com uma segunda fonte. Todo pixel automático entra com peso 1.0; só a "
+            "rotulagem manual complementar da classe 3 carrega peso diferente."
+        )
+    return (
+        "peso_label = 1/(1+distancia_safra) x (1.0 se concorda com WorldCover no ano de "
+        "verificação cruzada 2021, senão 0.5). Fonte é anual (MapBiomas, ADR-004 opção b): "
+        "distancia_safra=0 e peso_label=1.0 na grande maioria dos casos (2013-2023, exceto "
+        "2021 discordante). As duas exceções documentadas: (a) 2024/2025 replicam a banda "
+        "classification_2023 (Coleção 9 não cobre esses anos) -> distancia_safra=1 ou 2, "
+        "peso reduzido; (b) 2021 tem verificação cruzada com WorldCover -> pixels "
+        "discordantes (~29-33% dos válidos, ver ADR-004) entram com peso 0.5 em vez de "
+        "serem descartados."
+    )
+
+
+def _descricao_fonte_label() -> str:
+    """Descreve a fonte de rótulo que ESTE dataset usou, lida de `params.yml`.
+
+    Já esteve fixa na string do MapBiomas, e por isso o manifest do `dataset_v2.0` — que é
+    rotulado pelo Dynamic World — declarava a fonte errada. Um campo de proveniência que
+    mente é pior que um campo ausente: o notebook 06 imprime este valor como se fosse fato.
+    """
+    fonte = (SETTINGS.params().get("labels") or {}).get("fonte_principal", "mapbiomas")
+    return _FONTES_LABEL.get(fonte, fonte)
+
 
 def teto_por_area(teto_nominal: int, resolucao_m: int) -> int:
     """Teto de amostragem equalizado por ÁREA, não por contagem de pixel (ADR-006 §3).
@@ -1095,7 +1140,7 @@ def construir_manifest(df: pd.DataFrame, stats: dict[str, Any], *, versao: str, 
         "sites": sorted(df["site_id"].unique().tolist()),
         "anos": sorted(int(a) for a in df["ano"].unique().tolist()),
         "sensores": sorted(df["sensor"].unique().tolist()),
-        "fonte_label": "mapbiomas_coleção9_anual (ADR-004 opção b) + worldcover_crosscheck_2021",
+        "fonte_label": _descricao_fonte_label(),
         "seed": seed,
         "regra_split": (
             "bloco_id = grade regular de 1km x 1km sobre coordenadas projetadas (x, y) em "
@@ -1118,24 +1163,18 @@ def construir_manifest(df: pd.DataFrame, stats: dict[str, Any], *, versao: str, 
             "temporal em SV-12 — não substitui nem sobrepõe o split por bloco, que continua "
             "sendo a única fonte de verdade da coluna `split`."
         ),
-        "regra_peso_label": (
-            "peso_label = 1/(1+distancia_safra) x (1.0 se concorda com WorldCover no ano de "
-            "verificação cruzada 2021, senão 0.5). Fonte é anual (MapBiomas, ADR-004 opção b): "
-            "distancia_safra=0 e peso_label=1.0 na grande maioria dos casos (2013-2023, exceto "
-            "2021 discordante). As duas exceções documentadas: (a) 2024/2025 replicam a banda "
-            "classification_2023 (Coleção 9 não cobre esses anos) -> distancia_safra=1 ou 2, "
-            "peso reduzido; (b) 2021 tem verificação cruzada com WorldCover -> pixels "
-            "discordantes (~29-33% dos válidos, ver ADR-004) entram com peso 0.5 em vez de "
-            "serem descartados."
-        ),
+        "regra_peso_label": _descricao_regra_peso_label(),
         "erosao": erosao_manifest,
         "amostragem": {
             "teto_por_classe_site_ano_sensor": stats.get("teto", TETO_POR_CLASSE_SITE_ANO_SENSOR),
             "erosao_borda_px": 1,
             "observacao": (
-                "teto por sensor (não proporcional à contagem de pixels) — um pixel Landsat de "
-                "30m cobre 9x a área de um pixel S2 de 10m; teto proporcional faria a era "
-                "moderna dominar o dataset ~9:1."
+                f"teto equalizado por ÁREA (ADR-006 §3, `teto_por_area`): o valor nominal vale "
+                f"na grade de {RESOLUCAO_BASE_TETO_M} m e é dividido pelo quadrado da razão de "
+                f"resolução nos demais sensores, de modo que o mesmo teto represente a mesma "
+                f"área no chão. O teto por contagem bruta de pixel — usado até o dataset_v1.0 — "
+                f"fazia a classe 3 nunca encher a cota no Landsat e o modelo aprender o prior "
+                f"condicionado ao sensor."
             ),
             "justificativa_teto": (
                 f"v0.1 usava teto=8000 fixo (3 sites), linear no nº de AOIs. Aplicado às AOIs "

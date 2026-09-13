@@ -1,0 +1,13 @@
+recorte,zona,assinatura,n_pares,n_positivo,frac_positivo,p_unilateral,excesso_mediano_pp
+so_validados,0-0.5km,virou_construida,8,7,0.875,0.0352,2.2694
+so_validados,0-0.5km,vegetacao_para_construida,8,6,0.75,0.1445,0.4197
+so_validados,0.5-1km,virou_construida,10,8,0.8,0.0547,2.204
+so_validados,0.5-1km,vegetacao_para_construida,10,8,0.8,0.0547,1.0841
+so_validados,1-2km,virou_construida,10,8,0.8,0.0547,0.8547
+so_validados,1-2km,vegetacao_para_construida,10,8,0.8,0.0547,0.5154
+conjunto,0-0.5km,virou_construida,8,7,0.875,0.0352,2.2694
+conjunto,0-0.5km,vegetacao_para_construida,8,6,0.75,0.1445,0.4197
+conjunto,0.5-1km,virou_construida,10,8,0.8,0.0547,2.204
+conjunto,0.5-1km,vegetacao_para_construida,10,8,0.8,0.0547,1.0841
+conjunto,1-2km,virou_construida,10,8,0.8,0.0547,0.8547
+conjunto,1-2km,vegetacao_para_construida,10,8,0.8,0.0547,0.5154
