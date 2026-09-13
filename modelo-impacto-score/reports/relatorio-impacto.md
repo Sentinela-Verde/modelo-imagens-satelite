@@ -99,6 +99,7 @@ Esta é a seção que decide se o trabalho vale. Nove verificações independent
 | **Robustez temporal** (passo 35) | sobrevive a exigir 3 anos em vez de 2? | **PASSOU** ✓ |
 | **Estudo de evento + janela longa** (passos 18, 20) | quando acontece, e persiste? | **INCONCLUSIVO** ⚠ |
 | **Validação cruzada** (passo 24) | outro classificador reproduz? | **NÃO REPLICA** ✗ |
+| **Origem da discordância** (passo 41) | é o rótulo ou o modelo? | **É O MODELO** — o rótulo está descartado |
 | **Robustez à confiança** (passo 35) | sobrevive a filtrar pixels incertos? | **NÃO SOBREVIVE** ✗ |
 
 **Duas verificações falham, e elas são a parte mais importante desta seção.** As duas
@@ -164,8 +165,34 @@ magnitude fica ~5× menor.
 
 **A discordância não é de resolução.** Degradamos o DW de 10 m para 30 m por moda de bloco
 3×3 — mesmo rótulo, só a grade muda — e a mediana não se move (+0,326 → +0,325 p.p.). Se
-fosse resolução, o DW degradado teria caminhado para o nosso +1,589. A causa é rótulo ou
-modelo.
+fosse resolução, o DW degradado teria caminhado para o nosso +1,589.
+
+**E também não é o rótulo — é o modelo.** Essa frase dizia "é rótulo ou modelo" e ficou sem
+resposta até o passo 41, que separa as duas coisas com um terceiro instrumento: o
+`rf_v2.0-dw`, que é o **mesmo algoritmo, na mesma grade, nos mesmos pixels**, treinado com
+rótulo do Dynamic World em vez do MapBiomas. Só uma variável muda de cada vez. Nos **mesmos
+10 pares**, anel de 0,5–1 km:
+
+| instrumento | rótulo | modelo | positivos | p | mediana |
+|---|---|---|---:|---:|---:|
+| `rf_v1.0-tuned` | MapBiomas | nosso RF | 10/10 | 0,0010 | +1,589 p.p. |
+| `rf_v2.0-dw` | **Dynamic World** | nosso RF | 8/10 | 0,0547 | **+2,204 p.p.** |
+| `dynamic_world` | Dynamic World | **CNN do Google** | 6/10 | 0,3770 | **+0,180 p.p.** |
+
+Trocar **só o rótulo** não encolhe o efeito — ele **aumenta** (+1,589 → +2,204). Trocar o
+**modelo** colapsa o efeito **12×**. A hipótese de que o nosso classificador inflava o achado
+por causa do rótulo do MapBiomas está medida e descartada.
+
+> **O p do `rf_v2.0-dw` cai sem que a magnitude caia, e isso não é contradição.** O teste de
+> sinal conta sinais e joga a magnitude fora; com n=10 ele exige 9/10 para p<0,05. Os dois
+> campi que trocam de lado são **exatamente os dois de menor efeito** no v1.0 —
+> `ascenty-osasco` (+0,390 p.p.) e `ascenty-vinhedo` (+0,056 p.p.). Perto de zero, trocar de
+> lado é ruído. Ler esse cruzamento só pelo p-valor leria errado o próprio dado.
+
+**O que isto não resolve:** qual dos dois está certo. Uma CNN com contexto espacial suaviza, e
+suavizar apaga conversão pequena real tão bem quanto apaga ruído. Os três instrumentos
+concordam na **direção** — mediana positiva nos três. A magnitude varia 12× entre eles, e é
+essa faixa, não um número só, que o trabalho sustenta.
 
 **(b) O nosso classificador é medidamente mais ruidoso.**
 

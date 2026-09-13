@@ -56,9 +56,11 @@ import impacto_dc_14_footprint_vs_anel as P14  # noqa: E402
 
 ZONAS = [("0-0.5km", 0.0, 0.5), ("0.5-1km", 0.5, 1.0), ("1-2km", 1.0, 2.0)]
 SAIDA_FP = C.DIR_SAIDA / "expansao_footprints.csv"
-SAIDA = C.DIR_SAIDA / "analise_expandida.csv"
-SAIDA_RESUMO = C.DIR_SAIDA / "analise_expandida_resumo.csv"
-SAIDA_FIGURA = C.DIR_FIGURAS / "fig_18_analise_expandida.png"
+# Carimbadas com o classificador: com o modelo de produção o nome não muda; com um candidato
+# ganham o sufixo dele, para não sobrescrever a tabela que sustenta os números publicados.
+SAIDA = C.saida_do_modelo(C.DIR_SAIDA / "analise_expandida.csv")
+SAIDA_RESUMO = C.saida_do_modelo(C.DIR_SAIDA / "analise_expandida_resumo.csv")
+SAIDA_FIGURA = C.saida_do_modelo(C.DIR_FIGURAS / "fig_18_analise_expandida.png")
 # Mesmo diretório do passo 13 de propósito: `P14.poligono_do_cache` lê de um caminho fixo
 # (`raw/controles-rf/osm/{site_id}.json`). Os site_id são distintos (`exp-*`), então não há
 # colisão — e reusar o diretório é o que faz a máscara de footprint funcionar para os novos.

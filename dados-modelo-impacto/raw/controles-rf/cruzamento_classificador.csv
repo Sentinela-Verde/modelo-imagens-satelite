@@ -1,0 +1,11 @@
+recorte,zona,modelo,n_pares,n_positivo,frac_positivo,p_unilateral,excesso_mediano_pp
+mesmos_pares,0-0.5km,rf_v1.0-tuned,10,9,0.9,0.0107,1.8713
+mesmos_pares,0-0.5km,rf_v2.0-dw,10,8,0.8,0.0547,2.0665
+amostra_publicada,0-0.5km,rf_v1.0-tuned,20,15,0.75,0.0207,1.4904
+mesmos_pares,0.5-1km,rf_v1.0-tuned,10,10,1.0,0.001,1.5885
+mesmos_pares,0.5-1km,rf_v2.0-dw,10,8,0.8,0.0547,2.204
+mesmos_pares,0.5-1km,dynamic_world,10,6,0.6,0.377,0.1802
+amostra_publicada,0.5-1km,rf_v1.0-tuned,20,18,0.9,0.0002,1.054
+mesmos_pares,1-2km,rf_v1.0-tuned,10,6,0.6,0.377,0.6237
+mesmos_pares,1-2km,rf_v2.0-dw,10,8,0.8,0.0547,0.8547
+amostra_publicada,1-2km,rf_v1.0-tuned,20,13,0.65,0.1316,0.6237

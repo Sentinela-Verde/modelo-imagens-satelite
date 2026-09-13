@@ -34,6 +34,7 @@ pronto (`models/rf_v1.0-tuned.joblib`), que é a relação correta entre as duas
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 import time
@@ -51,11 +52,16 @@ class Passo:
     descricao: str
     regime: str                       # "rede" | "analise"
     args: list[str] = field(default_factory=list)
+    # Variáveis de ambiente do passo. Hoje só `SENTINELA_MODELO_IMPACTO`, que manda a cadeia
+    # medir com um classificador candidato em vez do de produção — sem ela, os passos 30 e 41
+    # reclassificariam por cima dos artefatos do `rf_v1.0-tuned`.
+    env: dict[str, str] = field(default_factory=dict)
 
     @property
     def rotulo(self) -> str:
         extra = f" {' '.join(self.args)}" if self.args else ""
-        return f"{self.ordem} {self.script.name}{extra}"
+        prefixo = "".join(f"{k}={v} " for k, v in self.env.items())
+        return f"{self.ordem} {prefixo}{self.script.name}{extra}"
 
 
 def _dmi(nome: str) -> Path:
@@ -133,6 +139,72 @@ PLANO: list[Passo] = [
           "data da obra pelo DW dentro do footprint", "rede", ["--fase", "datar"]),
     Passo("28c", _dmi("impacto_dc_28_datar_eua_dw.py"), "funil completo e portão do §6",
           "analise", ["--fase", "funil"]),
+
+    # --------------------------------------- portão do ADR-006 §4 (trocar o classificador)
+    # O §4 é o critério que decide adoção de um classificador retreinado: instabilidade
+    # temporal nos controles, medida sobre os MESMOS pixels e anos em todos os instrumentos.
+    # A ordem aqui não é decorativa — 30 produz os rasters que 29 mede, e 29 sem eles só
+    # compara os instrumentos que já estão em disco.
+    Passo("30", _dmi("impacto_dc_30_reclassificar_controles.py"),
+          "reclassifica os controles com o candidato (Earth Engine)", "rede",
+          ["--fase", "rodar"], {"SENTINELA_MODELO_IMPACTO": "rf_v2.0-dw"}),
+    Passo("29", _dmi("impacto_dc_29_estabilidade.py"),
+          "instabilidade temporal — o critério §4", "analise", ["--fase", "medir"]),
+
+    # ------------------------------------- portão do ADR-006 §6 (expansão para os EUA)
+    Passo("31", _dmi("impacto_dc_31_lista_mestra.py"),
+          "lista mestra Brasil + EUA, com procedência", "analise", ["--fase", "montar"]),
+    Passo("32a", _dmi("impacto_dc_32_datar_landsat.py"),
+          "série Landsat dentro do footprint", "rede", ["--fase", "serie"]),
+    Passo("32b", _dmi("impacto_dc_32_datar_landsat.py"),
+          "valida a datação contra as datas conhecidas", "analise", ["--fase", "validar"]),
+    Passo("32c", _dmi("impacto_dc_32_datar_landsat.py"),
+          "data da obra por Landsat (alcança antes de 2016)", "analise", ["--fase", "datar"]),
+    Passo("33a", _dmi("impacto_dc_33_ingerir_eua.py"),
+          "ingere o datacentermap americano", "analise", ["--fase", "ingerir"]),
+    Passo("33b", _dmi("impacto_dc_33_ingerir_eua.py"),
+          "funil EUA com greenfield explícito", "analise", ["--fase", "funil"]),
+    Passo("34", _dmi("impacto_dc_34_parear_eua.py"),
+          "pareia controles americanos via Dynamic World", "rede", ["--fase", "parear"]),
+
+    # ---------------------------------------------------------------- robustez e alcance
+    Passo("35", _dmi("impacto_dc_35_robustez_ruido.py"),
+          "superfície de robustez: o achado sobrevive a exigir mais?", "analise",
+          ["--fase", "medir"]),
+    Passo("36a", _dmi("impacto_dc_36_descritivo.py"),
+          "descritivo de 612 campi nas Américas (Earth Engine)", "rede", ["--fase", "medir"]),
+    Passo("36b", _dmi("impacto_dc_36_descritivo.py"),
+          "relatório descritivo, sem afirmação causal", "analise", ["--fase", "relatar"]),
+    Passo("37a", _dmi("impacto_dc_37_gradiente_5km.py"),
+          "gradiente de distância até 5 km", "analise", ["--fase", "medir"]),
+    Passo("37b", _dmi("impacto_dc_37_gradiente_5km.py"),
+          "placebo nos mesmos anéis de 5 km", "analise", ["--fase", "placebo"]),
+
+    # ------------------------------------------------- modelo 4 (WIP, não é entregável)
+    # Aprovado no critério do handoff e arquivado por decisão do grupo — ver ENTREGAVEIS.md.
+    # Fica no plano porque o código existe e precisa continuar reproduzível; quem só quer
+    # conferir os números do relatório pode pular (`--ate 37b`).
+    Passo("40a", _dmi("impacto_dc_40_modelo_conversao.py"),
+          "modelo 4: monta o dataset por pixel", "analise", ["--fase", "dataset"]),
+    Passo("40b", _dmi("impacto_dc_40_modelo_conversao.py"),
+          "modelo 4: treina", "analise", ["--fase", "treinar"]),
+    Passo("40c", _dmi("impacto_dc_40_modelo_conversao.py"),
+          "modelo 4: avalia sob leave-one-site-out", "analise", ["--fase", "avaliar"]),
+    Passo("40d", _dmi("impacto_dc_40_modelo_conversao.py"),
+          "modelo 4: ablação de features", "analise", ["--fase", "ablacao"]),
+
+    # ------------------------------------------- cruzamento de classificador (passo 41)
+    # Precisa dos rasters de TRATAMENTO do candidato, que `sentinela.predict` gera a partir
+    # das features já em disco — sem rede. O passo 26 roda de novo, agora com o candidato,
+    # e escreve em `analise_expandida__rf_v2.0-dw.csv`, nunca por cima do publicado.
+    Passo("41a", RAIZ / "scripts" / "classificar_com_candidato.py",
+          "classifica os tratamentos com o candidato (offline)", "analise"),
+    Passo("41b", _dmi("impacto_dc_26_analise_expandida.py"),
+          "refaz o achado com o candidato", "analise", ["--fase", "analise"],
+          {"SENTINELA_MODELO_IMPACTO": "rf_v2.0-dw"}),
+    Passo("41c", _dmi("impacto_dc_41_cruzar_classificador.py"),
+          "o mesmo teste, os mesmos pares, dois classificadores", "analise"),
+
     # ---------------------------------------------------------------- modelo de score
     Passo("S1", _mis("01_boletim.py"), "camada 1 — boletim por eixo", "analise"),
     Passo("S2", _mis("02_explicacao.py"), "camada 2 — poder preditivo (LOOCV)", "analise"),
@@ -163,7 +235,8 @@ def executar(passos: list[Passo], parar_no_erro: bool) -> int:
             continue
         print(f"\n[{i}/{len(passos)}] {p.rotulo} — {p.descricao}")
         t0 = time.time()
-        r = subprocess.run([PY, str(p.script), *p.args], cwd=RAIZ)
+        ambiente = {**os.environ, **p.env} if p.env else None
+        r = subprocess.run([PY, str(p.script), *p.args], cwd=RAIZ, env=ambiente)
         dt = time.time() - t0
         if r.returncode == 0:
             print(f"    OK ({dt:.0f}s)")

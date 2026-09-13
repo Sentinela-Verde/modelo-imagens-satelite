@@ -25,8 +25,13 @@ outputs/
 
 # Exceções explícitas: estes SÃO versionados mesmo estando sob data/ ou sendo gerados
 !data/labels_manual/
-!data/manifests/
 !.gitkeep
+
+# `data/manifests/` foi versionado até 2026-09-12, quando saiu do git na limpeza da árvore: são
+# 1.361 arquivos de proveniência de rasters que o git também não guarda, então o inventário
+# sozinho não reproduz nada. Continuam sendo escritos em disco normalmente — a exceção foi
+# retirada daqui para que não voltem como 1.361 linhas de "untracked" em todo `git status`.
+data/manifests/
 
 # modelo-impacto-score/ (frente criada em 2026-09-10, ver modelo-impacto-score/README.md): a regra
 # `outputs/` acima mira o output pesado do classificador (rasters classificados, GeoJSONs por

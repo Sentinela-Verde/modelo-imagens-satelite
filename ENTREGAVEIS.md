@@ -49,6 +49,7 @@ com `python -m sentinela.gee.landsat` / `.sentinel2` / `.labels`, ou vêm do S3 
 | 10 | Boletim de impacto por eixo | análise | CSV | `modelo-impacto-score/outputs/boletim_por_eixo.csv` |
 | 11 | Selos de evidência | análise | CSV | `modelo-impacto-score/outputs/selos_de_evidencia.csv` |
 | 12 | Área por classe (indicadores) | modelo 1 | CSV | `outputs/indicadores/area_por_classe.csv` |
+| 13 | **Os classificadores treinados** | `sentinela.train` | joblib comprimido | **S3** — ver abaixo |
 
 ### ⚠ O item 5 não é JSON
 
@@ -63,6 +64,25 @@ GeoTIFF**, não um JSON:
 Um `.tif` de 13 bandas `float32` por site/ano. JSON não serviria: são 111 mil pixels × 13
 valores por arquivo, e o alinhamento pixel a pixel com o rótulo depende da grade
 georreferenciada — que só o GeoTIFF carrega.
+
+### O item 13 — onde os modelos moram, e qual é qual
+
+Os `.joblib` não cabem no git (6,5 GB e 3,7 GB sem compressão). Comprimidos com `compress=3` e
+conferidos pixel a pixel contra o original, estão em:
+
+```
+s3://plataforma-artifacts-149465616406-us-east-1-an/models/
+  ├── manifest.json           ← leia este primeiro
+  ├── rf_v1.0-tuned.joblib    2,33 GB   PRODUÇÃO
+  └── rf_v2.0-dw.joblib       1,31 GB   candidato melhor, reprovado no critério de adoção
+```
+
+**São duas versões do mesmo modelo, e a melhor não é a de produção.** O `rf_v2.0-dw` ganha em
+toda métrica de acurácia (macro-F1 0,776 → 0,828; F1 da classe 3 0,580 → **0,804**), mas o
+critério que decide adoção neste projeto não é acurácia — é estabilidade temporal em terreno onde
+nada mudou (`ADR-006 §4`). Nesse eixo ele melhora de 17,5% para 13,1% e ainda assim não alcança a
+barra, que são os 7,2% do próprio Dynamic World. O `manifest.json` no bucket conta essa história
+inteira; sem ele, quem baixar os dois escolhe pelo número errado.
 
 ### O que cabe no git e o que não cabe
 

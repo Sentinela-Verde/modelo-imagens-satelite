@@ -214,16 +214,44 @@ def _caminho_manifest_features(sensor_token: str, site_id: str, ano: int) -> Pat
     return SETTINGS.manifests_dir / f"features_{sensor_token}_{site_id}_{ano}.json"
 
 
+# Token do diretório de saída. `classificado` é o de PRODUÇÃO — o que a etapa de Indicadores e
+# toda a análise de impacto publicada leem. Um modelo candidato precisa escrever em outro lugar,
+# senão classificar com ele apaga os rasters em que os números publicados se apoiam, e o apagão é
+# silencioso: o .tif novo tem o mesmo nome do antigo. Ver `--saida-token`.
+TOKEN_SAIDA_PADRAO = "classificado"
+_token_saida = TOKEN_SAIDA_PADRAO
+
+
+def definir_token_saida(token: str) -> None:
+    """Redireciona a saída da inferência para `data/processed/<token>/`.
+
+    Usado por `--saida-token` e pela frente de impacto quando ela avalia um classificador
+    candidato (ADR-006 §4) sem invalidar os artefatos do de produção.
+    """
+    global _token_saida
+    if not token or "/" in token or "\\" in token or token in (".", ".."):
+        raise ValueError(f"token de saída inválido: {token!r}")
+    _token_saida = token
+
+
 def _caminho_saida(sensor_token: str, site_id: str, ano: int) -> Path:
-    return SETTINGS.processed_dir / "classificado" / sensor_token / site_id / f"{ano}.tif"
+    return SETTINGS.processed_dir / _token_saida / sensor_token / site_id / f"{ano}.tif"
 
 
 def _caminho_saida_confianca(sensor_token: str, site_id: str, ano: int) -> Path:
-    return SETTINGS.processed_dir / "classificado" / sensor_token / site_id / f"{ano}_confianca.tif"
+    return SETTINGS.processed_dir / _token_saida / sensor_token / site_id / f"{ano}_confianca.tif"
 
 
 def _caminho_manifest_saida(sensor_token: str, site_id: str, ano: int) -> Path:
-    return SETTINGS.manifests_dir / f"classificado_{sensor_token}_{site_id}_{ano}.json"
+    """Manifest da inferência.
+
+    Fora da produção o token entra no nome: `sentinela.export_indicadores` varre
+    `classificado_*.json` e trataria o manifest de um candidato como se fosse de produção,
+    reportando à etapa de Indicadores um raster que não é o que ela lê.
+    """
+    if _token_saida == TOKEN_SAIDA_PADRAO:
+        return SETTINGS.manifests_dir / f"classificado_{sensor_token}_{site_id}_{ano}.json"
+    return SETTINGS.manifests_dir / f"{_token_saida}_{sensor_token}_{site_id}_{ano}.json"
 
 
 def _anos_disponiveis(sensor_token: str, site_id: str) -> list[int]:
@@ -658,7 +686,14 @@ def checar_continuidade_eras(
 
 
 def _manifest_lote_path() -> Path:
-    return SETTINGS.manifests_dir / "execucao_lote_predict.json"
+    """Registro de retomada do lote — um por token de saída.
+
+    Compartilhar o registro entre o modelo de produção e um candidato faria o lote do candidato
+    "pular" itens que só existem classificados pelo outro modelo.
+    """
+    if _token_saida == TOKEN_SAIDA_PADRAO:
+        return SETTINGS.manifests_dir / "execucao_lote_predict.json"
+    return SETTINGS.manifests_dir / f"execucao_lote_predict_{_token_saida}.json"
 
 
 def _carregar_manifest_lote() -> dict[str, Any]:
@@ -691,8 +726,21 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--sensor", required=True, choices=["s2", "landsat", "all"])
     parser.add_argument("--site", default="all", help="site_id de config/sites.geojson, ou 'all'")
     parser.add_argument("--ano", default="all", help="ano, ou 'all'")
+    parser.add_argument(
+        "--saida-token",
+        default=TOKEN_SAIDA_PADRAO,
+        help=("subdiretório de data/processed/ que recebe os rasters. O padrão "
+              f"({TOKEN_SAIDA_PADRAO!r}) é o de produção — use outro (ex.: "
+              "'classificado-rf_v2.0-dw') para avaliar um modelo candidato sem sobrescrever "
+              "os rasters em que os números publicados se apoiam."),
+    )
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args(argv)
+
+    definir_token_saida(args.saida_token)
+    if args.saida_token != TOKEN_SAIDA_PADRAO:
+        print(f"Saída redirecionada: data/processed/{args.saida_token}/ "
+              f"(os rasters de produção em '{TOKEN_SAIDA_PADRAO}/' não são tocados)")
 
     modelo_path_arg = Path(args.modelo)
     modelo_path = modelo_path_arg if modelo_path_arg.is_absolute() else REPO_ROOT / modelo_path_arg

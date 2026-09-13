@@ -225,10 +225,24 @@ PREFIXO_EXPANSAO = "exp-"
 PREFIXOS_FORA_DO_OFICIAL = (PREFIXO_CONTROLE, PREFIXO_EXPANSAO)
 # Cada modelo escreve num diretorio proprio. O de producao mantem o caminho historico para
 # nao invalidar nada ja calculado; um candidato vai para `classificado-<versao>`.
-DIR_CLASSIFICADO_CONTROLES = DIR_SAIDA / (
+_TOKEN_CLASSIFICADO = (
     "classificado" if MODELO_VERSAO == "rf_v1.0-tuned" else f"classificado-{MODELO_VERSAO}"
 )
+DIR_CLASSIFICADO_CONTROLES = DIR_SAIDA / _TOKEN_CLASSIFICADO
+# O mesmo token vale para os sites de TRATAMENTO, em `data/processed/`. Precisa valer: durante
+# um tempo so os controles respeitavam MODELO_VERSAO e os tratamentos liam sempre o diretorio de
+# producao, de modo que rodar a cadeia com um candidato media controle-do-candidato contra
+# tratamento-do-v1.0 — dois instrumentos diferentes nos dois lados do par, sem aviso nenhum.
+DIR_CLASSIFICADO_TRATAMENTOS = SETTINGS.processed_dir / _TOKEN_CLASSIFICADO
 DIR_MANIFESTS_CONTROLES = DIR_SAIDA / "manifests"
+
+# `sentinela.predict` escreve num token global de modulo. Alinha-lo AQUI, no import, e o que
+# impede o pior acidente possivel desta frente: `rodar_ponto` pergunta "ja existe?" a
+# `caminho_classificado` (que respeita MODELO_VERSAO) e manda classificar via `predict` (que
+# nao respeitaria). Desalinhados, rodar um passo de rede com um candidato acharia o raster
+# ausente, reclassificaria, e gravaria a saida do CANDIDATO por cima do raster de PRODUCAO,
+# com o mesmo nome de arquivo e sem erro nenhum.
+mod_predict.definir_token_saida(_TOKEN_CLASSIFICADO)
 
 
 def eh_controle(site_id: str) -> bool:
@@ -244,7 +258,10 @@ def caminho_classificado(sensor_token: str, site_id: str, ano: int) -> Path:
     """Onde mora o raster classificado de um ponto.
 
     Sites de TRATAMENTO ficam em `data/processed/classificado/`, o diretório do classificador
-    principal — são os sites oficiais de `config/sites.geojson`.
+    principal — são os sites oficiais de `config/sites.geojson`. Com um modelo candidato
+    (`SENTINELA_MODELO_IMPACTO`), vão para `data/processed/classificado-<versao>/`: os dois lados
+    do par têm de ser medidos pelo MESMO instrumento, senão a diferença tratamento-controle
+    mistura o efeito com a troca de classificador.
 
     Pontos de CONTROLE ficam sob `dados-modelo-impacto/raw/controles-rf/classificado/`. A
     separação não é cosmética: `sentinela.export_indicadores` varre
@@ -256,7 +273,7 @@ def caminho_classificado(sensor_token: str, site_id: str, ano: int) -> Path:
     """
     if eh_controle(site_id):
         return DIR_CLASSIFICADO_CONTROLES / sensor_token / site_id / f"{ano}.tif"
-    return SETTINGS.processed_dir / "classificado" / sensor_token / site_id / f"{ano}.tif"
+    return DIR_CLASSIFICADO_TRATAMENTOS / sensor_token / site_id / f"{ano}.tif"
 
 
 def isolar_artefatos_de_controle(sensor_token: str, site_id: str, ano: int) -> int:
@@ -270,7 +287,7 @@ def isolar_artefatos_de_controle(sensor_token: str, site_id: str, ano: int) -> i
         return 0
 
     movidos = 0
-    origem_tif = SETTINGS.processed_dir / "classificado" / sensor_token / site_id / f"{ano}.tif"
+    origem_tif = DIR_CLASSIFICADO_TRATAMENTOS / sensor_token / site_id / f"{ano}.tif"
     destino_tif = caminho_classificado(sensor_token, site_id, ano)
     for sufixo in ("", "_confianca"):
         org = origem_tif.with_name(f"{ano}{sufixo}.tif")
@@ -284,7 +301,7 @@ def isolar_artefatos_de_controle(sensor_token: str, site_id: str, ano: int) -> i
 
     DIR_MANIFESTS_CONTROLES.mkdir(parents=True, exist_ok=True)
     padroes = [
-        f"classificado_{sensor_token}_{site_id}_{ano}.json",
+        f"{_TOKEN_CLASSIFICADO}_{sensor_token}_{site_id}_{ano}.json",
         f"features_{sensor_token}_{site_id}_{ano}.json",
         f"{sensor_token}_{site_id}_{ano}.json",
     ]
@@ -474,6 +491,20 @@ class Checkpoint:
 
 def carregar_modelo() -> dict[str, Any]:
     return mod_predict.carregar_modelo(MODELO_PATH)
+
+
+def saida_do_modelo(caminho: Path) -> Path:
+    """Caminho de saída carimbado com o classificador que a produziu.
+
+    Com o modelo de PRODUÇÃO o caminho não muda — os CSVs publicados mantêm o nome que o
+    relatório cita. Com um candidato (`SENTINELA_MODELO_IMPACTO`) o nome ganha o sufixo do
+    modelo, porque senão rodar a cadeia com o candidato sobrescreveria em silêncio a tabela
+    de onde saiu cada número já apresentado — e as duas teriam o mesmo nome, sem nada no
+    arquivo dizendo qual instrumento mediu.
+    """
+    if MODELO_VERSAO == "rf_v1.0-tuned":
+        return caminho
+    return caminho.with_name(f"{caminho.stem}__{MODELO_VERSAO}{caminho.suffix}")
 
 
 def salvar_csv(df: pd.DataFrame, caminho: Path) -> None:

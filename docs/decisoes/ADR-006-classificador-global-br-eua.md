@@ -100,6 +100,10 @@ consecutivos nos pontos de CONTROLE**, onde por construção quase nada mudou e 
 | Dynamic World | **7,3%** |
 | `rf_v1.0-tuned` (atual) | **16,8%** |
 
+> Estes dois números são os da primeira medição (passo 24) e ficam como registro do que motivou
+> o critério. A medição definitiva, restrita aos pares cobertos por **todos** os instrumentos
+> (passo 29), dá 7,21% e 17,54% — e é ela que o §8 usa para julgar o retreino.
+
 **O modelo atual é 2,3× mais instável que o DW.** Isso define o critério de aceite do retreino:
 
 > O modelo global só substitui o atual se ficar **abaixo de 7,3%** de instabilidade nos controles —
@@ -274,3 +278,81 @@ estudo, que é justamente o motivo de expandir.
   sites desérticos.
 - **Toda a análise de impacto precisa ser reexecutada.** Enquanto o retreino não fecha e não passa
   no critério de §4, o `rf_v1.0-tuned` continua sendo o modelo de produção.
+
+## 8. O portão do §4, medido — e ele também reprova
+
+Executado em 2026-09-11/12. O §4 dizia que o retreino só substitui o atual se ficar **abaixo da
+instabilidade do próprio rótulo que o treinou**. O retreino foi feito, o portão foi medido, e o
+resultado está aqui porque um critério que só se registra quando aprova não é critério.
+
+### O que o retreino entregou
+
+O `rf_v2.0-dw` implementa o §2 (rótulo Dynamic World, com o remapeamento) e o §3 (teto de
+amostragem por área). Em acurácia ele ganha em tudo:
+
+| | `rf_v1.0-tuned` | `rf_v2.0-dw` |
+|---|---:|---:|
+| macro-F1 (holdout espacial) | 0,776 | **0,828** |
+| F1 da classe 3 (solo exposto / obras) | 0,580 | **0,804** |
+| viés de sensor | presente (2,4% Landsat vs 19,3% S2) | **eliminado** |
+| features | 14 (inclui `sensor`) | **13** — `sensor` deixou de ser adotada |
+
+**O §2 acertou o diagnóstico da classe 3.** Ela era a pior do modelo porque o MapBiomas não tem
+classe de canteiro de obras e o rótulo era um proxy de solo nu natural. Trocar para uma fonte com
+`bare` nativo levou o F1 de 0,580 a 0,804 — o maior ganho isolado de todo o projeto.
+
+**O §3 acertou o diagnóstico do viés de sensor.** Com o teto equalizado por área, a diferença
+entre as variantes com e sem `sensor` caiu para +0,0024 de macro-F1, e o treino passou a adotar a
+variante **sem** — o atalho temporal que o `rf_v1.0-tuned` aprendia deixou de existir.
+
+### E mesmo assim reprova
+
+Instabilidade temporal nos 10 controles cobertos pelo DW, 58 pares de anos, **os mesmos pixels
+nos três instrumentos** (passo 29, `estabilidade_resumo.csv`):
+
+| instrumento | instabilidade |
+|---|---:|
+| `dynamic_world` (a barra) | **7,21%** |
+| `rf_v2.0-dw` | **13,09%** |
+| `rf_v1.0-tuned` | 17,54% |
+
+O retreino melhora 25% nesse eixo e continua **1,8× acima da barra**. Pelo critério deste ADR,
+escrito antes de haver número, o `rf_v2.0-dw` **não** substitui o `rf_v1.0-tuned`.
+
+### A hipótese que explica, e que não foi testada
+
+Estabilidade temporal parece vir em boa parte de **contexto espacial**, não da definição das
+classes. O Dynamic World é uma rede convolucional: a classe de um pixel depende da vizinhança
+dele. O nosso é um Random Forest por pixel com 13 features espectrais — não tem vizinhança
+nenhuma. Trocar o rótulo corrige **o que as classes significam** (e a classe 3 prova que
+corrige), mas não dá contexto ao modelo.
+
+Se isso estiver certo, nenhum retreino com a mesma arquitetura passa no §4, e a alternativa (a) —
+usar o DW direto — é o caminho. Testar exigiria features de vizinhança (textura, janelas móveis)
+ou trocar a arquitetura, e nenhuma das duas cabe antes de 17/09.
+
+### O que fica valendo
+
+1. **`rf_v1.0-tuned` continua em produção.** Todos os números publicados vêm dele.
+2. **`rf_v2.0-dw` fica arquivado e utilizável**, com o veredito colado nele. Os dois estão em
+   `s3://plataforma-artifacts-149465616406-us-east-1-an/models/`, com um `manifest.json` que diz
+   qual é qual e por quê — sem isso, quem pegasse o v2.0 concluiria pela acurácia que é o bom.
+3. **Os artefatos dos dois nunca se misturam.** Cada classificador escreve em diretório próprio
+   (`classificado-<versao>/`) e carimba os CSVs derivados com o próprio nome. Rodar a cadeia com
+   um candidato não pode sobrescrever o que sustenta os números apresentados — e isso agora é
+   propriedade do código, não disciplina de quem roda.
+
+### Reproduzir
+
+```bash
+# controles com o candidato (Earth Engine) e o portão
+SENTINELA_MODELO_IMPACTO=rf_v2.0-dw \
+  python dados-modelo-impacto/scripts/impacto_dc_30_reclassificar_controles.py --fase rodar
+python dados-modelo-impacto/scripts/impacto_dc_29_estabilidade.py --fase medir
+
+# tratamentos com o candidato (offline) e o cruzamento de instrumento
+python scripts/classificar_com_candidato.py
+SENTINELA_MODELO_IMPACTO=rf_v2.0-dw \
+  python dados-modelo-impacto/scripts/impacto_dc_26_analise_expandida.py --fase analise
+python dados-modelo-impacto/scripts/impacto_dc_41_cruzar_classificador.py
+```
