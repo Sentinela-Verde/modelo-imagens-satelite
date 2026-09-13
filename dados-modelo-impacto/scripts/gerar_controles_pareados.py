@@ -241,6 +241,9 @@ class CacheGeo:
         self.path.write_text(json.dumps(self.data, ensure_ascii=False, indent=2), encoding="utf-8")
 
     def geocode_municipio(self, municipio: str, uf: str) -> tuple[float, float] | None:
+        # `uf` vem do datacentermap e pode ser nulo (float nan) — `exp-odata-sp01` morreu
+        # com AttributeError aqui e custou um campus inteiro da expansao de 2026-09-10.
+        uf = (uf or "") if isinstance(uf, str) else ""
         chave = f"{_normalizar(municipio)}|{uf.upper()}"
         if chave in self.data["geocode_municipio"]:
             v = self.data["geocode_municipio"][chave]
@@ -293,6 +296,8 @@ class CacheGeo:
         return out
 
     def microrregiao(self, municipio: str, uf: str) -> str | None:
+        if not isinstance(uf, str) or not uf:
+            return None  # sem UF nao da para consultar o IBGE; o campus segue sem o filtro
         uf = uf.upper()
         if uf not in self.data["ibge_municipios_uf"]:
             try:
