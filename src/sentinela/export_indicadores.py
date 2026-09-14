@@ -95,7 +95,13 @@ SENSOR_TOKEN_TO_CANONICO = {"s2": "sentinel2", "landsat": "landsat"}
 # correção). Ver docstring do módulo e docs/schema-indicadores.md.
 FATOR_CORRECAO_SENSOR_PADRAO = 1.0
 
-FATOR_CORRECAO_SV20_PATH = REPO_ROOT / "data" / "manifests" / "fator_correcao_sensor_sv20.json"
+FATOR_CORRECAO_DIR = REPO_ROOT / "data" / "manifests"
+FATOR_CORRECAO_SV20_PATH = FATOR_CORRECAO_DIR / "fator_correcao_sensor_sv20.json"
+
+# Prefixo de diretório/manifest da classificação. `classificado` é a de PRODUÇÃO; a inferência
+# escreve num prefixo versionado (`classificado-<tag>`, via `predict --saida-token`) quando roda
+# um classificador que não é o de produção. Ver --token.
+TOKEN_PADRAO = "classificado"
 
 # Anos de sobreposição (Faixa A) — replicado de config/params.yml pra não fazer I/O extra só pra
 # isso; SE params.yml mudar essa lista, este módulo precisa mudar junto (mesmo risco que qualquer
@@ -172,15 +178,34 @@ def carregar_resolucoes() -> dict[str, int]:
     return {"s2": int(res["sentinel2"]), "landsat": int(res["landsat"])}
 
 
-def carregar_fator_correcao_sv20() -> dict[int, dict[str, Any]]:
+def caminho_fator_correcao(modelo_versao: str) -> Path:
+    """O JSON do fator do modelo pedido; cai no nome histórico (sem sufixo) quando o
+    versionado não existe — a guarda de `modelo_versao` em carregar_fator_correcao_sv20()
+    impede que o histórico seja aplicado a outra classificação."""
+    versionado = FATOR_CORRECAO_DIR / f"fator_correcao_sensor_sv20_{modelo_versao}.json"
+    return versionado if versionado.exists() else FATOR_CORRECAO_SV20_PATH
+
+
+def carregar_fator_correcao_sv20(modelo_versao: str) -> dict[int, dict[str, Any]]:
     """Lê `data/manifests/fator_correcao_sensor_sv20.json` (gerado por
     `python -m sentinela.validacao_sensores`) e retorna `{classe_id: {"tratamento": "b"|"c",
     "fator_por_site": {site_id: float}}}`. Se o arquivo não existir, retorna `{}` — todo
     `fator_correcao_sensor` fica `1.0` (comportamento anterior a SV-20, sem quebrar quem roda
     `export_indicadores` sem ter rodado `validacao_sensores` antes)."""
-    if not FATOR_CORRECAO_SV20_PATH.exists():
+    caminho = caminho_fator_correcao(modelo_versao)
+    if not caminho.exists():
         return {}
-    payload = json.loads(FATOR_CORRECAO_SV20_PATH.read_text(encoding="utf-8"))
+    payload = json.loads(caminho.read_text(encoding="utf-8"))
+    # O fator é calibrado SOBRE uma classificação. Aplicar o de outro modelo é erro silencioso
+    # — aconteceu com o rf_v2.0-dw, que saiu publicado com o fator do rf_v1.0-tuned.
+    calibrado_em = payload.get("modelo_versao")
+    if calibrado_em != modelo_versao:
+        raise ExportError(
+            f"{caminho} foi calibrado sobre '{calibrado_em}', mas a exportação é de "
+            f"'{modelo_versao}' — o fator de correção de sensor não é transferível entre "
+            f"classificações. Rode `python -m sentinela.validacao_sensores --modelo "
+            f"models/{modelo_versao}.joblib --token <prefixo>` antes."
+        )
     out: dict[int, dict[str, Any]] = {}
     for classe_id_str, info in payload.get("classes", {}).items():
         out[int(classe_id_str)] = {
@@ -223,8 +248,10 @@ class ItemRaster:
     manifest: dict[str, Any]
 
 
-def localizar_rasters(modelo_versao: str, site_filtro: str | None = None) -> list[ItemRaster]:
-    """Varre `data/manifests/classificado_{sensor}_{site}_{ano}.json` e retorna os itens cujo
+def localizar_rasters(
+    modelo_versao: str, site_filtro: str | None = None, token: str = TOKEN_PADRAO
+) -> list[ItemRaster]:
+    """Varre `data/manifests/{token}_{sensor}_{site}_{ano}.json` e retorna os itens cujo
     `modelo_versao` bate com o pedido, ordenados de forma determinística (site, ano, sensor).
 
     Falha explicitamente (não ignora silenciosamente) se algum manifest tiver `modelo_versao`
@@ -236,7 +263,7 @@ def localizar_rasters(modelo_versao: str, site_filtro: str | None = None) -> lis
     itens: list[ItemRaster] = []
     versoes_encontradas: set[str] = set()
 
-    for manifest_path in sorted(manifests_dir.glob("classificado_*.json")):
+    for manifest_path in sorted(manifests_dir.glob(f"{token}_*.json")):
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         versoes_encontradas.add(manifest.get("modelo_versao", "desconhecido"))
         if manifest.get("modelo_versao") != modelo_versao:
@@ -481,6 +508,13 @@ def main(argv: list[str] | None = None) -> int:
         "--site", default=None, help="restringe a um site_id só (default: todos os sites com raster)."
     )
     parser.add_argument(
+        "--token",
+        default=TOKEN_PADRAO,
+        help="prefixo da classificação a exportar (default: %(default)s = produção). Use o mesmo "
+        "token que a inferência usou em --saida-token para exportar uma classificação de "
+        "avaliação, ex.: classificado-rf_v2.0-dw.",
+    )
+    parser.add_argument(
         "--pular-geojson",
         action="store_true",
         help="gera só o CSV (artefato 1) — útil para iterar rápido; o GeoJSON (artefato 2) é "
@@ -490,19 +524,19 @@ def main(argv: list[str] | None = None) -> int:
 
     gerado_em = datetime.now(UTC).isoformat()
 
-    print(f"[export_indicadores] modelo_versao={args.modelo_versao} | gerado_em={gerado_em}")
+    print(f"[export_indicadores] modelo_versao={args.modelo_versao} | token={args.token} | gerado_em={gerado_em}")
 
     sites_meta = carregar_metadados_sites()
     resolucoes = carregar_resolucoes()
-    itens = localizar_rasters(args.modelo_versao, site_filtro=args.site)
+    itens = localizar_rasters(args.modelo_versao, site_filtro=args.site, token=args.token)
     print(f"[export_indicadores] {len(itens)} rasters classificados encontrados para exportar.")
 
-    fator_sv20 = carregar_fator_correcao_sv20()
+    fator_sv20 = carregar_fator_correcao_sv20(args.modelo_versao)
     if fator_sv20:
         resumo = {c: info["tratamento"] for c, info in fator_sv20.items()}
-        print(f"[export_indicadores] fator de correção SV-20 carregado de {FATOR_CORRECAO_SV20_PATH} — tratamento por classe: {resumo}")
+        print(f"[export_indicadores] fator de correção SV-20 carregado de {caminho_fator_correcao(args.modelo_versao)} — tratamento por classe: {resumo}")
     else:
-        print(f"[export_indicadores] {FATOR_CORRECAO_SV20_PATH} não encontrado — fator_correcao_sensor=1.0 em toda linha (rode `python -m sentinela.validacao_sensores` antes para propagar SV-20).")
+        print(f"[export_indicadores] {caminho_fator_correcao(args.modelo_versao)} não encontrado — fator_correcao_sensor=1.0 em toda linha (rode `python -m sentinela.validacao_sensores` antes para propagar SV-20).")
 
     # --- Artefato 1 -----------------------------------------------------------------------
     df = gerar_area_por_classe(itens, sites_meta, resolucoes, args.modelo_versao, gerado_em, fator_sv20)
