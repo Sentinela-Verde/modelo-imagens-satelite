@@ -85,6 +85,12 @@ ANO_PRE_SOBREPOSICAO = 2018  # última safra só-Landsat — usado para medir o 
 
 SENSOR_TOKEN_TO_CANONICO = {"s2": "sentinel2", "landsat": "landsat"}
 
+# Prefixo de diretório/manifest da classificação. `classificado` é a de PRODUÇÃO; a inferência
+# escreve num prefixo versionado (`classificado-<tag>`, via `predict --saida-token`) quando roda
+# um classificador que não é o de produção. Sem isso, esta validação só enxerga a produção — foi
+# exatamente o que fez o fator do `rf_v2.0-dw` nunca ter sido calibrado. Ver --token.
+TOKEN_PADRAO = "classificado"
+
 FATOR_AGREGACAO = 3  # 30 m / 10 m — verificado, não assumido às cegas (ver _validar_fator_agregacao)
 
 OUT_DIR = REPO_ROOT / "reports" / "figures" / "validacao_sensores"
@@ -113,20 +119,23 @@ def _sites_ativos() -> list[str]:
 # --------------------------------------------------------------------------------------------
 
 
-def _caminho_raster(sensor_token: str, site_id: str, ano: int) -> Path:
-    return SETTINGS.processed_dir / "classificado" / sensor_token / site_id / f"{ano}.tif"
+def _caminho_raster(sensor_token: str, site_id: str, ano: int, token: str = TOKEN_PADRAO) -> Path:
+    return SETTINGS.processed_dir / token / sensor_token / site_id / f"{ano}.tif"
 
 
-def _caminho_manifest(sensor_token: str, site_id: str, ano: int) -> Path:
-    return SETTINGS.manifests_dir / f"classificado_{sensor_token}_{site_id}_{ano}.json"
+def _caminho_manifest(sensor_token: str, site_id: str, ano: int, token: str = TOKEN_PADRAO) -> Path:
+    return SETTINGS.manifests_dir / f"{token}_{sensor_token}_{site_id}_{ano}.json"
 
 
-def _checar_modelo_versao(sensor_token: str, site_id: str, ano: int, modelo_versao: str) -> None:
-    manifest_path = _caminho_manifest(sensor_token, site_id, ano)
+def _checar_modelo_versao(
+    sensor_token: str, site_id: str, ano: int, modelo_versao: str, token: str = TOKEN_PADRAO
+) -> None:
+    manifest_path = _caminho_manifest(sensor_token, site_id, ano, token)
     if not manifest_path.exists():
         raise ValidacaoError(
             f"{manifest_path} não existe — rode `python -m sentinela.predict --modelo "
-            f"models/{modelo_versao}.joblib --sensor {sensor_token} --site {site_id} --ano {ano}` antes."
+            f"models/{modelo_versao}.joblib --sensor {sensor_token} --site {site_id} --ano {ano}` antes, "
+            f"ou confira --token (atual: {token!r})."
         )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if manifest.get("modelo_versao") != modelo_versao:
@@ -148,17 +157,19 @@ class ParSobreposicao:
     landsat_2018_tif: Path  # para o cálculo do degrau publicado (item 5 do enunciado)
 
 
-def localizar_pares(modelo_versao: str, sites: list[str] | None = None) -> list[ParSobreposicao]:
+def localizar_pares(
+    modelo_versao: str, sites: list[str] | None = None, token: str = TOKEN_PADRAO
+) -> list[ParSobreposicao]:
     sites = sites or _sites_ativos()
     pares: list[ParSobreposicao] = []
     for site_id in sites:
         for ano in ANOS_SOBREPOSICAO:
-            _checar_modelo_versao("landsat", site_id, ano, modelo_versao)
-            _checar_modelo_versao("s2", site_id, ano, modelo_versao)
-            _checar_modelo_versao("landsat", site_id, ANO_PRE_SOBREPOSICAO, modelo_versao)
-            landsat_tif = _caminho_raster("landsat", site_id, ano)
-            s2_tif = _caminho_raster("s2", site_id, ano)
-            landsat_2018_tif = _caminho_raster("landsat", site_id, ANO_PRE_SOBREPOSICAO)
+            _checar_modelo_versao("landsat", site_id, ano, modelo_versao, token)
+            _checar_modelo_versao("s2", site_id, ano, modelo_versao, token)
+            _checar_modelo_versao("landsat", site_id, ANO_PRE_SOBREPOSICAO, modelo_versao, token)
+            landsat_tif = _caminho_raster("landsat", site_id, ano, token)
+            s2_tif = _caminho_raster("s2", site_id, ano, token)
+            landsat_2018_tif = _caminho_raster("landsat", site_id, ANO_PRE_SOBREPOSICAO, token)
             for p in (landsat_tif, s2_tif, landsat_2018_tif):
                 if not p.exists():
                     raise ValidacaoError(f"{p} não existe (manifest aponta pra ele, mas o .tif sumiu).")
@@ -511,8 +522,10 @@ def heterogeneidade_entre_sites(df_estab_intra: pd.DataFrame) -> pd.DataFrame:
 # --------------------------------------------------------------------------------------------
 
 
-def rodar_validacao(modelo_versao: str, sites: list[str] | None = None) -> dict[str, Any]:
-    pares = localizar_pares(modelo_versao, sites)
+def rodar_validacao(
+    modelo_versao: str, sites: list[str] | None = None, token: str = TOKEN_PADRAO
+) -> dict[str, Any]:
+    pares = localizar_pares(modelo_versao, sites, token)
     print(f"[validacao_sensores] {len(pares)} pares site x ano de sobreposição localizados.")
 
     todas_linhas_classe: list[dict[str, Any]] = []
@@ -587,13 +600,13 @@ def rodar_validacao(modelo_versao: str, sites: list[str] | None = None) -> dict[
     }
 
 
-def salvar_csvs(resultado: dict[str, Any]) -> None:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    resultado["df_classe"].to_csv(OUT_DIR / "diferenca_area_por_classe.csv", index=False)
-    resultado["df_degrau"].to_csv(OUT_DIR / "degrau_2018_vs_overlap.csv", index=False)
-    resultado["df_concordancia"].to_csv(OUT_DIR / "concordancia_espacial_por_par.csv", index=False)
-    resultado["df_estabilidade"].to_csv(OUT_DIR / "estabilidade_fator_por_site_classe.csv", index=False)
-    resultado["df_heterogeneidade"].to_csv(OUT_DIR / "heterogeneidade_fator_entre_sites.csv", index=False)
+def salvar_csvs(resultado: dict[str, Any], out_dir: Path = OUT_DIR) -> None:
+    out_dir.mkdir(parents=True, exist_ok=True)
+    resultado["df_classe"].to_csv(out_dir / "diferenca_area_por_classe.csv", index=False)
+    resultado["df_degrau"].to_csv(out_dir / "degrau_2018_vs_overlap.csv", index=False)
+    resultado["df_concordancia"].to_csv(out_dir / "concordancia_espacial_por_par.csv", index=False)
+    resultado["df_estabilidade"].to_csv(out_dir / "estabilidade_fator_por_site_classe.csv", index=False)
+    resultado["df_heterogeneidade"].to_csv(out_dir / "heterogeneidade_fator_entre_sites.csv", index=False)
 
     matriz = resultado["matriz_confusao_total"]
     df_matriz = pd.DataFrame(
@@ -601,7 +614,7 @@ def salvar_csvs(resultado: dict[str, Any]) -> None:
         index=[f"landsat_{classes.ID_TO_SLUG[c]}" for c in CLASS_IDS],
         columns=[f"s2agg30_{classes.ID_TO_SLUG[c]}" for c in CLASS_IDS],
     )
-    df_matriz.to_csv(OUT_DIR / "matriz_confusao_agregada.csv")
+    df_matriz.to_csv(out_dir / "matriz_confusao_agregada.csv")
 
 
 def gerar_grafico_serie(df_area_por_classe_csv: Path, out_path: Path) -> Path | None:
@@ -769,7 +782,16 @@ def decidir_tratamento(resultado: dict[str, Any]) -> dict[str, Any]:
 # Artefato de correção — consumido por export_indicadores.py (SV-15), item 6 do enunciado
 # --------------------------------------------------------------------------------------------
 
-FATOR_CORRECAO_PATH = REPO_ROOT / "data" / "manifests" / "fator_correcao_sensor_sv20.json"
+FATOR_CORRECAO_DIR = REPO_ROOT / "data" / "manifests"
+FATOR_CORRECAO_PATH = FATOR_CORRECAO_DIR / "fator_correcao_sensor_sv20.json"
+
+
+def caminho_fator_correcao(modelo_versao: str) -> Path:
+    """Um arquivo por modelo. O nome sem sufixo (`fator_correcao_sensor_sv20.json`) é o
+    histórico, do `rf_v1.0-tuned`, e não é mais sobrescrito: o fator é calibrado SOBRE uma
+    classificação, então aplicá-lo a outra é erro silencioso — foi o que aconteceu com o
+    `rf_v2.0-dw`. Quem lê precisa escolher o arquivo do modelo que está exportando."""
+    return FATOR_CORRECAO_DIR / f"fator_correcao_sensor_sv20_{modelo_versao}.json"
 
 
 def escrever_artefato_correcao(decisao: dict[str, Any], modelo_versao: str, n_pares: int) -> Path:
@@ -796,9 +818,10 @@ def escrever_artefato_correcao(decisao: dict[str, Any], modelo_versao: str, n_pa
             "justificativa": info["justificativa"],
             "fator_por_site": info["fator_por_site"] if info["tratamento"] == "b" else {},
         }
-    FATOR_CORRECAO_PATH.parent.mkdir(parents=True, exist_ok=True)
-    FATOR_CORRECAO_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
-    return FATOR_CORRECAO_PATH
+    destino = caminho_fator_correcao(modelo_versao)
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    destino.write_text(json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    return destino
 
 
 # --------------------------------------------------------------------------------------------
@@ -812,25 +835,35 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--modelo", required=True, help="caminho do .joblib, ex.: models/rf_v1.0.joblib")
     parser.add_argument("--site", default=None, help="restringe a 1 site_id (default: todos os 16 ativos)")
+    parser.add_argument(
+        "--token",
+        default=TOKEN_PADRAO,
+        help="prefixo da classificação a validar (default: %(default)s = produção). Use o mesmo "
+        "token que a inferência usou em --saida-token para validar uma classificação de avaliação, "
+        "ex.: classificado-rf_v2.0-dw.",
+    )
     args = parser.parse_args(argv)
 
     modelo_versao = Path(args.modelo).stem
     sites = [args.site] if args.site else None
+    # Um diretório por modelo: os CSVs de um modelo não sobrescrevem os do outro, que são a
+    # evidência do que já foi publicado.
+    out_dir = OUT_DIR / modelo_versao
 
-    print(f"[validacao_sensores] modelo_versao={modelo_versao}")
-    resultado = rodar_validacao(modelo_versao, sites)
-    salvar_csvs(resultado)
+    print(f"[validacao_sensores] modelo_versao={modelo_versao} | token={args.token}")
+    resultado = rodar_validacao(modelo_versao, sites, args.token)
+    salvar_csvs(resultado, out_dir)
     decisao = decidir_tratamento(resultado)
     artefato_correcao = escrever_artefato_correcao(decisao, modelo_versao, resultado["n_pares"])
 
     grafico = gerar_grafico_serie(
         REPO_ROOT / "outputs" / "indicadores" / "area_por_classe.csv",
-        OUT_DIR / "serie_classes_criticas_com_sobreposicao.png",
+        out_dir / "serie_classes_criticas_com_sobreposicao.png",
     )
 
     for c, info in decisao["por_classe"].items():
         print(f"[validacao_sensores] classe {c} ({classes.ID_TO_SLUG[c]}): tratamento={info['tratamento']} — {info['justificativa']}")
-    print(f"[validacao_sensores] artefatos em {OUT_DIR}")
+    print(f"[validacao_sensores] artefatos em {out_dir}")
     print(f"[validacao_sensores] fator de correção gravado em {artefato_correcao}")
     if grafico:
         print(f"[validacao_sensores] gráfico: {grafico}")
